@@ -79,13 +79,13 @@
     <Button
         android:id="@+id/botonFecha"
         style="?attr/materialIconButtonStyle"
-        android:layout_width="94dp"
-        android:layout_height="124dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_below="@id/sexo"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="21dp"
         android:layout_toEndOf="@+id/fechaNacimiento"
-        app:icon="@drawable/common_google_signin_btn_icon_dark"
-        />
-
+        app:icon="@drawable/ic_calendar_foreground" />
 
 
 </RelativeLayout>

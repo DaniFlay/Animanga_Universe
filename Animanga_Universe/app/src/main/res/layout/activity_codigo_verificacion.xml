@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CodigoVerificacion">
+    <TextView
+        android:id="@+id/cambio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/ramen_ichiraku"
+        android:text="@string/codigoVerificacion"
+        android:textSize="25sp"/>
+
+    <ImageView
+        android:id="@+id/imagen"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/cambio"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:contentDescription="@string/protagonistas"
+        android:src="@drawable/protas" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/codigoVerificacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imagen"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="30dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/codigoVerificacion">
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+    <Button
+        android:id="@+id/botonConfirmar"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/codigoVerificacion"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="35dp"
+        android:backgroundTint="@color/darknavy"
+        android:text="@string/confirmar" />
+
+
+</RelativeLayout>

@@ -6,19 +6,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Registro">
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:src="@drawable/protagonistas"
-        android:layout_centerInParent="true"
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
-        android:id="@+id/imagen"/>
+        android:layout_centerInParent="true"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/black_clover"
+        android:text="@string/AnimangaUniverse"
+        android:textSize="40sp" />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imagen"
+        android:layout_below="@+id/app_name"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="15dp">
@@ -37,6 +40,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="15dp">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,34 +62,94 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
-            app:simpleItems="@array/sexos"/>
+            app:simpleItems="@array/sexos"
+            tools:ignore="LabelFor" />
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fechaNacimiento"
-        android:layout_width="250dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sexo"
+        android:orientation="horizontal"
+        android:id="@+id/linearFecha"
+        android:layout_below="@+id/sexo">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fechaNacimiento"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:hint="@string/fechaDeNacimiento">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/botonFecha"
+            style="?attr/materialIconButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="13dp"
+            android:layout_weight="1"
+            app:icon="@drawable/ic_calendar_foreground"
+            />
+    </LinearLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearFecha"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="15dp">
+        app:passwordToggleEnabled="true"
+        android:id="@+id/password"
+        >
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/fechaDeNacimiento">
+            android:hint="@string/password"
+            android:inputType="textPassword">
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:passwordToggleEnabled="true"
+        android:id="@+id/password2"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password2"
+            android:inputType="textPassword">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/botonFecha"
-        style="?attr/materialIconButtonStyle"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/sexo"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="21dp"
-        android:layout_toEndOf="@+id/fechaNacimiento"
-        app:icon="@drawable/ic_calendar_foreground" />
+        android:id="@+id/botonGuardar"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password2"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="35dp"
+        android:backgroundTint="@color/darknavy"
+        android:text="@string/guardar" />
 
 
 </RelativeLayout>

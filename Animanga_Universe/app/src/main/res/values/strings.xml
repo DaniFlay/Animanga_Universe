@@ -3,11 +3,17 @@
     <string name="AnimangaUniverse">Animanga Universe</string>
     <string name="usuario">Usuario</string>
     <string name="password">Contraseña</string>
+    <string name="password2">Repite contraseña</string>
     <string name="entrar">Entrar</string>
     <string name="registrarse">Registrarse</string>
     <string name="contraseñaOlvidada">Se me ha olvidado la contraseña</string>
     <string name="campoUsuarioVacio">El campo usuario está vacío</string>
     <string name="campoContraseñaVacio">El campo contraseña está vacío</string>
+    <string name="campoCorreoVacio">El campo correo está vacío</string>
+    <string name="campoFechaNacimientoVacio">El campo fecha de nacimiento está vacío</string>
+    <string name="camporSexoVacio">El campo sexo está vacío</string>
+    <string name="campoContraseña2Vacio">El campo repetir contraseña está vacío</string>
+    <string name="camposContraseñaNoCoinciden">Los campos contraseña y repetir contraseña no coinciden</string>
     <string name="contraseñaIncorrecta">La contraseña introducida no es correcta</string>
     <string name="usuarioNoExiste">El usuario introducido no existe</string>
     <string name="correo">Correo</string>
@@ -17,4 +23,15 @@
         <item>Mujer</item>
     </array>
     <string name="fechaDeNacimiento">Fecha de nacimiento</string>
+    <string name="guardar">Guardar</string>
+    <string name="protagonistas">Imagen con protagonistas</string>
+    <string name="errorRellenoFecha">Error al rellenar la fecha</string>
+    <string name="cambioContraseña">Cambio de contraseña</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="codigoVerificacion">Código de verificación</string>
+    <string name="errorRellenoDatos">Error al rellenar los datos</string>
+    <string name="bbddvacia">La base de datos está vacía</string>
+    <string name="codigoNoCoincide">El código de verificación es incorrecto</string>
+    <string name="contraseñaCambiada">La contraseña ha sido cambiada con éxito</string>
+    <string name="aceptar">Aceptar</string>
 </resources>

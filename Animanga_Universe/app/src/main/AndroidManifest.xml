@@ -13,6 +13,15 @@
         android:theme="@style/Theme.Animanga_Universe"
         tools:targetApi="31">
         <activity
+            android:name=".CambioPassword"
+            android:exported="false" />
+        <activity
+            android:name=".CodigoVerificacion"
+            android:exported="false" />
+        <activity
+            android:name=".CambioPasswordCorreo"
+            android:exported="false" />
+        <activity
             android:name=".Registro"
             android:exported="false" />
         <activity

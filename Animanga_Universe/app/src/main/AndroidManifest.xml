@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Animanga_Universe"
         tools:targetApi="31">
         <activity
+            android:name=".MenuPrincipal"
+            android:exported="false" />
+        <activity
             android:name=".CambioPassword"
             android:exported="false" />
         <activity

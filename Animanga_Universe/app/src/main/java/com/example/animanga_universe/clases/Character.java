@@ -11,43 +11,27 @@ import java.util.Objects;
 public class Character implements Serializable, Parcelable {
     int id;
     String name;
-    String nicknames;
     int favourites;
     String about;
-    String picture;
+    String main_picture;
 
-    public Character() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Character)) return false;
-        Character character = (Character) o;
-        return getId() == character.getId() && Objects.equals(getName(), character.getName());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName());
-    }
-
-    public Character(int id, String name, String nicknames, int favourites, String about, String picture) {
+    public Character(int id, String name, int favourites, String about, String main_picture) {
         this.id = id;
         this.name = name;
-        this.nicknames = nicknames;
         this.favourites = favourites;
         this.about = about;
-        this.picture = picture;
+        this.main_picture = main_picture;
+    }
+
+    public Character() {
     }
 
     protected Character(Parcel in) {
         id = in.readInt();
         name = in.readString();
-        nicknames = in.readString();
         favourites = in.readInt();
         about = in.readString();
-        picture = in.readString();
+        main_picture = in.readString();
     }
 
     public static final Creator<Character> CREATOR = new Creator<Character>() {
@@ -61,6 +45,19 @@ public class Character implements Serializable, Parcelable {
             return new Character[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Character character = (Character) o;
+        return id == character.id && Objects.equals(name, character.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
 
     public int getId() {
         return id;
@@ -76,14 +73,6 @@ public class Character implements Serializable, Parcelable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNicknames() {
-        return nicknames;
-    }
-
-    public void setNicknames(String nicknames) {
-        this.nicknames = nicknames;
     }
 
     public int getFavourites() {
@@ -102,12 +91,12 @@ public class Character implements Serializable, Parcelable {
         this.about = about;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getMain_picture() {
+        return main_picture;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setMain_picture(String main_picture) {
+        this.main_picture = main_picture;
     }
 
     @Override
@@ -119,9 +108,8 @@ public class Character implements Serializable, Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
-        dest.writeString(nicknames);
         dest.writeInt(favourites);
         dest.writeString(about);
-        dest.writeString(picture);
+        dest.writeString(main_picture);
     }
 }

@@ -98,7 +98,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="13dp"
             android:layout_weight="1"
-            app:icon="@drawable/ic_calendar_foreground"
+            app:icon="@drawable/baseline_calendar_month_24"
             />
     </LinearLayout>
     <com.google.android.material.textfield.TextInputLayout

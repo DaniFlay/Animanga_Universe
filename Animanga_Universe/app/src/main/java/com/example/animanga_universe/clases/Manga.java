@@ -10,96 +10,68 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Manga implements Serializable, Parcelable {
-    int id;
-    String title;
-    String type;
-    double score;
-    double scored_by;
-    String status;
-    String volumes;
+    String authors;
     String chapters;
-    String published_from;
-    String published_to;
+    String demographics;
     int favourites;
     String genres;
-    String themes;
-    String demographics;
-    String authors;
+    int id;
+    String main_picture;
+    String published_from;
+    String published_to;
+    int score;
+    double scored_by;
+    String status;
     String synopsis;
-    String picture;
-    String title_j;
-    String estado;
-    String fecha_inicio;
-    String fecha_fin;
-    String score_usuario;
-    boolean favorito;
+    String title;
+    String title_english;
+    String title_japanese;
+    String type;
+    String volumes;
 
-    public Manga(int id, String title, String type, double score, double scored_by, String status, String volumes, String chapters, String published_from, String published_to, int favourites, String genres, String themes, String demographics, String authors, String synopsis, String picture, String title_j, String estado, String fecha_inicio, String fecha_fin, String score_usuario, boolean favorito) {
+    public Manga(String authors, String chapters, String demographics, int favourites, String genres, int id, String main_picture, String published_from, String published_to, int score, double scored_by, String status, String synopsis, String title, String title_english, String title_japanese, String type, String volumes) {
+        this.authors = authors;
+        this.chapters = chapters;
+        this.demographics = demographics;
+        this.favourites = favourites;
+        this.genres = genres;
         this.id = id;
-        this.title = title;
-        this.type = type;
+        this.main_picture = main_picture;
+        this.published_from = published_from;
+        this.published_to = published_to;
         this.score = score;
         this.scored_by = scored_by;
         this.status = status;
-        this.volumes = volumes;
-        this.chapters = chapters;
-        this.published_from = published_from;
-        this.published_to = published_to;
-        this.favourites = favourites;
-        this.genres = genres;
-        this.themes = themes;
-        this.demographics = demographics;
-        this.authors = authors;
         this.synopsis = synopsis;
-        this.picture = picture;
-        this.title_j = title_j;
-        this.estado = estado;
-        this.fecha_inicio = fecha_inicio;
-        this.fecha_fin = fecha_fin;
-        this.score_usuario = score_usuario;
-        this.favorito = favorito;
+        this.title = title;
+        this.title_english = title_english;
+        this.title_japanese = title_japanese;
+        this.type = type;
+        this.volumes = volumes;
     }
 
     public Manga() {
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Manga)) return false;
-        Manga manga = (Manga) o;
-        return getId() == manga.getId() && Objects.equals(getTitle(), manga.getTitle());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getTitle());
-    }
-
     protected Manga(Parcel in) {
-        id = in.readInt();
-        title = in.readString();
-        type = in.readString();
-        score = in.readDouble();
-        scored_by = in.readDouble();
-        status = in.readString();
-        volumes = in.readString();
+        authors = in.readString();
         chapters = in.readString();
-        published_from = in.readString();
-        published_to = in.readString();
+        demographics = in.readString();
         favourites = in.readInt();
         genres = in.readString();
-        themes = in.readString();
-        demographics = in.readString();
-        authors = in.readString();
+        id = in.readInt();
+        main_picture = in.readString();
+        published_from = in.readString();
+        published_to = in.readString();
+        score = in.readInt();
+        scored_by = in.readDouble();
+        status = in.readString();
         synopsis = in.readString();
-        picture = in.readString();
-        title_j = in.readString();
-        estado = in.readString();
-        fecha_inicio = in.readString();
-        fecha_fin = in.readString();
-        score_usuario = in.readString();
-        favorito = in.readByte() != 0;
+        title = in.readString();
+        title_english = in.readString();
+        title_japanese = in.readString();
+        type = in.readString();
+        volumes = in.readString();
     }
 
     public static final Creator<Manga> CREATOR = new Creator<Manga>() {
@@ -114,6 +86,59 @@ public class Manga implements Serializable, Parcelable {
         }
     };
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Manga manga = (Manga) o;
+        return id == manga.id && Objects.equals(title, manga.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title);
+    }
+
+    public String getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(String authors) {
+        this.authors = authors;
+    }
+
+    public String getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(String chapters) {
+        this.chapters = chapters;
+    }
+
+    public String getDemographics() {
+        return demographics;
+    }
+
+    public void setDemographics(String demographics) {
+        this.demographics = demographics;
+    }
+
+    public int getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(int favourites) {
+        this.favourites = favourites;
+    }
+
+    public String getGenres() {
+        return genres;
+    }
+
+    public void setGenres(String genres) {
+        this.genres = genres;
+    }
+
     public int getId() {
         return id;
     }
@@ -122,27 +147,35 @@ public class Manga implements Serializable, Parcelable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getMain_picture() {
+        return main_picture;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setMain_picture(String main_picture) {
+        this.main_picture = main_picture;
     }
 
-    public String getType() {
-        return type;
+    public String getPublished_from() {
+        return published_from;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setPublished_from(String published_from) {
+        this.published_from = published_from;
     }
 
-    public double getScore() {
+    public String getPublished_to() {
+        return published_to;
+    }
+
+    public void setPublished_to(String published_to) {
+        this.published_to = published_to;
+    }
+
+    public int getScore() {
         return score;
     }
 
-    public void setScore(double score) {
+    public void setScore(int score) {
         this.score = score;
     }
 
@@ -162,78 +195,6 @@ public class Manga implements Serializable, Parcelable {
         this.status = status;
     }
 
-    public String getVolumes() {
-        return volumes;
-    }
-
-    public void setVolumes(String volumes) {
-        this.volumes = volumes;
-    }
-
-    public String getChapters() {
-        return chapters;
-    }
-
-    public void setChapters(String chapters) {
-        this.chapters = chapters;
-    }
-
-    public String getPublished_from() {
-        return published_from;
-    }
-
-    public void setPublished_from(String published_from) {
-        this.published_from = published_from;
-    }
-
-    public String getPublished_to() {
-        return published_to;
-    }
-
-    public void setPublished_to(String published_to) {
-        this.published_to = published_to;
-    }
-
-    public int getFavourites() {
-        return favourites;
-    }
-
-    public void setFavourites(int favourites) {
-        this.favourites = favourites;
-    }
-
-    public String getGenres() {
-        return genres;
-    }
-
-    public void setGenres(String genres) {
-        this.genres = genres;
-    }
-
-    public String getThemes() {
-        return themes;
-    }
-
-    public void setThemes(String themes) {
-        this.themes = themes;
-    }
-
-    public String getDemographics() {
-        return demographics;
-    }
-
-    public void setDemographics(String demographics) {
-        this.demographics = demographics;
-    }
-
-    public String getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(String authors) {
-        this.authors = authors;
-    }
-
     public String getSynopsis() {
         return synopsis;
     }
@@ -242,60 +203,44 @@ public class Manga implements Serializable, Parcelable {
         this.synopsis = synopsis;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getTitle() {
+        return title;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getTitle_j() {
-        return title_j;
+    public String getTitle_english() {
+        return title_english;
     }
 
-    public void setTitle_j(String title_j) {
-        this.title_j = title_j;
+    public void setTitle_english(String title_english) {
+        this.title_english = title_english;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getTitle_japanese() {
+        return title_japanese;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setTitle_japanese(String title_japanese) {
+        this.title_japanese = title_japanese;
     }
 
-    public String getFecha_inicio() {
-        return fecha_inicio;
+    public String getType() {
+        return type;
     }
 
-    public void setFecha_inicio(String fecha_inicio) {
-        this.fecha_inicio = fecha_inicio;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getFecha_fin() {
-        return fecha_fin;
+    public String getVolumes() {
+        return volumes;
     }
 
-    public void setFecha_fin(String fecha_fin) {
-        this.fecha_fin = fecha_fin;
-    }
-
-    public String getScore_usuario() {
-        return score_usuario;
-    }
-
-    public void setScore_usuario(String score_usuario) {
-        this.score_usuario = score_usuario;
-    }
-
-    public boolean isFavorito() {
-        return favorito;
-    }
-
-    public void setFavorito(boolean favorito) {
-        this.favorito = favorito;
+    public void setVolumes(String volumes) {
+        this.volumes = volumes;
     }
 
     @Override
@@ -305,28 +250,23 @@ public class Manga implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(title);
-        dest.writeString(type);
-        dest.writeDouble(score);
-        dest.writeDouble(scored_by);
-        dest.writeString(status);
-        dest.writeString(volumes);
+        dest.writeString(authors);
         dest.writeString(chapters);
-        dest.writeString(published_from);
-        dest.writeString(published_to);
+        dest.writeString(demographics);
         dest.writeInt(favourites);
         dest.writeString(genres);
-        dest.writeString(themes);
-        dest.writeString(demographics);
-        dest.writeString(authors);
+        dest.writeInt(id);
+        dest.writeString(main_picture);
+        dest.writeString(published_from);
+        dest.writeString(published_to);
+        dest.writeInt(score);
+        dest.writeDouble(scored_by);
+        dest.writeString(status);
         dest.writeString(synopsis);
-        dest.writeString(picture);
-        dest.writeString(title_j);
-        dest.writeString(estado);
-        dest.writeString(fecha_inicio);
-        dest.writeString(fecha_fin);
-        dest.writeString(score_usuario);
-        dest.writeByte((byte) (favorito ? 1 : 0));
+        dest.writeString(title);
+        dest.writeString(title_english);
+        dest.writeString(title_japanese);
+        dest.writeString(type);
+        dest.writeString(volumes);
     }
 }

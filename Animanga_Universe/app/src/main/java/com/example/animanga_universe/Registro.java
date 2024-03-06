@@ -1,5 +1,6 @@
 package com.example.animanga_universe;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -19,8 +20,11 @@ import com.example.animanga_universe.clases.Manga;
 import com.example.animanga_universe.clases.Usuario;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,6 +43,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
     Button elegirFecha, guardar;
     DatabaseReference ref;
     String usuario2,correo2,sexo2,fechaNacimiento,password,password2 ;
+    boolean existe= false;
 
 
     /**
@@ -111,6 +116,24 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                 fechaNacimiento = fecha.getEditText().getText().toString().trim();
                 password = contraseña.getEditText().getText().toString().trim();
                 password2 = contraseña2.getEditText().getText().toString().trim();
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot d: snapshot.getChildren()){
+                            Usuario u= d.getValue(Usuario.class);
+                            if(u!=null){
+                                if(u.getUsername().equals(usuario2)){
+                                    existe= true;
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
             else{
                 Snackbar.make(v,getString(R.string.errorRellenoDatos),Snackbar.LENGTH_SHORT).show();
@@ -145,7 +168,10 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                 requestFocus(contraseña);
                 contraseña.getEditText().setText("");
                 contraseña2.getEditText().setText("");
-            }else {
+            }else if (existe) {
+                Snackbar.make(v,getString(R.string.usuarioExiste),Snackbar.LENGTH_SHORT).show();
+                requestFocus(usuario);
+            }else{
                 Date fechaActual = new Date();
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                 String fechaRegistro = formatoFecha.format(fechaActual);

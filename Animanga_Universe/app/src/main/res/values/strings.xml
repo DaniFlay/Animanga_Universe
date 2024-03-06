@@ -34,4 +34,17 @@
     <string name="codigoNoCoincide">El código de verificación es incorrecto</string>
     <string name="contraseñaCambiada">La contraseña ha sido cambiada con éxito</string>
     <string name="aceptar">Aceptar</string>
+    <string name="usuarioExiste">El usuario ya existe</string>
+    <string name="home">Home</string>
+    <string name="forums">Forums</string>
+    <string name="buscar">Buscar</string>
+    <string name="perfil">Perfil</string>
+    <string name="listas">Listas</string>
+    <string name="anime">Anime</string>
+    <string name="manga">Manga</string>
+    <string name="personajes">Personajes</string>
+    <string name="imagen">Imagen del elemento</string>
+    <string name="titulo">Titulo</string>
+    <string name="info">Info</string>
+    <string name="rating">rating</string>
 </resources>

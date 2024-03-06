@@ -3,7 +3,18 @@
     <style name="Base.Theme.Animanga_Universe" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
     </style>
 
     <style name="Theme.Animanga_Universe" parent="Base.Theme.Animanga_Universe" />
+    <style name="Widget.Material3.Toolbar"
+        parent="">
+        <item name="fontFamily">@font/black_clover</item>
+        <item name="android:fontFamily">@font/black_clover</item>
+        <item name="titleTextAppearance">@font/black_clover</item>
+        <item name="titleTextStyle">@font/black_clover</item>
+    </style>
+    <style name="NarutoFont">
+        <item name="android:fontFamily">@font/ramen_ichiraku</item>
+    </style>
 </resources>

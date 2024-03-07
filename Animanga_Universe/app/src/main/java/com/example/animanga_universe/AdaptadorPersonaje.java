@@ -1,7 +1,6 @@
 package com.example.animanga_universe;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class AdaptadorBusqueda extends RecyclerView.Adapter<AdaptadorBusqueda.ViewHolder> {
+public class AdaptadorPersonaje extends RecyclerView.Adapter<AdaptadorPersonaje.ViewHolder> {
 
     ArrayList<?> listado;
     Context context;
@@ -23,7 +22,7 @@ public class AdaptadorBusqueda extends RecyclerView.Adapter<AdaptadorBusqueda.Vi
         this.onClickListener= onClickListener;
     }
 
-    public AdaptadorBusqueda(ArrayList<?> listado, Context context, int layout_id) {
+    public AdaptadorPersonaje(ArrayList<?> listado, Context context, int layout_id) {
         this.listado = listado;
         this.context = context;
         this.layout_id = layout_id;
@@ -31,41 +30,36 @@ public class AdaptadorBusqueda extends RecyclerView.Adapter<AdaptadorBusqueda.Vi
 
     @NonNull
     @Override
-    public AdaptadorBusqueda.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View elemento= LayoutInflater.from(parent.getContext()).inflate(R.layout.element_busqueda,parent,false);
-        elemento.setOnClickListener(onClickListener);
-        return new ViewHolder(elemento);
+    public AdaptadorPersonaje.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdaptadorBusqueda.ViewHolder holder, int position) {
-        Encapsulador e= (Encapsulador) listado.get(position);
-        holder.representacionElementos(e);
+    public void onBindViewHolder(@NonNull AdaptadorPersonaje.ViewHolder holder, int position) {
+
     }
 
     @Override
     public int getItemCount() {
-        return listado.size();
+        return 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView titulo, info, rating;
+        TextView nombre, favs;
         ImageView imagen;
         AppCompatImageButton boton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            titulo= itemView.findViewById(R.id.titulo);
-            info= itemView.findViewById(R.id.infoAdicional);
-            rating= itemView.findViewById(R.id.rating);
+            nombre= itemView.findViewById(R.id.nombre);
+            favs= itemView.findViewById(R.id.favs);
             imagen= itemView.findViewById(R.id.imagen);
             boton= itemView.findViewById(R.id.boton);
         }
-        public void representacionElementos(Encapsulador e){
-            titulo.setText(e.getTitulo());
-            info.setText(e.getInfo());
-            rating.setText(e.getRating());
-            imagen.setImageDrawable(e.getImagen());
+        public void representacionElementos(EncapsuladorPersonaje e){
+            nombre.setText(e.getNombre());
+            favs.setText(e.getFavs());
+            imagen.setImageResource(e.getImagen());
             boton.setBackgroundColor(e.getColor());
         }
     }

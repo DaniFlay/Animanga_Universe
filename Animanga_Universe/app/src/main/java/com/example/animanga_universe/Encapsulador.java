@@ -1,10 +1,13 @@
 package com.example.animanga_universe;
 
+import android.graphics.drawable.Drawable;
+
 public class Encapsulador {
-    int imagen, color;
+    Drawable imagen;
+    int color;
     String titulo, info, rating;
 
-    public Encapsulador(int imagen, int color, String titulo, String info, String rating) {
+    public Encapsulador(Drawable imagen, int color, String titulo, String info, String rating) {
         this.imagen = imagen;
         this.color = color;
         this.titulo = titulo;
@@ -12,11 +15,11 @@ public class Encapsulador {
         this.rating = rating;
     }
 
-    public int getImagen() {
+    public Drawable getImagen() {
         return imagen;
     }
 
-    public void setImagen(int imagen) {
+    public void setImagen(Drawable imagen) {
         this.imagen = imagen;
     }
 

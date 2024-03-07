@@ -7,4 +7,10 @@
     <color name="darknavy">#011A27</color>
     <color name="daffodil">#E6DF44</color>
     <color name="blancoRoto">#b1b3b1</color>
+    <color name="espera">#f5aa42</color>
+    <color name="completado">#426cf5</color>
+    <color name="enProceso">#09ba00</color>
+    <color name="dejado">#cf0000</color>
+    <color name="enlista">#f062dd</color>
+    <color name="pordefecto">#bdbdbd</color>
 </resources>

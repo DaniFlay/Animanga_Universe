@@ -2,6 +2,8 @@ package com.example.animanga_universe;
 
 import android.graphics.drawable.Drawable;
 
+import java.util.Objects;
+
 public class Encapsulador {
     Drawable imagen;
     int color;
@@ -13,6 +15,19 @@ public class Encapsulador {
         this.titulo = titulo;
         this.info = info;
         this.rating = rating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Encapsulador that = (Encapsulador) o;
+        return Objects.equals(titulo, that.titulo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(titulo);
     }
 
     public Drawable getImagen() {
@@ -53,5 +68,16 @@ public class Encapsulador {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public String toString() {
+        return "Encapsulador{" +
+                "imagen=" + imagen +
+                ", color=" + color +
+                ", titulo='" + titulo + '\'' +
+                ", info='" + info + '\'' +
+                ", rating='" + rating + '\'' +
+                '}';
     }
 }

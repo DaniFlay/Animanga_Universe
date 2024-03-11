@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,8 @@ import android.view.ViewGroup;
 import com.example.animanga_universe.clases.Anime;
 import com.example.animanga_universe.clases.Manga;
 import com.example.animanga_universe.clases.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -27,12 +30,22 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +61,7 @@ public class BuscarFragment extends Fragment {
     Usuario user;
     int color;
     String info, rating, nombre;
+    FirebaseFirestore db;
 
     Drawable drawable;
     ArrayList<Encapsulador> animes, mangas;
@@ -94,9 +108,7 @@ public class BuscarFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        animes= new ArrayList<>();
-        mangas= new ArrayList<>();
-        personajes= new ArrayList<>();
+
 
     }
 
@@ -108,17 +120,59 @@ public class BuscarFragment extends Fragment {
         searchView= view.findViewById(R.id.search_view);
         tabLayout= view.findViewById(R.id.tab_layout);
         recyclerView= view.findViewById(R.id.recycler_view);
+        animes= new ArrayList<>();
+        mangas= new ArrayList<>();
+        personajes= new ArrayList<>();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                animes.clear();
                 nombre= query;
+                CollectionReference cr=FirebaseFirestore.getInstance().collection("Anime");
+                cr.orderBy("title").startAt(nombre).endAt(nombre+"\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        Log.d("tamaño",value.getDocuments().size()+"");
+                        for(DocumentSnapshot d: value.getDocuments()){
+                            Anime a= d.toObject(Anime.class);
+                            Log.d("animeencontrado",a.getTitle().toString());
+                            String anyo="";
+                            if(a.getPremiered_year().length()>0){
+                                 anyo= a.getPremiered_year();
+                            }else{
+                                anyo="?";
+                            }
+                            if(!a.getEpisodes().equals("")){
+                                info = a.getEpisodes() + " ep, " + anyo;
+                            }else{
+                                info= "? ep, "+anyo;
+                            }
+                            try {
+                                InputStream is= (InputStream) new URL(a.getMain_picture()).getContent();
+                                drawable= Drawable.createFromStream(is,"src name");
+
+                            } catch (IOException e) {
+                                drawable= getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                            }
+                            rating= String.valueOf(a.getScore());
+                            Encapsulador e= new Encapsulador(drawable,R.color.pordefecto,a.getTitle(),info,rating);
+                            if(!animes.contains(e)){
+                                animes.add(e);
+                            }
+                            adaptadorBusqueda= new AdaptadorBusqueda(animes, getContext(), R.layout.element_busqueda);
+                            recyclerView.setAdapter(adaptadorBusqueda);
+                            layoutManager= new LinearLayoutManager(getContext());
+                            recyclerView.setLayoutManager(layoutManager);
+                        }
+                    }
+                });
                 if(getActivity()!= null){
                     user= getActivity().getIntent().getParcelableExtra("usuario");
                 }
                 StrictMode.ThreadPolicy policy= new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 ref=  FirebaseDatabase.getInstance().getReference("Manga").child(nombre);
-                ref.orderByChild("title").addListenerForSingleValueEvent(new ValueEventListener() {
+              /*  ref.orderByChild("title").equalTo(nombre+"\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -131,22 +185,23 @@ public class BuscarFragment extends Fragment {
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-                        char[] fecha= m.getPublished_from().toCharArray();
-                        String anyo="";
-                        for(int i=fecha.length-1;i>fecha.length-5;i--){
-                            anyo+=fecha[i];
-                        }
-
+                        String anyo= m.getPublished_from().substring(m.getPublished_from().length()-4);
                         info = m.getChapters() + " ch," + anyo;
                         rating= String.valueOf(m.getScore());
+                        Log.d("encapsulador",new Encapsulador(drawable,R.color.pordefecto,m.getTitle(),info,rating).toString());
                         mangas.add(new Encapsulador(drawable,R.color.pordefecto,m.getTitle(),info,rating));
+                        adaptadorBusqueda= new AdaptadorBusqueda(mangas, getContext(), R.layout.element_busqueda);
+                        recyclerView.setAdapter(adaptadorBusqueda);
+                        layoutManager= new LinearLayoutManager(getContext());
+                        recyclerView.setLayoutManager(layoutManager);
+                        Log.d("longitud",mangas.size()+"");
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
-                });
+                });*/
                 return false;
             }
 
@@ -222,11 +277,7 @@ public class BuscarFragment extends Fragment {
 
             }
         });*/
-        adaptadorBusqueda= new AdaptadorBusqueda(mangas, getContext(), R.layout.element_busqueda);
-        recyclerView.setAdapter(adaptadorBusqueda);
-        layoutManager= new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        Log.d("longitud",mangas.size()+"");
+
         return view;
 
     }

@@ -12,13 +12,12 @@ public class Anime implements Serializable, Parcelable {
     String aired_from;
     String aired_to;
     String broadcast_day;
-    String broadcast_time;
     String demographics;
     String duration;
     String episodes;
-    String favourites;
+    String favorites;
     String genres;
-    String id;
+    String mal_id;
     String main_picture;
     String premiered_season;
     String premiered_year;
@@ -33,17 +32,19 @@ public class Anime implements Serializable, Parcelable {
     String trailer_url;
     String type;
 
-    public Anime(String aired_from, String aired_to, String broadcast_day, String broadcast_time, String demographics, String duration, String episodes, String favourites, String genres, String id, String main_picture, String premiered_season, String premiered_year, String producers, String score, String scored_by, String status, String studios, String title, String title_english, String title_japanese, String trailer_url, String type) {
+    public Anime() {
+    }
+
+    public Anime(String aired_from, String aired_to, String broadcast_day, String demographics, String duration, String episodes, String favorites, String genres, String mal_id, String main_picture, String premiered_season, String premiered_year, String producers, String score, String scored_by, String status, String studios, String title, String title_english, String title_japanese, String trailer_url, String type) {
         this.aired_from = aired_from;
         this.aired_to = aired_to;
         this.broadcast_day = broadcast_day;
-        this.broadcast_time = broadcast_time;
         this.demographics = demographics;
         this.duration = duration;
         this.episodes = episodes;
-        this.favourites = favourites;
+        this.favorites = favorites;
         this.genres = genres;
-        this.id = id;
+        this.mal_id = mal_id;
         this.main_picture = main_picture;
         this.premiered_season = premiered_season;
         this.premiered_year = premiered_year;
@@ -59,20 +60,16 @@ public class Anime implements Serializable, Parcelable {
         this.type = type;
     }
 
-    public Anime() {
-    }
-
     protected Anime(Parcel in) {
         aired_from = in.readString();
         aired_to = in.readString();
         broadcast_day = in.readString();
-        broadcast_time = in.readString();
         demographics = in.readString();
         duration = in.readString();
         episodes = in.readString();
-        favourites = in.readString();
+        favorites = in.readString();
         genres = in.readString();
-        id = in.readString();
+        mal_id = in.readString();
         main_picture = in.readString();
         premiered_season = in.readString();
         premiered_year = in.readString();
@@ -105,12 +102,40 @@ public class Anime implements Serializable, Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Anime anime = (Anime) o;
-        return Objects.equals(id, anime.id) && Objects.equals(title, anime.title);
+        return Objects.equals(mal_id, anime.mal_id) && Objects.equals(title, anime.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title);
+        return Objects.hash(mal_id, title);
+    }
+
+    @Override
+    public String toString() {
+        return "Anime{" +
+                "aired_from='" + aired_from + '\'' +
+                ", aired_to='" + aired_to + '\'' +
+                ", broadcast_day='" + broadcast_day + '\'' +
+                ", demographics='" + demographics + '\'' +
+                ", duration='" + duration + '\'' +
+                ", episodes='" + episodes + '\'' +
+                ", favorites='" + favorites + '\'' +
+                ", genres='" + genres + '\'' +
+                ", mal_id='" + mal_id + '\'' +
+                ", main_picture='" + main_picture + '\'' +
+                ", premiered_season='" + premiered_season + '\'' +
+                ", premiered_year='" + premiered_year + '\'' +
+                ", producers='" + producers + '\'' +
+                ", score='" + score + '\'' +
+                ", scored_by='" + scored_by + '\'' +
+                ", status='" + status + '\'' +
+                ", studios='" + studios + '\'' +
+                ", title='" + title + '\'' +
+                ", title_english='" + title_english + '\'' +
+                ", title_japanese='" + title_japanese + '\'' +
+                ", trailer_url='" + trailer_url + '\'' +
+                ", type='" + type + '\'' +
+                '}';
     }
 
     public String getAired_from() {
@@ -137,14 +162,6 @@ public class Anime implements Serializable, Parcelable {
         this.broadcast_day = broadcast_day;
     }
 
-    public String getBroadcast_time() {
-        return broadcast_time;
-    }
-
-    public void setBroadcast_time(String broadcast_time) {
-        this.broadcast_time = broadcast_time;
-    }
-
     public String getDemographics() {
         return demographics;
     }
@@ -169,12 +186,12 @@ public class Anime implements Serializable, Parcelable {
         this.episodes = episodes;
     }
 
-    public String getFavourites() {
-        return favourites;
+    public String getFavorites() {
+        return favorites;
     }
 
-    public void setFavourites(String favourites) {
-        this.favourites = favourites;
+    public void setFavorites(String favorites) {
+        this.favorites = favorites;
     }
 
     public String getGenres() {
@@ -185,12 +202,12 @@ public class Anime implements Serializable, Parcelable {
         this.genres = genres;
     }
 
-    public String getId() {
-        return id;
+    public String getMal_id() {
+        return mal_id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setMal_id(String mal_id) {
+        this.mal_id = mal_id;
     }
 
     public String getMain_picture() {
@@ -307,13 +324,12 @@ public class Anime implements Serializable, Parcelable {
         dest.writeString(aired_from);
         dest.writeString(aired_to);
         dest.writeString(broadcast_day);
-        dest.writeString(broadcast_time);
         dest.writeString(demographics);
         dest.writeString(duration);
         dest.writeString(episodes);
-        dest.writeString(favourites);
+        dest.writeString(favorites);
         dest.writeString(genres);
-        dest.writeString(id);
+        dest.writeString(mal_id);
         dest.writeString(main_picture);
         dest.writeString(premiered_season);
         dest.writeString(premiered_year);
@@ -327,35 +343,5 @@ public class Anime implements Serializable, Parcelable {
         dest.writeString(title_japanese);
         dest.writeString(trailer_url);
         dest.writeString(type);
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return "Anime{" +
-                "aired_from='" + aired_from + '\'' +
-                ", aired_to='" + aired_to + '\'' +
-                ", broadcast_day='" + broadcast_day + '\'' +
-                ", broadcast_time='" + broadcast_time + '\'' +
-                ", demographics='" + demographics + '\'' +
-                ", duration='" + duration + '\'' +
-                ", episodes='" + episodes + '\'' +
-                ", favourites=" + favourites +
-                ", genres='" + genres + '\'' +
-                ", id=" + id +
-                ", main_picture='" + main_picture + '\'' +
-                ", premiered_season='" + premiered_season + '\'' +
-                ", premiered_year=" + premiered_year +
-                ", producers='" + producers + '\'' +
-                ", score='" + score + '\'' +
-                ", scored_by=" + scored_by +
-                ", status='" + status + '\'' +
-                ", studios='" + studios + '\'' +
-                ", title='" + title + '\'' +
-                ", title_english='" + title_english + '\'' +
-                ", title_japanese='" + title_japanese + '\'' +
-                ", trailer_url='" + trailer_url + '\'' +
-                ", type='" + type + '\'' +
-                '}';
     }
 }

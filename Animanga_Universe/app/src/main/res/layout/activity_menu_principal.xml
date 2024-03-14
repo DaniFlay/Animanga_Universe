@@ -28,6 +28,16 @@
         app:titleTextColor="@color/white"
         app:titleCentered="true"
         style="@style/Widget.Material3.Toolbar">
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            app:thumbIcon="@drawable/ic_a_foreground"
+            app:thumbIconSize="150dp"
+            android:visibility="gone"
+            android:id="@+id/switchButton"/>
+
+
 
     </com.google.android.material.appbar.MaterialToolbar>
             <com.google.android.material.bottomnavigation.BottomNavigationView

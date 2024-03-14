@@ -13,11 +13,9 @@
             android:src="@mipmap/ic_launcher"
             android:contentDescription="@string/imagen"
             />
-
-
     <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight="5"
         android:layout_height="match_parent"
         android:id="@+id/LinearInfo"
         android:orientation="vertical">
@@ -42,7 +40,8 @@
             />
     </LinearLayout>
     <androidx.appcompat.widget.AppCompatImageButton
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
         android:src="@drawable/baseline_playlist_add_24"
         android:layout_gravity="bottom"

@@ -1,5 +1,6 @@
 package com.example.animanga_universe;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.example.animanga_universe.clases.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.search.SearchBar;
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,8 +62,9 @@ public class BuscarFragment extends Fragment {
     DatabaseReference ref;
     Usuario user;
     int color;
-    String info, rating, nombre;
+    String info, rating, nombre, busqueda;
     FirebaseFirestore db;
+
 
     Drawable drawable;
     ArrayList<Encapsulador> animes, mangas;
@@ -115,10 +118,37 @@ public class BuscarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        busqueda="Anime";
         view =inflater.inflate(R.layout.fragment_buscar, container, false);
         searchView= view.findViewById(R.id.search_view);
         tabLayout= view.findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.anime)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.manga)));
+
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                animes.clear();
+                if(tab.getPosition()==0){
+                    busqueda="Anime";
+                } else if (tab.getPosition()==1) {
+                    busqueda= "Manga";
+                }else{
+                    busqueda="Personaje";
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         recyclerView= view.findViewById(R.id.recycler_view);
         animes= new ArrayList<>();
         mangas= new ArrayList<>();
@@ -126,82 +156,108 @@ public class BuscarFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                animes.clear();
                 nombre= query;
-                CollectionReference cr=FirebaseFirestore.getInstance().collection("Anime");
-                cr.orderBy("title").startAt(nombre).endAt(nombre+"\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        Log.d("tamaño",value.getDocuments().size()+"");
-                        for(DocumentSnapshot d: value.getDocuments()){
-                            Anime a= d.toObject(Anime.class);
-                            Log.d("animeencontrado",a.getTitle().toString());
-                            String anyo="";
-                            if(a.getPremiered_year().length()>0){
-                                 anyo= a.getPremiered_year();
-                            }else{
-                                anyo="?";
-                            }
-                            if(!a.getEpisodes().equals("")){
-                                info = a.getEpisodes() + " ep, " + anyo;
-                            }else{
-                                info= "? ep, "+anyo;
-                            }
-                            try {
-                                InputStream is= (InputStream) new URL(a.getMain_picture()).getContent();
-                                drawable= Drawable.createFromStream(is,"src name");
+                if(busqueda.equals(getString(R.string.anime))){
+                    CollectionReference cr=FirebaseFirestore.getInstance().collection(busqueda);
+                    cr.orderBy("title").startAt(nombre).endAt(nombre+"\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if(value!=null){
+                                for(DocumentSnapshot d: value.getDocuments()){
+                                    Anime a= d.toObject(Anime.class);
+                                    String anyo="";
+                                    if(a!=null){
+                                        if(a.getPremiered_year().length()>0){
+                                            anyo= a.getPremiered_year();
+                                        }else{
+                                            anyo="?";
+                                        }
+                                        if(!a.getEpisodes().equals("")){
+                                            info = a.getEpisodes() + " ep, " + anyo;
+                                        }else{
+                                            info= "? ep, "+anyo;
+                                        }
+                                        try {
+                                            InputStream is= (InputStream) new URL(a.getMain_picture()).getContent();
+                                            drawable= Drawable.createFromStream(is,"src name");
 
-                            } catch (IOException e) {
-                                drawable= getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                                        } catch (IOException e) {
+                                            drawable= getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                                        }
+                                        rating= String.valueOf(a.getScore());
+                                        Encapsulador e= new Encapsulador(drawable,R.color.pordefecto,a.getTitle(),info,rating);
+                                        if(!animes.contains(e)){
+                                            animes.add(e);
+                                        }
+                                        adaptadorBusqueda= new AdaptadorBusqueda(animes, getContext(), R.layout.element_busqueda);
+                                        recyclerView.setAdapter(adaptadorBusqueda);
+                                        layoutManager= new LinearLayoutManager(getContext());
+                                        recyclerView.setLayoutManager(layoutManager);
+                                    }
+
+                                }
+
+
                             }
-                            rating= String.valueOf(a.getScore());
-                            Encapsulador e= new Encapsulador(drawable,R.color.pordefecto,a.getTitle(),info,rating);
-                            if(!animes.contains(e)){
-                                animes.add(e);
                             }
-                            adaptadorBusqueda= new AdaptadorBusqueda(animes, getContext(), R.layout.element_busqueda);
-                            recyclerView.setAdapter(adaptadorBusqueda);
-                            layoutManager= new LinearLayoutManager(getContext());
-                            recyclerView.setLayoutManager(layoutManager);
-                        }
-                    }
-                });
+
+                    });
+                } else if (busqueda.equals(getString(R.string.manga))) {
+                    CollectionReference cr=FirebaseFirestore.getInstance().collection(busqueda);
+                    cr.orderBy("title").startAt(nombre).endAt(nombre+"\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @SuppressLint("UseCompatLoadingForDrawables")
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            if(value!=null){
+                                for(DocumentSnapshot d: value.getDocuments()){
+                                    Manga m= d.toObject(Manga.class);
+                                    String anyo="";
+                                    if(m!=null){
+                                        if(m.getPublishedFrom()==null){
+                                            anyo= "?";
+                                        }else{
+                                            anyo=m.getPublishedFrom().substring(m.getPublishedFrom().length()-4);
+                                        }
+                                        if(m.getChapters()!=null){
+                                            info = m.getChapters() + " ch, " + anyo;
+                                        }else{
+                                            info= "? ep, "+anyo;
+                                        }
+                                        try {
+                                            InputStream is= (InputStream) new URL(m.getMainPicture()).getContent();
+                                            drawable= Drawable.createFromStream(is,"src name");
+
+                                        } catch (IOException e) {
+                                            drawable= getResources().getDrawable(R.drawable.ic_launcher_foreground);
+                                        }
+                                        rating= String.valueOf(m.getScore());
+                                        Encapsulador e= new Encapsulador(drawable,R.color.pordefecto,m.getTitle(),info,rating);
+                                        if(!animes.contains(e)){
+                                            animes.add(e);
+                                        }
+                                        adaptadorBusqueda= new AdaptadorBusqueda(animes, getContext(), R.layout.element_busqueda);
+                                        recyclerView.setAdapter(adaptadorBusqueda);
+                                        layoutManager= new LinearLayoutManager(getContext());
+                                        recyclerView.setLayoutManager(layoutManager);
+                                    }
+
+
+                                }
+
+
+                            }
+                            }
+
+                    });
+                }
+
+
                 if(getActivity()!= null){
                     user= getActivity().getIntent().getParcelableExtra("usuario");
                 }
                 StrictMode.ThreadPolicy policy= new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
-                ref=  FirebaseDatabase.getInstance().getReference("Manga").child(nombre);
-              /*  ref.orderByChild("title").equalTo(nombre+"\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        Manga m= snapshot.getValue(Manga.class);
-                        Log.d("mangaaaa",m.toString());
-                        try {
-                            InputStream is= (InputStream) new URL(m.getMain_picture()).getContent();
-                            drawable= Drawable.createFromStream(is,"src name");
-
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                        String anyo= m.getPublished_from().substring(m.getPublished_from().length()-4);
-                        info = m.getChapters() + " ch," + anyo;
-                        rating= String.valueOf(m.getScore());
-                        Log.d("encapsulador",new Encapsulador(drawable,R.color.pordefecto,m.getTitle(),info,rating).toString());
-                        mangas.add(new Encapsulador(drawable,R.color.pordefecto,m.getTitle(),info,rating));
-                        adaptadorBusqueda= new AdaptadorBusqueda(mangas, getContext(), R.layout.element_busqueda);
-                        recyclerView.setAdapter(adaptadorBusqueda);
-                        layoutManager= new LinearLayoutManager(getContext());
-                        recyclerView.setLayoutManager(layoutManager);
-                        Log.d("longitud",mangas.size()+"");
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });*/
                 return false;
             }
 
@@ -210,74 +266,6 @@ public class BuscarFragment extends Fragment {
                 return false;
             }
         });
-
-
-      /*  ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot d: snapshot.getChildren()){
-                    Anime a = d.getValue(Anime.class);
-                    color= R.color.pordefecto;
-                    if(a.getTitle().toLowerCase().contains(nombre.toLowerCase())){
-                        if(user.getAnimesEspera()!=null){
-                            if(user.getAnimesEspera().contains(a)){
-                                color= R.color.espera;
-                            }
-                        }else{
-                            color= R.color.pordefecto;
-                        }
-                        if(user.getAnimesDejados()!=null){
-                            if(user.getAnimesDejados().contains(a)){
-                                color= R.color.dejado;
-                            }
-                        }else{
-                            color= R.color.pordefecto;
-                        }
-                        if(user.getAnimesPlaneados()!=null){
-                            if(user.getAnimesPlaneados().contains(a)){
-                                color= R.color.enlista;
-                            }
-                        }else{
-                            color= R.color.pordefecto;
-                        }
-                        if(user.getAnimesViendo()!=null){
-                            if(user.getAnimesViendo().contains(a)){
-                                color= R.color.enProceso;
-                            }
-                        }else{
-                            color= R.color.pordefecto;
-                        }if(user.getAnimesVistos()!=null){
-                            if(user.getAnimesVistos().contains(a)){
-                                color= R.color.completado;
-                            }
-                        }else{
-                            color= R.color.pordefecto;
-                        }
-                        if(a!=null) {
-                            try {
-                                InputStream is= (InputStream) new URL(a.getMain_picture()).getContent();
-                                drawable= Drawable.createFromStream(is,"src name");
-
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            info = a.getEpisodes() + " ep," + a.getPremiered_season() + " " + a.getPremiered_year();
-                            rating= String.valueOf(a.getScore());
-                            Log.d("info", drawable.toString()+"  "+ a.toString());
-                            animes.add(new Encapsulador(drawable,color,a.getTitle(),info, rating));
-                        }
-
-                    }
-                    }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
-
         return view;
 
     }

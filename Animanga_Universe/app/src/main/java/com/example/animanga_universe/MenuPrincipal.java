@@ -1,18 +1,18 @@
 package com.example.animanga_universe;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
 
 import com.example.animanga_universe.databinding.ActivityMenuPrincipalBinding;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.navigation.NavigationBarView;
 
 public class MenuPrincipal extends AppCompatActivity {
 
@@ -27,17 +27,35 @@ public class MenuPrincipal extends AppCompatActivity {
         binding.bottonNavigationView.setOnItemSelectedListener(item -> {
             int id= item.getItemId();
             if(id==R.id.home){
+                binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new HomeFragment());
             }else if(id== R.id.forums){
+                binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new ForumsFragment());
 
             }else if(id== R.id.buscar){
+                binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new BuscarFragment());
 
             } else if (id== R.id.listas) {
-                reemplazarFragment(new ListasFragment());
+                binding.switchButton.setVisibility(View.VISIBLE);
 
+                reemplazarFragment(new ListasAnimeFragment());
+                binding.switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @SuppressLint("UseCompatLoadingForDrawables")
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if(isChecked){
+                            binding.switchButton.setThumbIconDrawable(getDrawable(R.drawable.ic_m_foreground));
+                            reemplazarFragment(new ListasMangaFragment());
+                        }else{
+                            binding.switchButton.setThumbIconDrawable(getDrawable(R.drawable.ic_a_foreground));
+                            reemplazarFragment(new ListasAnimeFragment());
+                        }
+                    }
+                });
             } else if (id==R.id.perfil) {
+                binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new PerfilFragment());
 
             }

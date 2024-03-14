@@ -22,7 +22,7 @@ public class Encapsulador {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Encapsulador that = (Encapsulador) o;
-        return Objects.equals(titulo, that.titulo);
+        return Objects.equals(titulo, that.titulo) && Objects.equals(info, that.info);
     }
 
     @Override

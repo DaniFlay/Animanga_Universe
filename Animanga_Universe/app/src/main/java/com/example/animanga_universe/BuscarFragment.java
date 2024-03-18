@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,16 +55,17 @@ import java.util.Map;
  * Use the {@link BuscarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BuscarFragment extends Fragment {
+public class BuscarFragment extends Fragment  {
     View view;
     SearchView searchView;
     TabLayout tabLayout;
     RecyclerView recyclerView;
-    DatabaseReference ref;
+    CollectionReference cr;
     Usuario user;
     int color;
     String info, rating, nombre, busqueda;
     FirebaseFirestore db;
+    AppCompatImageButton boton;
 
 
     Drawable drawable;
@@ -101,6 +103,7 @@ public class BuscarFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -124,6 +127,8 @@ public class BuscarFragment extends Fragment {
         tabLayout= view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.anime)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.manga)));
+        boton= view.findViewById(R.id.boton);
+
 
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -158,7 +163,7 @@ public class BuscarFragment extends Fragment {
             public boolean onQueryTextSubmit(String query) {
                 nombre= query;
                 if(busqueda.equals(getString(R.string.anime))){
-                    CollectionReference cr=FirebaseFirestore.getInstance().collection(busqueda);
+                    cr=FirebaseFirestore.getInstance().collection(busqueda);
                     cr.orderBy("title").startAt(nombre).endAt(nombre+"\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -167,7 +172,7 @@ public class BuscarFragment extends Fragment {
                                     Anime a= d.toObject(Anime.class);
                                     String anyo="";
                                     if(a!=null){
-                                        if(a.getPremiered_year().length()>0){
+                                        if(a.getPremiered_year()!=null&&!a.getPremiered_year().equals("")){
                                             anyo= a.getPremiered_year();
                                         }else{
                                             anyo="?";
@@ -189,7 +194,8 @@ public class BuscarFragment extends Fragment {
                                         if(!animes.contains(e)){
                                             animes.add(e);
                                         }
-                                        adaptadorBusqueda= new AdaptadorBusqueda(animes, getContext(), R.layout.element_busqueda);
+                                        adaptadorBusqueda= new AdaptadorBusqueda(getActivity().getIntent().getParcelableExtra("usuario"),animes, getContext(), R.layout.element_busqueda,busqueda);
+
                                         recyclerView.setAdapter(adaptadorBusqueda);
                                         layoutManager= new LinearLayoutManager(getContext());
                                         recyclerView.setLayoutManager(layoutManager);
@@ -235,7 +241,8 @@ public class BuscarFragment extends Fragment {
                                         if(!animes.contains(e)){
                                             animes.add(e);
                                         }
-                                        adaptadorBusqueda= new AdaptadorBusqueda(animes, getContext(), R.layout.element_busqueda);
+                                        adaptadorBusqueda= new AdaptadorBusqueda(getActivity().getIntent().getParcelableExtra("usuario"),animes, getContext(), R.layout.element_busqueda,busqueda);
+
                                         recyclerView.setAdapter(adaptadorBusqueda);
                                         layoutManager= new LinearLayoutManager(getContext());
                                         recyclerView.setLayoutManager(layoutManager);
@@ -269,5 +276,6 @@ public class BuscarFragment extends Fragment {
         return view;
 
     }
+
 
 }

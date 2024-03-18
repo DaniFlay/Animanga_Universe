@@ -46,7 +46,15 @@
     <string name="imagen">Imagen del elemento</string>
     <string name="titulo">Titulo</string>
     <string name="info">Info</string>
-    <string name="rating">rating</string>
+    <string name="rating">Rating</string>
     <string name="nombre">Nombre</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="estado">Estado</string>
+    <string name="progreso">Progreso</string>
+    <string name="viendo">Viendo</string>
+    <string name="completado">Completado</string>
+    <string name="dejado">Dejado</string>
+    <string name="enespera">En espera</string>
+    <string name="planeado">Planeado para ver</string>
+    <string name="sinasignar">Sin asignar</string>
 </resources>

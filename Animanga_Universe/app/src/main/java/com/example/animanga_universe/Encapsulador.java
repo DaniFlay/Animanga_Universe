@@ -1,10 +1,15 @@
 package com.example.animanga_universe;
 
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Encapsulador {
+public class Encapsulador implements Serializable, Parcelable {
     Drawable imagen;
     int color;
     String titulo, info, rating;
@@ -16,6 +21,25 @@ public class Encapsulador {
         this.info = info;
         this.rating = rating;
     }
+
+    protected Encapsulador(Parcel in) {
+        color = in.readInt();
+        titulo = in.readString();
+        info = in.readString();
+        rating = in.readString();
+    }
+
+    public static final Creator<Encapsulador> CREATOR = new Creator<Encapsulador>() {
+        @Override
+        public Encapsulador createFromParcel(Parcel in) {
+            return new Encapsulador(in);
+        }
+
+        @Override
+        public Encapsulador[] newArray(int size) {
+            return new Encapsulador[size];
+        }
+    };
 
     @Override
     public boolean equals(Object o) {
@@ -79,5 +103,18 @@ public class Encapsulador {
                 ", info='" + info + '\'' +
                 ", rating='" + rating + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(color);
+        dest.writeString(titulo);
+        dest.writeString(info);
+        dest.writeString(rating);
     }
 }

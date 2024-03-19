@@ -172,10 +172,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                 Snackbar.make(v,getString(R.string.usuarioExiste),Snackbar.LENGTH_SHORT).show();
                 requestFocus(usuario);
             }else{
-                Date fechaActual = new Date();
-                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                String fechaRegistro = formatoFecha.format(fechaActual);
-                Usuario user= new Usuario(usuario2,password,sexo2,correo2,fechaNacimiento,fechaRegistro,"Usuario");
+                Usuario user= new Usuario(usuario2,password,sexo2,correo2,fechaNacimiento);
                 ref.push().setValue(user);
                 Intent intent= new Intent(Registro.this, Login.class);
                 startActivity(intent);

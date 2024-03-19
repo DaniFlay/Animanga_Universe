@@ -6,15 +6,21 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.example.animanga_universe.clases.Anime;
+import com.example.animanga_universe.clases.Manga;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Encapsulador implements Serializable, Parcelable {
+    Anime anime;
+    Manga manga;
     Drawable imagen;
     int color;
     String titulo, info, rating;
 
-    public Encapsulador(Drawable imagen, int color, String titulo, String info, String rating) {
+    public Encapsulador(Anime anime, Drawable imagen, int color, String titulo, String info, String rating) {
+        this.anime = anime;
         this.imagen = imagen;
         this.color = color;
         this.titulo = titulo;
@@ -22,11 +28,40 @@ public class Encapsulador implements Serializable, Parcelable {
         this.rating = rating;
     }
 
+    public Encapsulador(Manga manga, Drawable imagen, int color, String titulo, String info, String rating) {
+        this.manga = manga;
+        this.imagen = imagen;
+        this.color = color;
+        this.titulo = titulo;
+        this.info = info;
+        this.rating = rating;
+    }
+
+    public Encapsulador() {
+    }
+
     protected Encapsulador(Parcel in) {
+        anime = in.readParcelable(Anime.class.getClassLoader());
+        manga = in.readParcelable(Manga.class.getClassLoader());
         color = in.readInt();
         titulo = in.readString();
         info = in.readString();
         rating = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(anime, flags);
+        dest.writeParcelable(manga, flags);
+        dest.writeInt(color);
+        dest.writeString(titulo);
+        dest.writeString(info);
+        dest.writeString(rating);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Encapsulador> CREATOR = new Creator<Encapsulador>() {
@@ -51,7 +86,36 @@ public class Encapsulador implements Serializable, Parcelable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(titulo);
+        return Objects.hash(titulo, info);
+    }
+
+    @Override
+    public String toString() {
+        return "Encapsulador{" +
+                "anime=" + anime +
+                ", manga=" + manga +
+                ", imagen=" + imagen +
+                ", color=" + color +
+                ", titulo='" + titulo + '\'' +
+                ", info='" + info + '\'' +
+                ", rating='" + rating + '\'' +
+                '}';
+    }
+
+    public Anime getAnime() {
+        return anime;
+    }
+
+    public void setAnime(Anime anime) {
+        this.anime = anime;
+    }
+
+    public Manga getManga() {
+        return manga;
+    }
+
+    public void setManga(Manga manga) {
+        this.manga = manga;
     }
 
     public Drawable getImagen() {
@@ -92,29 +156,5 @@ public class Encapsulador implements Serializable, Parcelable {
 
     public void setRating(String rating) {
         this.rating = rating;
-    }
-
-    @Override
-    public String toString() {
-        return "Encapsulador{" +
-                "imagen=" + imagen +
-                ", color=" + color +
-                ", titulo='" + titulo + '\'' +
-                ", info='" + info + '\'' +
-                ", rating='" + rating + '\'' +
-                '}';
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(color);
-        dest.writeString(titulo);
-        dest.writeString(info);
-        dest.writeString(rating);
     }
 }

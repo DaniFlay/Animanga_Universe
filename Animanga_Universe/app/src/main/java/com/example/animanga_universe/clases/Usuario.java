@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -18,37 +20,21 @@ public class Usuario implements Serializable, Parcelable {
     String fecha_de_nacimiento;
     String fecha_de_registro;
     String rol;
-    ArrayList<Manga> mangasLeidos;
-    ArrayList<Manga> mangasEspera;
-    ArrayList<Manga> mangasLeyendo;
-    ArrayList<Manga> mangasDejados;
-    ArrayList<Manga> mangasPlaneados;
-    ArrayList<Anime> animesVistos;
-    ArrayList<Anime> animesViendo;
-    ArrayList<Anime> animesDejados;
-    ArrayList<Anime> animesEspera;
-    ArrayList<Anime> animesPlaneados;
-    ArrayList<Character> personajes;
+ArrayList<MangaUsuario> mangas;
+ArrayList<AnimeUsuario> animes;
 
-    public Usuario(String username, String password, String sexo, String correo, String fecha_de_nacimiento, String fecha_de_registro, String rol) {
+    public Usuario(String username, String password, String sexo, String correo, String fecha_de_nacimiento) {
         this.username = username;
         this.password = password;
         this.sexo = sexo;
         this.correo = correo;
         this.fecha_de_nacimiento = fecha_de_nacimiento;
-        this.fecha_de_registro = fecha_de_registro;
-        this.rol = rol;
-        this.mangasDejados= new ArrayList<>();
-        this.mangasLeidos= new ArrayList<>();
-        this.mangasLeyendo= new ArrayList<>();
-        this.mangasPlaneados= new ArrayList<>();
-        this.mangasEspera= new ArrayList<>();
-        this.animesDejados= new ArrayList<>();
-        this.animesEspera= new ArrayList<>();
-        this.animesPlaneados= new ArrayList<>();
-        this.animesViendo= new ArrayList<>();
-        this.animesVistos= new ArrayList<>();
-        this.personajes= new ArrayList<>();
+        LocalDate localDate = LocalDate.now();//For reference
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.fecha_de_registro = localDate.format(formatter);
+        this.rol = "Usuario";
+        this.mangas = new ArrayList<>();
+        this.animes = new ArrayList<>();
     }
 
     public Usuario() {
@@ -62,17 +48,8 @@ public class Usuario implements Serializable, Parcelable {
         fecha_de_nacimiento = in.readString();
         fecha_de_registro = in.readString();
         rol = in.readString();
-        mangasLeidos = in.createTypedArrayList(Manga.CREATOR);
-        mangasEspera = in.createTypedArrayList(Manga.CREATOR);
-        mangasLeyendo = in.createTypedArrayList(Manga.CREATOR);
-        mangasDejados = in.createTypedArrayList(Manga.CREATOR);
-        mangasPlaneados = in.createTypedArrayList(Manga.CREATOR);
-        animesVistos = in.createTypedArrayList(Anime.CREATOR);
-        animesViendo = in.createTypedArrayList(Anime.CREATOR);
-        animesDejados = in.createTypedArrayList(Anime.CREATOR);
-        animesEspera = in.createTypedArrayList(Anime.CREATOR);
-        animesPlaneados = in.createTypedArrayList(Anime.CREATOR);
-        personajes = in.createTypedArrayList(Character.CREATOR);
+        mangas = in.createTypedArrayList(MangaUsuario.CREATOR);
+        animes = in.createTypedArrayList(AnimeUsuario.CREATOR);
     }
 
     public static final Creator<Usuario> CREATOR = new Creator<Usuario>() {
@@ -93,6 +70,21 @@ public class Usuario implements Serializable, Parcelable {
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
         return Objects.equals(username, usuario.username);
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", sexo='" + sexo + '\'' +
+                ", correo='" + correo + '\'' +
+                ", fecha_de_nacimiento='" + fecha_de_nacimiento + '\'' +
+                ", fecha_de_registro='" + fecha_de_registro + '\'' +
+                ", rol='" + rol + '\'' +
+                ", mangas=" + mangas +
+                ", animes=" + animes +
+                '}';
     }
 
     @Override
@@ -156,92 +148,20 @@ public class Usuario implements Serializable, Parcelable {
         this.rol = rol;
     }
 
-    public ArrayList<Manga> getMangasLeidos() {
-        return mangasLeidos;
+    public ArrayList<MangaUsuario> getMangas() {
+        return mangas;
     }
 
-    public void setMangasLeidos(ArrayList<Manga> mangasLeidos) {
-        this.mangasLeidos = mangasLeidos;
+    public void setMangas(ArrayList<MangaUsuario> mangas) {
+        this.mangas = mangas;
     }
 
-    public ArrayList<Manga> getMangasEspera() {
-        return mangasEspera;
+    public ArrayList<AnimeUsuario> getAnimes() {
+        return animes;
     }
 
-    public void setMangasEspera(ArrayList<Manga> mangasEspera) {
-        this.mangasEspera = mangasEspera;
-    }
-
-    public ArrayList<Manga> getMangasLeyendo() {
-        return mangasLeyendo;
-    }
-
-    public void setMangasLeyendo(ArrayList<Manga> mangasLeyendo) {
-        this.mangasLeyendo = mangasLeyendo;
-    }
-
-    public ArrayList<Manga> getMangasDejados() {
-        return mangasDejados;
-    }
-
-    public void setMangasDejados(ArrayList<Manga> mangasDejados) {
-        this.mangasDejados = mangasDejados;
-    }
-
-    public ArrayList<Manga> getMangasPlaneados() {
-        return mangasPlaneados;
-    }
-
-    public void setMangasPlaneados(ArrayList<Manga> mangasPlaneados) {
-        this.mangasPlaneados = mangasPlaneados;
-    }
-
-    public ArrayList<Anime> getAnimesVistos() {
-        return animesVistos;
-    }
-
-    public void setAnimesVistos(ArrayList<Anime> animesVistos) {
-        this.animesVistos = animesVistos;
-    }
-
-    public ArrayList<Anime> getAnimesViendo() {
-        return animesViendo;
-    }
-
-    public void setAnimesViendo(ArrayList<Anime> animesViendo) {
-        this.animesViendo = animesViendo;
-    }
-
-    public ArrayList<Anime> getAnimesDejados() {
-        return animesDejados;
-    }
-
-    public void setAnimesDejados(ArrayList<Anime> animesDejados) {
-        this.animesDejados = animesDejados;
-    }
-
-    public ArrayList<Anime> getAnimesEspera() {
-        return animesEspera;
-    }
-
-    public void setAnimesEspera(ArrayList<Anime> animesEspera) {
-        this.animesEspera = animesEspera;
-    }
-
-    public ArrayList<Anime> getAnimesPlaneados() {
-        return animesPlaneados;
-    }
-
-    public void setAnimesPlaneados(ArrayList<Anime> animesPlaneados) {
-        this.animesPlaneados = animesPlaneados;
-    }
-
-    public ArrayList<Character> getPersonajes() {
-        return personajes;
-    }
-
-    public void setPersonajes(ArrayList<Character> personajes) {
-        this.personajes = personajes;
+    public void setAnimes(ArrayList<AnimeUsuario> animes) {
+        this.animes = animes;
     }
 
     @Override
@@ -258,16 +178,7 @@ public class Usuario implements Serializable, Parcelable {
         dest.writeString(fecha_de_nacimiento);
         dest.writeString(fecha_de_registro);
         dest.writeString(rol);
-        dest.writeTypedList(mangasLeidos);
-        dest.writeTypedList(mangasEspera);
-        dest.writeTypedList(mangasLeyendo);
-        dest.writeTypedList(mangasDejados);
-        dest.writeTypedList(mangasPlaneados);
-        dest.writeTypedList(animesVistos);
-        dest.writeTypedList(animesViendo);
-        dest.writeTypedList(animesDejados);
-        dest.writeTypedList(animesEspera);
-        dest.writeTypedList(animesPlaneados);
-        dest.writeTypedList(personajes);
+        dest.writeTypedList(mangas);
+        dest.writeTypedList(animes);
     }
 }

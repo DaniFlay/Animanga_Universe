@@ -23,56 +23,50 @@ public class MenuPrincipal extends AppCompatActivity {
         binding= ActivityMenuPrincipalBinding.inflate(getLayoutInflater());
         binding.toolBar.setTitleTextAppearance(this, R.style.NarutoFont);
         setContentView(binding.getRoot());
-        reemplazarFragment(new HomeFragment(),false);
+        reemplazarFragment(new HomeFragment());
         binding.bottonNavigationView.setOnItemSelectedListener(item -> {
             int id= item.getItemId();
             if(id==R.id.home){
                 binding.switchButton.setVisibility(View.GONE);
-                reemplazarFragment(new HomeFragment(),false);
+                reemplazarFragment(new HomeFragment());
             }else if(id== R.id.forums){
                 binding.switchButton.setVisibility(View.GONE);
-                reemplazarFragment(new ForumsFragment(),false);
+                reemplazarFragment(new ForumsFragment());
 
             }else if(id== R.id.buscar){
                 binding.switchButton.setVisibility(View.GONE);
-                reemplazarFragment(new BuscarFragment(),true);
+                reemplazarFragment(new BuscarFragment());
 
             } else if (id== R.id.listas) {
                 binding.switchButton.setVisibility(View.VISIBLE);
 
-                reemplazarFragment(new ListasAnimeFragment(),false);
+                reemplazarFragment(new ListasAnimeFragment());
                 binding.switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @SuppressLint("UseCompatLoadingForDrawables")
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if(isChecked){
                             binding.switchButton.setThumbIconDrawable(getDrawable(R.drawable.ic_m_foreground));
-                            reemplazarFragment(new ListasMangaFragment(),false);
+                            reemplazarFragment(new ListasMangaFragment());
                         }else{
                             binding.switchButton.setThumbIconDrawable(getDrawable(R.drawable.ic_a_foreground));
-                            reemplazarFragment(new ListasAnimeFragment(),false);
+                            reemplazarFragment(new ListasAnimeFragment());
                         }
                     }
                 });
             } else if (id==R.id.perfil) {
                 binding.switchButton.setVisibility(View.GONE);
-                reemplazarFragment(new PerfilFragment(),false);
+                reemplazarFragment(new PerfilFragment());
 
             }
 
             return true;
         });
         }
-        public void reemplazarFragment(Fragment fragment, boolean buscar){
+        public void reemplazarFragment(Fragment fragment){
             FragmentManager fragmentManager= getSupportFragmentManager();
             FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
-            if(!buscar){
-
-            }else{
-                fragmentTransaction.replace(R.id.frame_layout,fragment,"BusquedaFragment");
-                fragmentTransaction.addToBackStack("BusquedaFragment");
-            }
-
+            fragmentTransaction.replace(R.id.frame_layout, fragment);
             fragmentTransaction.commit();
 
         }

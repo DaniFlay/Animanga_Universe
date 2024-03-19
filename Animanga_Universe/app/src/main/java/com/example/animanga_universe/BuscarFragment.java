@@ -170,10 +170,11 @@ public class BuscarFragment extends Fragment  {
                             if(value!=null){
                                 for(DocumentSnapshot d: value.getDocuments()){
                                     Anime a= d.toObject(Anime.class);
+                                    Log.d("Anime", a.toString());
                                     String anyo="";
                                     if(a!=null){
-                                        if(a.getPremiered_year()!=null&&!a.getPremiered_year().equals("")){
-                                            anyo= a.getPremiered_year();
+                                        if(a.getPremieredYear()!=null&&!a.getPremieredYear().equals("")){
+                                            anyo= a.getPremieredYear();
                                         }else{
                                             anyo="?";
                                         }
@@ -183,14 +184,14 @@ public class BuscarFragment extends Fragment  {
                                             info= "? ep, "+anyo;
                                         }
                                         try {
-                                            InputStream is= (InputStream) new URL(a.getMain_picture()).getContent();
+                                            InputStream is= (InputStream) new URL(a.getMainPicture()).getContent();
                                             drawable= Drawable.createFromStream(is,"src name");
 
                                         } catch (IOException e) {
                                             drawable= getResources().getDrawable(R.drawable.ic_launcher_foreground);
                                         }
                                         rating= String.valueOf(a.getScore());
-                                        Encapsulador e= new Encapsulador(drawable,R.color.pordefecto,a.getTitle(),info,rating);
+                                        Encapsulador e= new Encapsulador(a,drawable,R.color.pordefecto,a.getTitle(),info,rating);
                                         if(!animes.contains(e)){
                                             animes.add(e);
                                         }
@@ -237,7 +238,7 @@ public class BuscarFragment extends Fragment  {
                                             drawable= getResources().getDrawable(R.drawable.ic_launcher_foreground);
                                         }
                                         rating= String.valueOf(m.getScore());
-                                        Encapsulador e= new Encapsulador(drawable,R.color.pordefecto,m.getTitle(),info,rating);
+                                        Encapsulador e= new Encapsulador(m,drawable,R.color.pordefecto,m.getTitle(),info,rating);
                                         if(!animes.contains(e)){
                                             animes.add(e);
                                         }

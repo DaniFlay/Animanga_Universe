@@ -1,10 +1,8 @@
-package com.example.animanga_universe;
+package com.example.animanga_universe.encapsuladores;
 
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import androidx.annotation.NonNull;
 
 import com.example.animanga_universe.clases.Anime;
 import com.example.animanga_universe.clases.Manga;
@@ -18,6 +16,33 @@ public class Encapsulador implements Serializable, Parcelable {
     Drawable imagen;
     int color;
     String titulo, info, rating;
+    int progreso;
+
+    public int getProgreso() {
+        return progreso;
+    }
+
+    public void setProgreso(int progreso) {
+        this.progreso = progreso;
+    }
+
+    public Encapsulador(Anime anime, Drawable imagen, int color, String titulo, String info, int progreso) {
+        this.anime = anime;
+        this.imagen = imagen;
+        this.color = color;
+        this.titulo = titulo;
+        this.info = info;
+        this.progreso= progreso;
+    }
+
+    public Encapsulador(Manga manga, Drawable imagen, int color, String titulo, String info, int progreso) {
+        this.manga = manga;
+        this.imagen = imagen;
+        this.color = color;
+        this.titulo = titulo;
+        this.info = info;
+        this.progreso= progreso;
+    }
 
     public Encapsulador(Anime anime, Drawable imagen, int color, String titulo, String info, String rating) {
         this.anime = anime;

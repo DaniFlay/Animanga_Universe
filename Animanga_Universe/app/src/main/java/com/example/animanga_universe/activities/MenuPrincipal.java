@@ -1,7 +1,6 @@
-package com.example.animanga_universe;
+package com.example.animanga_universe.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,7 +11,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import com.example.animanga_universe.R;
 import com.example.animanga_universe.databinding.ActivityMenuPrincipalBinding;
+import com.example.animanga_universe.fragments.BuscarFragment;
+import com.example.animanga_universe.fragments.ForumsFragment;
+import com.example.animanga_universe.fragments.HomeFragment;
+import com.example.animanga_universe.fragments.ListasAnimeFragment;
+import com.example.animanga_universe.fragments.ListasMangaFragment;
+import com.example.animanga_universe.fragments.PerfilFragment;
 
 public class MenuPrincipal extends AppCompatActivity {
 

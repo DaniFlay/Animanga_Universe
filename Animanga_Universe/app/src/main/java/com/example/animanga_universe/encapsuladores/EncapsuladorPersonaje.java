@@ -1,4 +1,4 @@
-package com.example.animanga_universe;
+package com.example.animanga_universe.encapsuladores;
 
 public class EncapsuladorPersonaje {
     String nombre, favs;

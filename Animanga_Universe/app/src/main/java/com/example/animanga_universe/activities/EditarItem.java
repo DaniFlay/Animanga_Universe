@@ -1,9 +1,10 @@
-package com.example.animanga_universe;
+package com.example.animanga_universe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,21 +16,19 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.animanga_universe.clases.Anime;
+import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.AnimeUsuario;
-import com.example.animanga_universe.clases.Manga;
 import com.example.animanga_universe.clases.MangaUsuario;
 import com.example.animanga_universe.clases.Usuario;
+import com.example.animanga_universe.encapsuladores.Encapsulador;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
 
 import java.util.ArrayList;
 
@@ -52,6 +51,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
     ArrayList<MangaUsuario> mangas;
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,13 +83,24 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
         dejado= findViewById(R.id.dejado);
         enLista= findViewById(R.id.planeado);
         porDefecto= findViewById(R.id.sinAsignar);
+        assert progreso.getEditText()!=null;
+        if(busqueda.equals("Anime")){
+            for(AnimeUsuario a: usuario.getAnimes()){
+                if(a.getAnime().equals(e.getAnime())){
+                    estadoAnime= a.getEstado();
+                    progreso.getEditText().setText(a.getEpisodios());
+                }
+            }
+        } else if (busqueda.equals("Manga")) {
+            for(MangaUsuario m: usuario.getMangas()){
+                if(m.getManga().equals(e.getManga())){
+                    estadoAnime= m.getEstado();
 
-        for(AnimeUsuario a: usuario.getAnimes()){
-            if(a.getAnime().equals(e.getAnime())){
-                estadoAnime= a.getEstado();
-                progreso.getEditText().setText(a.getEpisodios());
+                    progreso.getEditText().setText(m.getCapitulos());
+                }
             }
         }
+
         if(e.getInfo().split(" ")[0].equals("?")){
             progressBar.setMax(10);
             progressBar.setProgress(5);
@@ -206,8 +217,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
             } else {
                 enProceso.setText("Leyendo");
                 enLista.setText("Planeado para leer");
-                if(e.getColor()== R.color.espera){
-
+                if(estadoAnime.equals(getString(R.string.enespera))){
                     enEspera.setChecked(true);
                     for(MangaUsuario m: usuario.getMangas()){
                         if(e.getTitulo().equals(m.getManga().getTitle())){
@@ -222,7 +232,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             }
                         }
                     }
-                } else if (e.getColor()== R.color.enProceso) {
+                } else if (estadoAnime.equals(getString(R.string.progreso))) {
                     enProceso.setChecked(true);
                     for(MangaUsuario m: usuario.getMangas()){
                         if(e.getTitulo().equals(m.getManga().getTitle())){
@@ -237,7 +247,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             }
                         }
                     }
-                } else if (e.getColor()== R.color.completado) {
+                } else if (estadoAnime.equals(getString(R.string.completado))) {
                     completado.setChecked(true);
                     for(MangaUsuario m: usuario.getMangas()){
                         if(e.getTitulo().equals(m.getManga().getTitle())){
@@ -253,7 +263,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                         }
                     }
 
-                }else if(e.getColor()== R.color.enlista){
+                }else if(estadoAnime.equals(getString(R.string.planeado))){
                     enLista.setChecked(true);
                     for(MangaUsuario m: usuario.getMangas()){
                         if(e.getTitulo().equals(m.getManga().getTitle())){
@@ -268,7 +278,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             }
                         }
                     }
-                } else if (e.getColor()== R.color.dejado) {
+                } else if (estadoAnime.equals(getString(R.string.dejado))) {
                     dejado.setChecked(true);
                     for(MangaUsuario m: usuario.getMangas()){
                         if(e.getTitulo().equals(m.getManga().getTitle())){
@@ -314,7 +324,24 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                     animeUsuario.setNota(String.valueOf(ratingBar.getRating()));
                     animes.add(animeUsuario);
                     usuario.setAnimes(animes);
-                    Log.d("lista", usuario.getAnimes().toString());
+                } else if (busqueda.equals("Manga")) {
+                    if(cg.getCheckedChipId()==completado.getId()){
+                        estado= getString(R.string.completado);
+                    }else if(cg.getCheckedChipId()==enEspera.getId()){
+                        estado= getString(R.string.enespera);
+                    } else if (cg.getCheckedChipId()== enLista.getId()) {
+                        estado= getString(R.string.planeado);
+                    } else if (cg.getCheckedChipId()== enProceso.getId()) {
+                        estado= getString(R.string.leyendo);
+                    } else if (cg.getCheckedChipId()== dejado.getId()) {
+                        estado= getString(R.string.dejado);
+                    }
+                    mangaUsuario.setEstado(estado);
+                    assert progreso.getEditText()!=null;
+                    mangaUsuario.setCapitulos(progreso.getEditText().getText().toString());
+                    mangaUsuario.setNota(String.valueOf(ratingBar.getRating()));
+                    mangas.add(mangaUsuario);
+                    usuario.setMangas(mangas);
                 }
             }
 ref.addValueEventListener(new ValueEventListener() {
@@ -322,6 +349,7 @@ ref.addValueEventListener(new ValueEventListener() {
     public void onDataChange(@NonNull DataSnapshot snapshot) {
         for(DataSnapshot d: snapshot.getChildren()){
             Usuario user= d.getValue(Usuario.class);
+            assert user != null;
             if(user.equals(usuario)){
                 d.getRef().setValue(usuario);
                 break;

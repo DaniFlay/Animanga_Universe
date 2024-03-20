@@ -1,4 +1,4 @@
-package com.example.animanga_universe;
+package com.example.animanga_universe.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,10 +8,10 @@ import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.Usuario;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.DatabaseReference;
 
 /**
  * El usuario deberia haber recibido un correo con un codigo de verificacion, en esta actividad se introduce el codigo, y si coincide, se le

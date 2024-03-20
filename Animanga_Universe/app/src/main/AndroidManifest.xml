@@ -15,25 +15,25 @@
         android:theme="@style/Theme.Animanga_Universe"
         tools:targetApi="31">
         <activity
-            android:name=".EditarItem"
+            android:name=".activities.EditarItem"
             android:exported="false" />
         <activity
-            android:name=".MenuPrincipal"
+            android:name=".activities.MenuPrincipal"
             android:exported="false" />
         <activity
-            android:name=".CambioPassword"
+            android:name=".activities.CambioPassword"
             android:exported="false" />
         <activity
-            android:name=".CodigoVerificacion"
+            android:name=".activities.CodigoVerificacion"
             android:exported="false" />
         <activity
-            android:name=".CambioPasswordCorreo"
+            android:name=".activities.CambioPasswordCorreo"
             android:exported="false" />
         <activity
-            android:name=".Registro"
+            android:name=".activities.Registro"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".activities.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

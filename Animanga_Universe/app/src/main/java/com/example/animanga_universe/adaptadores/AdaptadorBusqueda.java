@@ -1,4 +1,4 @@
-package com.example.animanga_universe;
+package com.example.animanga_universe.adaptadores;
 
 
 import android.content.Context;
@@ -11,15 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.animanga_universe.activities.EditarItem;
+import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.Usuario;
+import com.example.animanga_universe.encapsuladores.Encapsulador;
 
 import java.util.ArrayList;
 

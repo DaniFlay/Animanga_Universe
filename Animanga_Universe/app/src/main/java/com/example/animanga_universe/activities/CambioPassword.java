@@ -1,4 +1,4 @@
-package com.example.animanga_universe;
+package com.example.animanga_universe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.Usuario;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;

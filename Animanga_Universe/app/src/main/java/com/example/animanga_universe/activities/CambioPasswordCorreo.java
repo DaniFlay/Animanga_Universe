@@ -1,4 +1,4 @@
-package com.example.animanga_universe;
+package com.example.animanga_universe.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

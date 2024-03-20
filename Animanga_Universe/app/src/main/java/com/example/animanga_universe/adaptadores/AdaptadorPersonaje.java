@@ -1,4 +1,4 @@
-package com.example.animanga_universe;
+package com.example.animanga_universe.adaptadores;
 
 import android.content.Context;
 import android.view.View;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.animanga_universe.R;
+import com.example.animanga_universe.encapsuladores.EncapsuladorPersonaje;
 
 import java.util.ArrayList;
 

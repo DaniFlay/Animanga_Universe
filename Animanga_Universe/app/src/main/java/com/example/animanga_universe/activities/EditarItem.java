@@ -57,83 +57,52 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_item);
-        animes= new ArrayList<>();
-        mangas= new ArrayList<>();
-        estadoAnime= "";
+        animes = new ArrayList<>();
+        mangas = new ArrayList<>();
+        estadoAnime = "";
         usuario = getIntent().getParcelableExtra("usuario");
         e = getIntent().getParcelableExtra("encapsulador");
+        Log.d("encapsulador", e.toString());
         busqueda = getIntent().getStringExtra("busqueda");
-        ref= FirebaseDatabase.getInstance().getReference("Usuario");
-        totales= findViewById(R.id.episodiosTotales);
-        estado="";
-        progreso= findViewById(R.id.progreso);
-        animeUsuario= new AnimeUsuario();
-        mangaUsuario= new MangaUsuario();
-        botonPlus= findViewById(R.id.botonPlus);
+        ref = FirebaseDatabase.getInstance().getReference("Usuario");
+        totales = findViewById(R.id.episodiosTotales);
+        estado = "";
+
+        progreso = findViewById(R.id.progreso);
+        animeUsuario = new AnimeUsuario();
+        mangaUsuario = new MangaUsuario();
+        botonPlus = findViewById(R.id.botonPlus);
         botonPlus.setOnClickListener(this);
-        botonGuardar= findViewById(R.id.botonGuardar);
+        botonGuardar = findViewById(R.id.botonGuardar);
         botonGuardar.setOnClickListener(this);
-        ratingBar= findViewById(R.id.ratingBar);
-        progressBar= findViewById(R.id.progressBar);
-        cg= findViewById(R.id.chipGroup);
+        ratingBar = findViewById(R.id.ratingBar);
+        progressBar = findViewById(R.id.progressBar);
+        cg = findViewById(R.id.chipGroup);
         cg.setOnCheckedStateChangeListener(this);
-        completado= findViewById(R.id.completado);
-        enProceso= findViewById(R.id.enProceso);
-        enEspera= findViewById(R.id.enEspera);
-        dejado= findViewById(R.id.dejado);
-        enLista= findViewById(R.id.planeado);
-        porDefecto= findViewById(R.id.sinAsignar);
-       /*  assert progreso.getEditText()!=null;
-       if(busqueda.equals("Anime")&&usuario.getAnimes()!=null){
-            for(AnimeUsuario a: usuario.getAnimes()){
-                if(a.getAnime().equals(e.getAnime())){
-                    estadoAnime= a.getEstado();
+        completado = findViewById(R.id.completado);
+        enProceso = findViewById(R.id.enProceso);
+        enEspera = findViewById(R.id.enEspera);
+        dejado = findViewById(R.id.dejado);
+        enLista = findViewById(R.id.planeado);
+        porDefecto = findViewById(R.id.sinAsignar);
+        assert progreso.getEditText() != null;
+        if (e.getAnime()!=null && usuario.getAnimes() != null) {
+            for (AnimeUsuario a : usuario.getAnimes()) {
+                if (a.getAnime().equals(e.getAnime())) {
+                    estadoAnime = a.getEstado();
                     progreso.getEditText().setText(a.getEpisodios());
                 }
             }
-        } else if (busqueda.equals("Manga")&&usuario.getMangas()!=null) {
-            for(MangaUsuario m: usuario.getMangas()){
-                if(m.getManga().equals(e.getManga())){
-                    estadoAnime= m.getEstado();
+        } else if (e.getManga()!=null && usuario.getMangas() != null) {
+            for (MangaUsuario m : usuario.getMangas()) {
+                if (m.getManga().equals(e.getManga())) {
+                    estadoAnime = m.getEstado();
                     progreso.getEditText().setText(m.getCapitulos());
                 }
             }
-        }*/
-        if(e.getInfo().split(" ")[0].equals("?")){
-            progressBar.setMax(10);
-            progressBar.setProgress(5);
-        }else{
-            progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
-            totales.setText("/"+Integer.parseInt(e.getInfo().split(" ")[0]));
         }
-
-        progreso.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!String.valueOf(s).equals("")){
-                    progressBar.setProgress(Integer.parseInt(String.valueOf(s)));
-                    if(e.getAnime()!=null&& !e.getAnime().getEpisodes().equals("") && Integer.parseInt(String.valueOf(s))==Integer.parseInt(e.getAnime().getEpisodes()) ||e.getManga()!=null &&e.getManga().getChapters()!=null  && Integer.parseInt(String.valueOf(s))==e.getManga().getChapters()){
-                        progressBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.completado)));
-                        completado.setChecked(true);
-                    }
-                }else {
-                    progressBar.setProgress(0);
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
         if(usuario.getAnimes()!=null){
-            if (busqueda.equals("Anime")) {
+            if (e.getAnime()!=null) {
                 if(estadoAnime.equals(getString(R.string.enespera))){
                     enEspera.setChecked(true);
                     for(AnimeUsuario a: usuario.getAnimes()){
@@ -214,7 +183,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                 }
                 animeUsuario.setAnime(e.getAnime());
 
-            } else {
+            } else if(e.getManga()!=null) {
                 enProceso.setText("Leyendo");
                 enLista.setText("Planeado para leer");
                 if(estadoAnime.equals(getString(R.string.enespera))){
@@ -232,7 +201,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             }
                         }
                     }
-                } else if (estadoAnime.equals(getString(R.string.progreso))) {
+                } else if (estadoAnime.equals(getString(R.string.leyendo))) {
                     enProceso.setChecked(true);
                     for(MangaUsuario m: usuario.getMangas()){
                         if(e.getTitulo().equals(m.getManga().getTitle())){
@@ -258,7 +227,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(String.valueOf(m.getCapitulos())));
-                                progressBar.setBackgroundColor(getResources().getColor(R.color.completado));
+                                progressBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.completado)));
                             }
                         }
                     }
@@ -298,6 +267,41 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
             }
         }
 
+
+
+        if (e.getInfo().split(" ")[0].equals("?")) {
+            progressBar.setMax(10);
+            progressBar.setProgress(5);
+        } else {
+            progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
+            totales.setText("/" + Integer.parseInt(e.getInfo().split(" ")[0]));
+        }
+
+        progreso.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!String.valueOf(s).equals("")) {
+                    progressBar.setProgress(Integer.parseInt(String.valueOf(s)));
+                    if (e.getAnime() != null && !e.getAnime().getEpisodes().equals("") && Integer.parseInt(String.valueOf(s)) == Integer.parseInt(e.getAnime().getEpisodes()) || e.getManga() != null && e.getManga().getChapters() != null && Integer.parseInt(String.valueOf(s)) == e.getManga().getChapters()) {
+                        progressBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.completado)));
+                        completado.setChecked(true);
+                    }
+                } else {
+                    progressBar.setProgress(0);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @Override

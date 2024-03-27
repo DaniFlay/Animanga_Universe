@@ -188,7 +188,7 @@ public class ListasMangaFragment extends Fragment {
                                         anyo = "?";
                                     }
                                     if (m.getManga().getChapters()!=null) {
-                                        info = m.getCapitulos() + " cap, " + anyo;
+                                        info = m.getManga().getChapters() + " cap, " + anyo;
                                     } else {
                                         info = "? cap, " + anyo;
                                     }
@@ -217,7 +217,7 @@ public class ListasMangaFragment extends Fragment {
                                         anyo = "?";
                                     }
                                     if (m.getManga().getChapters()!=null) {
-                                        info = m.getCapitulos() + " cap, " + anyo;
+                                        info = m.getManga().getChapters() + " cap, " + anyo;
                                     } else {
                                         info = "? cap, " + anyo;
                                     }
@@ -246,7 +246,7 @@ public class ListasMangaFragment extends Fragment {
                                         anyo = "?";
                                     }
                                     if (m.getManga().getChapters()!=null) {
-                                        info = m.getCapitulos() + " cap, " + anyo;
+                                        info = m.getManga().getChapters() + " cap, " + anyo;
                                     } else {
                                         info = "? cap, " + anyo;
                                     }
@@ -275,7 +275,7 @@ public class ListasMangaFragment extends Fragment {
                                         anyo = "?";
                                     }
                                     if (m.getManga().getChapters()!=null) {
-                                        info = m.getCapitulos() + " cap, " + anyo;
+                                        info = m.getManga().getChapters() + " cap, " + anyo;
                                     } else {
                                         info = "? cap, " + anyo;
                                     }
@@ -304,7 +304,7 @@ public class ListasMangaFragment extends Fragment {
                                         anyo = "?";
                                     }
                                     if (m.getManga().getChapters()!=null) {
-                                        info = m.getCapitulos() + " cap, " + anyo;
+                                        info = m.getManga().getChapters() + " cap, " + anyo;
                                     } else {
                                         info = "? cap, " + anyo;
                                     }

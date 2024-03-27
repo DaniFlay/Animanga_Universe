@@ -45,6 +45,7 @@ public class MenuPrincipal extends AppCompatActivity {
 
             } else if (id== R.id.listas) {
                 binding.switchButton.setVisibility(View.VISIBLE);
+                binding.switchButton.setChecked(false);
 
                 reemplazarFragment(new ListasAnimeFragment());
                 binding.switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

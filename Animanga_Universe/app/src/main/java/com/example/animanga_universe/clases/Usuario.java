@@ -29,7 +29,7 @@ ArrayList<AnimeUsuario> animes;
         this.sexo = sexo;
         this.correo = correo;
         this.fecha_de_nacimiento = fecha_de_nacimiento;
-        LocalDate localDate = LocalDate.now();//For reference
+        LocalDate localDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         this.fecha_de_registro = localDate.format(formatter);
         this.rol = "Usuario";

@@ -22,6 +22,8 @@
         <item>Hombre</item>
         <item>Mujer</item>
     </array>
+    <string name="hombre">Hombre</string>
+    <string name="mujer">Mujer</string>
     <string name="fechaDeNacimiento">Fecha de nacimiento</string>
     <string name="guardar">Guardar</string>
     <string name="protagonistas">Imagen con protagonistas</string>
@@ -59,4 +61,8 @@
     <string name="sinasignar">Sin asignar</string>
     <string name="leyendo">Leyendo</string>
     <string name="todos">Todos</string>
+    <string name="fechaRegistro">Fecha de Registro</string>
+    <string name="editarPerfil">Editar perfil</string>
+    <string name="cambiarContraseña">Cambiar la contraseña</string>
+    <string name="fotoPerfil">La foto de perfil</string>
 </resources>

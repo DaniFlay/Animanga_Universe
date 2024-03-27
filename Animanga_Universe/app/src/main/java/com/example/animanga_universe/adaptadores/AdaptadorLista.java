@@ -2,7 +2,9 @@ package com.example.animanga_universe.adaptadores;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,7 @@ public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHold
         String busqueda;
         ArrayList<?> listado;
         Context context;
-        int layout_id;
+        int layout_id, estado;
         View.OnClickListener onClickListener;
 public void setOnClickListener( View.OnClickListener onClickListener){
         this.onClickListener= onClickListener;
@@ -38,6 +40,7 @@ public AdaptadorLista(Usuario usuario,ArrayList<?> listado, Context context, int
         this.context = context;
         this.layout_id = layout_id;
         this.busqueda= busqueda;
+
         }
 
 
@@ -100,9 +103,28 @@ public int getItemCount() {
     public void representacionElementos(Encapsulador e){
         titulo.setText(e.getTitulo());
         info.setText(e.getInfo());
-        progressBar.setProgress(e.getProgreso());
+        if(e.getAnime()!=null){
+            if(!e.getAnime().getEpisodes().equals("")){
+                progressBar.setMax(Integer.parseInt(e.getAnime().getEpisodes()));
+                progressBar.setProgress(e.getProgreso());
+            }else{
+                progressBar.setMax(10);
+                progressBar.setProgress(5);
+            }
+
+        } else if (e.getManga()!=null) {
+            if(e.getManga().getChapters()!=null){
+                progressBar.setMax(Math.toIntExact(e.getManga().getChapters()));
+                progressBar.setProgress(e.getProgreso());
+            }else{
+                progressBar.setMax(10);
+                progressBar.setProgress(5);
+            }
+
+        }
+
+        progressBar.setProgressTintList(ColorStateList.valueOf(context.getResources().getColor(e.getColor())));
         imagen.setImageDrawable(e.getImagen());
-        boton.setBackgroundColor(e.getColor());
     }
 }
 

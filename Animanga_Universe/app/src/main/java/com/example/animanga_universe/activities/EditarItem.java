@@ -31,8 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class EditarItem extends AppCompatActivity implements View.OnClickListener {
+public class EditarItem extends AppCompatActivity implements View.OnClickListener, ChipGroup.OnCheckedStateChangeListener {
     Usuario usuario;
     Encapsulador e;
     String busqueda, estado, estadoAnime;
@@ -63,8 +64,6 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
         e = getIntent().getParcelableExtra("encapsulador");
         busqueda = getIntent().getStringExtra("busqueda");
         ref= FirebaseDatabase.getInstance().getReference("Usuario");
-
-        Log.d("busqueda",busqueda);
         totales= findViewById(R.id.episodiosTotales);
         estado="";
         progreso= findViewById(R.id.progreso);
@@ -77,36 +76,34 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
         ratingBar= findViewById(R.id.ratingBar);
         progressBar= findViewById(R.id.progressBar);
         cg= findViewById(R.id.chipGroup);
+        cg.setOnCheckedStateChangeListener(this);
         completado= findViewById(R.id.completado);
         enProceso= findViewById(R.id.enProceso);
         enEspera= findViewById(R.id.enEspera);
         dejado= findViewById(R.id.dejado);
         enLista= findViewById(R.id.planeado);
         porDefecto= findViewById(R.id.sinAsignar);
-        assert progreso.getEditText()!=null;
-        if(busqueda.equals("Anime")){
+       /*  assert progreso.getEditText()!=null;
+       if(busqueda.equals("Anime")&&usuario.getAnimes()!=null){
             for(AnimeUsuario a: usuario.getAnimes()){
                 if(a.getAnime().equals(e.getAnime())){
                     estadoAnime= a.getEstado();
                     progreso.getEditText().setText(a.getEpisodios());
                 }
             }
-        } else if (busqueda.equals("Manga")) {
+        } else if (busqueda.equals("Manga")&&usuario.getMangas()!=null) {
             for(MangaUsuario m: usuario.getMangas()){
                 if(m.getManga().equals(e.getManga())){
                     estadoAnime= m.getEstado();
-
                     progreso.getEditText().setText(m.getCapitulos());
                 }
             }
-        }
-
+        }*/
         if(e.getInfo().split(" ")[0].equals("?")){
             progressBar.setMax(10);
             progressBar.setProgress(5);
         }else{
             progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
-            progressBar.setProgress(Integer.parseInt(e.getAnime().getEpisodes()));
             totales.setText("/"+Integer.parseInt(e.getInfo().split(" ")[0]));
         }
 
@@ -120,6 +117,10 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!String.valueOf(s).equals("")){
                     progressBar.setProgress(Integer.parseInt(String.valueOf(s)));
+                    if(e.getAnime()!=null&& !e.getAnime().getEpisodes().equals("") && Integer.parseInt(String.valueOf(s))==Integer.parseInt(e.getAnime().getEpisodes()) ||e.getManga()!=null &&e.getManga().getChapters()!=null  && Integer.parseInt(String.valueOf(s))==e.getManga().getChapters()){
+                        progressBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.completado)));
+                        completado.setChecked(true);
+                    }
                 }else {
                     progressBar.setProgress(0);
                 }
@@ -132,7 +133,6 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
             }
         });
         if(usuario.getAnimes()!=null){
-
             if (busqueda.equals("Anime")) {
                 if(estadoAnime.equals(getString(R.string.enespera))){
                     enEspera.setChecked(true);
@@ -322,6 +322,10 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                     animeUsuario.setEstado(estado);
                     animeUsuario.setEpisodios(progreso.getEditText().getText().toString());
                     animeUsuario.setNota(String.valueOf(ratingBar.getRating()));
+                    if(usuario.getAnimes()!=null){
+                        animes.addAll(usuario.getAnimes());
+                    }
+                    animes.remove(animeUsuario);
                     animes.add(animeUsuario);
                     usuario.setAnimes(animes);
                 } else if (busqueda.equals("Manga")) {
@@ -340,10 +344,30 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                     assert progreso.getEditText()!=null;
                     mangaUsuario.setCapitulos(progreso.getEditText().getText().toString());
                     mangaUsuario.setNota(String.valueOf(ratingBar.getRating()));
+                    if(usuario.getMangas()!=null){
+                        mangas.addAll(usuario.getMangas());
+                    }
+                    mangas.remove(mangaUsuario);
                     mangas.add(mangaUsuario);
                     usuario.setMangas(mangas);
                 }
+            }else {
+                if(busqueda.equals("Manga")){
+                        if(usuario.getMangas()!=null){
+                            mangas.addAll(usuario.getMangas());
+                        }
+                        mangas.remove(mangaUsuario);
+                        usuario.setMangas(mangas);
+                } else if (busqueda.equals("Anime")) {
+                    if(usuario.getAnimes()!=null){
+                        animes.addAll(usuario.getAnimes());
+                    }
+                    animes.remove(animeUsuario);
+                    usuario.setAnimes(animes);
+                }
             }
+
+
 ref.addValueEventListener(new ValueEventListener() {
     @Override
     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -366,4 +390,39 @@ ref.addValueEventListener(new ValueEventListener() {
     }
 
 
+    @Override
+    public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
+        if(group.getCheckedChipId()==completado.getId()){
+            progressBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.completado)));
+            if(e.getAnime()!=null){
+                assert progreso.getEditText()!=null;
+                progreso.getEditText().setText(String.valueOf(e.getAnime().getEpisodes()));
+                progressBar.setMax(Integer.parseInt(e.getAnime().getEpisodes()));
+                progressBar.setProgress(progressBar.getMax());
+            } else if (e.getManga()!=null) {
+                assert progreso.getEditText()!=null;
+                progreso.getEditText().setText(String.valueOf(e.getManga().getChapters()));
+                progressBar.setMax(Math.toIntExact(e.getManga().getChapters()));
+                progressBar.setProgress(progressBar.getMax());
+            }
+
+
+        } else if (group.getCheckedChipId()==enEspera.getId()) {
+            progressBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.espera)));
+        } else if (group.getCheckedChipId()== porDefecto.getId()) {
+            progressBar.setMax(10);
+            progressBar.setProgress(0);
+            assert progreso.getEditText()!=null;
+            progreso.getEditText().setText("");
+        } else if (group.getCheckedChipId()==dejado.getId()) {
+            progressBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.dejado)));
+        } else if (group.getCheckedChipId()== enProceso.getId()) {
+            progressBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.enProceso)));
+        } else if (group.getCheckedChipId()==enLista.getId()) {
+            progressBar.setMax(10);
+            progressBar.setProgress(0);
+            assert progreso.getEditText()!=null;
+            progreso.getEditText().setText("");
+        }
+    }
 }

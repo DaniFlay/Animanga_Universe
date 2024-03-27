@@ -53,11 +53,8 @@ public class BuscarFragment extends Fragment  {
     String info, rating, nombre, busqueda;
     FirebaseFirestore db;
     AppCompatImageButton boton;
-
-
     Drawable drawable;
-    ArrayList<Encapsulador> animes, mangas;
-    ArrayList<EncapsuladorPersonaje> personajes;
+    ArrayList<Encapsulador> animes;
     AdaptadorBusqueda adaptadorBusqueda;
     RecyclerView.LayoutManager layoutManager;
 
@@ -143,21 +140,21 @@ public class BuscarFragment extends Fragment  {
         });
         recyclerView= view.findViewById(R.id.recycler_view);
         animes= new ArrayList<>();
-        mangas= new ArrayList<>();
-        personajes= new ArrayList<>();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String query) {
+                animes.clear();
                 nombre= query;
                 if(busqueda.equals(getString(R.string.anime))){
                     cr=FirebaseFirestore.getInstance().collection(busqueda);
                     cr.orderBy("title").startAt(nombre).endAt(nombre+"\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @SuppressLint("UseCompatLoadingForDrawables")
                         @Override
                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                             if(value!=null){
                                 for(DocumentSnapshot d: value.getDocuments()){
                                     Anime a= d.toObject(Anime.class);
-                                    Log.d("Anime", a.toString());
                                     String anyo="";
                                     if(a!=null){
                                         if(a.getPremieredYear()!=null&&!a.getPremieredYear().equals("")){
@@ -213,9 +210,9 @@ public class BuscarFragment extends Fragment  {
                                             anyo=m.getPublishedFrom().substring(m.getPublishedFrom().length()-4);
                                         }
                                         if(m.getChapters()!=null){
-                                            info = m.getChapters() + " ch, " + anyo;
+                                            info = m.getChapters() + " cap, " + anyo;
                                         }else{
-                                            info= "? ep, "+anyo;
+                                            info= "? cap, "+anyo;
                                         }
                                         try {
                                             InputStream is= (InputStream) new URL(m.getMainPicture()).getContent();

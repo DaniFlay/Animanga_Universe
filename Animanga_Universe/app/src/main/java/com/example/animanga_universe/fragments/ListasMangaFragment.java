@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,11 @@ import com.example.animanga_universe.clases.MangaUsuario;
 import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.encapsuladores.Encapsulador;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,14 +58,6 @@ public class ListasMangaFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListasMangaFragment.
-     */
     public static ListasMangaFragment newInstance(String param1, String param2) {
         ListasMangaFragment fragment = new ListasMangaFragment();
         Bundle args = new Bundle();
@@ -131,7 +129,7 @@ public class ListasMangaFragment extends Fragment {
                 }
                 recyclerView = view.findViewById(R.id.recycler_view);
 
-                adaptadorLista = new AdaptadorLista(user, mangas, getContext(), R.layout.element_lista_usuario, "Anime");
+                adaptadorLista = new AdaptadorLista(user, mangas, getContext(), R.layout.element_lista_usuario, "Manga");
                 recyclerView.setAdapter(adaptadorLista);
                 layoutManager = new LinearLayoutManager(getContext());
                 recyclerView.setLayoutManager(layoutManager);
@@ -209,8 +207,8 @@ public class ListasMangaFragment extends Fragment {
                             }
                         } else if (tab.getPosition() == 2) {
                             check = R.color.enlista;
-                            for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getEstado().equals(getString(R.string.planeado))) {
+                            for (MangaUsuario m : user.getMangas()) {
+                                if (m.getEstado().equals(getString(R.string.planeado))) {
                                     if (m.getManga().getPublishedFrom() != null && !m.getManga().getPublishedFrom().equals("")) {
                                         anyo = m.getManga().getPublishedFrom().substring(m.getManga().getPublishedFrom().length()-4);
                                     } else {
@@ -238,8 +236,8 @@ public class ListasMangaFragment extends Fragment {
 
                         } else if (tab.getPosition() == 3) {
                             check = R.color.espera;
-                            for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getEstado().equals(getString(R.string.enespera))) {
+                            for (MangaUsuario m : user.getMangas()) {
+                                if (m.getEstado().equals(getString(R.string.enespera))) {
                                     if (m.getManga().getPublishedFrom() != null && !m.getManga().getPublishedFrom().equals("")) {
                                         anyo = m.getManga().getPublishedFrom().substring(m.getManga().getPublishedFrom().length()-4);
                                     } else {
@@ -267,8 +265,8 @@ public class ListasMangaFragment extends Fragment {
                             }
                         } else if (tab.getPosition() == 4) {
                             check = R.color.dejado;
-                            for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getEstado().equals(getString(R.string.dejado))) {
+                            for (MangaUsuario m : user.getMangas()) {
+                                if (m.getEstado().equals(getString(R.string.dejado))) {
                                     if (m.getManga().getPublishedFrom() != null && !m.getManga().getPublishedFrom().equals("")) {
                                         anyo = m.getManga().getPublishedFrom().substring(m.getManga().getPublishedFrom().length()-4);
                                     } else {
@@ -296,8 +294,8 @@ public class ListasMangaFragment extends Fragment {
                             }
                         } else if (tab.getPosition() == 5) {
                             check = R.color.completado;
-                            for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getEstado().equals(getString(R.string.completado))) {
+                            for (MangaUsuario m : user.getMangas()) {
+                                if (m.getEstado().equals(getString(R.string.completado))) {
                                     if (m.getManga().getPublishedFrom() != null && !m.getManga().getPublishedFrom().equals("")) {
                                         anyo = m.getManga().getPublishedFrom().substring(m.getManga().getPublishedFrom().length()-4);
                                     } else {
@@ -327,6 +325,7 @@ public class ListasMangaFragment extends Fragment {
                         recyclerView = view.findViewById(R.id.recycler_view);
 
                         adaptadorLista = new AdaptadorLista(user, mangas, getContext(), R.layout.element_lista_usuario, "Manga");
+
                         recyclerView.setAdapter(adaptadorLista);
                         layoutManager = new LinearLayoutManager(getContext());
                         recyclerView.setLayoutManager(layoutManager);

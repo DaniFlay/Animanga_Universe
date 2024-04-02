@@ -39,8 +39,30 @@
             android:scaleY="5"
             android:progress="5"
             android:max="10"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="end">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/vistos"
+                android:id="@+id/vistos"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/divisor"
+                android:id="@+id/divisor"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/totales"
+                android:id="@+id/totales"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -48,25 +70,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="7dp">
+        android:padding="7dp"
+        android:layout_gravity="bottom">
         <androidx.appcompat.widget.AppCompatImageButton
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:src="@drawable/baseline_edit_list_24"
             android:layout_gravity="bottom"
             android:id="@+id/botonEditar"
             />
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:src="@drawable/baseline_add_24"
-            android:layout_gravity="bottom"
-            android:id="@+id/botonPlus"
-            />
     </LinearLayout>
-
-
-
 </LinearLayout>

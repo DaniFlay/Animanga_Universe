@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.encapsuladores.Encapsulador;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,6 +53,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
     TextView totales;
     ArrayList<AnimeUsuario> animes;
     ArrayList<MangaUsuario> mangas;
+    Boolean complete;
 
 
     @SuppressLint("SetTextI18n")
@@ -57,12 +61,12 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_item);
+        complete= true;
         animes = new ArrayList<>();
         mangas = new ArrayList<>();
         estadoAnime = "";
         usuario = getIntent().getParcelableExtra("usuario");
         e = getIntent().getParcelableExtra("encapsulador");
-        Log.d("encapsulador", e.toString());
         busqueda = getIntent().getStringExtra("busqueda");
         ref = FirebaseDatabase.getInstance().getReference("Usuario");
         totales = findViewById(R.id.episodiosTotales);
@@ -111,6 +115,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
@@ -127,6 +132,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
@@ -142,6 +148,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
@@ -158,6 +165,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
@@ -173,6 +181,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
@@ -194,6 +203,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(String.valueOf(m.getCapitulos())));
@@ -209,6 +219,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(String.valueOf(m.getCapitulos())));
@@ -224,6 +235,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(String.valueOf(m.getCapitulos())));
@@ -240,6 +252,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(String.valueOf(m.getCapitulos())));
@@ -255,6 +268,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                             if(e.getInfo().split(" ")[0].equals("?")){
                                 progressBar.setMax(10);
                                 progressBar.setProgress(5);
+                                complete= false;
                             }else{
                                 progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
                                 progressBar.setProgress(Integer.parseInt(String.valueOf(m.getCapitulos())));
@@ -272,6 +286,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
         if (e.getInfo().split(" ")[0].equals("?")) {
             progressBar.setMax(10);
             progressBar.setProgress(5);
+            complete= false;
         } else {
             progressBar.setMax(Integer.parseInt(e.getInfo().split(" ")[0]));
             totales.setText("/" + Integer.parseInt(e.getInfo().split(" ")[0]));
@@ -307,8 +322,17 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if(v.getId()== botonPlus.getId()){
-            progressBar.setProgress(progressBar.getProgress()+1);
-            progreso.getEditText().setText(String.valueOf(Integer.parseInt(progreso.getEditText().getText().toString())+1));
+            if(complete){
+                if(progreso.getEditText()!=null){
+                    progressBar.setProgress(progressBar.getProgress()+1);
+                    progreso.getEditText().setText(String.valueOf(Integer.parseInt(progreso.getEditText().getText().toString())+1));
+                }
+            } else{
+                if(progreso.getEditText()!=null){
+                    progreso.getEditText().setText(String.valueOf(Integer.parseInt(progreso.getEditText().getText().toString())+1));
+                }
+            }
+
         } else if (v.getId()== botonGuardar.getId()) {
             if(cg.getCheckedChipId()!=porDefecto.getId()){
                 if(busqueda.equals("Anime")){
@@ -390,6 +414,15 @@ ref.addValueEventListener(new ValueEventListener() {
 
     }
 });
+            Snackbar.make(v,getString(R.string.cambiosGuardados),Snackbar.LENGTH_SHORT).setAction(R.string.aceptar, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent= new Intent(EditarItem.this, MenuPrincipal.class);
+                    intent.putExtra("usuario",(Parcelable) usuario);
+                    startActivity(intent);
+                }
+            }).show();
+
         }
     }
 

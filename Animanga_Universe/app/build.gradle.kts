@@ -9,6 +9,7 @@ android {
     compileSdk = 34
 
 
+
     defaultConfig {
         applicationId = "com.example.animanga_universe"
         minSdk = 26

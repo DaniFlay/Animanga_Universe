@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import com.example.animanga_universe.clases.Anime;
 import com.example.animanga_universe.clases.Manga;
 import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.encapsuladores.Encapsulador;
-import com.example.animanga_universe.encapsuladores.EncapsuladorPersonaje;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -51,7 +49,6 @@ public class BuscarFragment extends Fragment  {
     Usuario user;
     int color;
     String info, rating, nombre, busqueda;
-    FirebaseFirestore db;
     AppCompatImageButton boton;
     Drawable drawable;
     ArrayList<Encapsulador> animes;
@@ -145,7 +142,12 @@ public class BuscarFragment extends Fragment  {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 animes.clear();
-                nombre= query;
+                nombre="";
+                String[] palabras = query.split(" ");
+                for(String s: palabras){
+                    nombre+= s.substring(0,1).toUpperCase()+s.substring(1).toLowerCase()+" ";
+                }
+                nombre=nombre.trim();
                 if(busqueda.equals(getString(R.string.anime))){
                     cr=FirebaseFirestore.getInstance().collection(busqueda);
                     cr.orderBy("title").startAt(nombre).endAt(nombre+"\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {

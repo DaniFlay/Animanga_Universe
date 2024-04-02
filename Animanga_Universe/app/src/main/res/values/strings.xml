@@ -65,4 +65,10 @@
     <string name="editarPerfil">Editar perfil</string>
     <string name="cambiarContraseña">Cambiar la contraseña</string>
     <string name="fotoPerfil">La foto de perfil</string>
+    <string name="vistos">vistos</string>
+    <string name="totales">totales</string>
+    <string name="divisor">/</string>
+    <string name="ranking">Ranking</string>
+    <string name="cargandoEleementos">Cargando elementos</string>
+    <string name="cambiosGuardados">Los cambios han sido guardados con éxito</string>
 </resources>

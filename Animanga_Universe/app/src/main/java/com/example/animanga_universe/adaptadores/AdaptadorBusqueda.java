@@ -18,6 +18,7 @@ import com.example.animanga_universe.activities.EditarItem;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.encapsuladores.Encapsulador;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -56,6 +57,7 @@ public class AdaptadorBusqueda extends RecyclerView.Adapter<AdaptadorBusqueda.Vi
         holder.boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent= new Intent(context, EditarItem.class);
                 intent.putExtra("usuario",(Parcelable) usuario);
                 intent.putExtra("encapsulador",(Parcelable) e);

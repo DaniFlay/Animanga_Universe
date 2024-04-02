@@ -1,24 +1,33 @@
 package com.example.animanga_universe.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.animanga_universe.R;
+import com.example.animanga_universe.activities.MenuPrincipal;
 import com.example.animanga_universe.adaptadores.AdaptadorLista;
 import com.example.animanga_universe.clases.AnimeUsuario;
 import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.encapsuladores.Encapsulador;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,28 +50,16 @@ public class ListasAnimeFragment extends Fragment {
     Drawable drawable;
     RecyclerView recyclerView;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public ListasAnimeFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListasFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ListasAnimeFragment newInstance(String param1, String param2) {
         ListasAnimeFragment fragment = new ListasAnimeFragment();
         Bundle args = new Bundle();
@@ -87,7 +84,9 @@ public class ListasAnimeFragment extends Fragment {
                              Bundle savedInstanceState) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        MenuPrincipal activity= (MenuPrincipal) getActivity();
         user = getActivity().getIntent().getParcelableExtra("usuario");
+
         view = inflater.inflate(R.layout.fragment_anime_listas, container, false);
         tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.todos));
@@ -134,7 +133,7 @@ public class ListasAnimeFragment extends Fragment {
                 }
                 recyclerView = view.findViewById(R.id.recycler_view);
 
-                adaptadorLista = new AdaptadorLista(user, animes, getContext(), R.layout.element_lista_usuario, "Anime");
+                adaptadorLista = new AdaptadorLista(user, animes, getContext(), R.layout.element_lista_usuario,"Anime" );
                 recyclerView.setAdapter(adaptadorLista);
                 layoutManager = new LinearLayoutManager(getContext());
                 recyclerView.setLayoutManager(layoutManager);
@@ -329,7 +328,7 @@ public class ListasAnimeFragment extends Fragment {
                         }
                         recyclerView = view.findViewById(R.id.recycler_view);
 
-                        adaptadorLista = new AdaptadorLista(user, animes, getContext(), R.layout.element_lista_usuario, "Anime");
+                        adaptadorLista = new AdaptadorLista(user, animes, getContext(), R.layout.element_lista_usuario,"Anime" );
                         recyclerView.setAdapter(adaptadorLista);
                         layoutManager = new LinearLayoutManager(getContext());
                         recyclerView.setLayoutManager(layoutManager);

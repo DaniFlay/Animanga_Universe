@@ -1,11 +1,15 @@
 package com.example.animanga_universe.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +19,8 @@ import android.widget.DatePicker;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.Usuario;
+import com.example.animanga_universe.extras.Helper;
+import com.example.animanga_universe.extras.PasswordEncryption;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.Calendar;
 
@@ -34,8 +42,9 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
     TextInputLayout usuario, correo, contraseña,contraseña2, fecha, sexo;
     Button elegirFecha, guardar;
     DatabaseReference ref;
-    String usuario2,correo2,sexo2,fechaNacimiento,password,password2 ;
+    String usuario2,correo2,sexo2,fechaNacimiento,password,password2, hashedPassword ;
     boolean existe= false;
+    SQLiteDatabase bbdd;
 
 
     /**
@@ -164,10 +173,35 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                 Snackbar.make(v,getString(R.string.usuarioExiste),Snackbar.LENGTH_SHORT).show();
                 requestFocus(usuario);
             }else{
-                Usuario user= new Usuario(usuario2,password,sexo2,correo2,fechaNacimiento);
+                hashedPassword= PasswordEncryption.hashPassword(password);
+                Usuario user= new Usuario(usuario2,hashedPassword,sexo2,correo2,fechaNacimiento);
                 ref.push().setValue(user);
-                Intent intent= new Intent(Registro.this, Login.class);
-                startActivity(intent);
+                AlertDialog.Builder builder= new AlertDialog.Builder(this);
+                builder.setMessage(getString(R.string.guardarpassword))
+                        .setPositiveButton(getString(R.string.si), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Helper helper= new Helper(Registro.this, "bbdd",null,1);
+                                bbdd= helper.getWritableDatabase();
+                                ContentValues cv= new ContentValues();
+                                cv.put("usuario", usuario2);
+                                cv.put("password",hashedPassword);
+                                bbdd.insert("usuario",null, cv);
+                                Intent intent= new Intent(Registro.this, Login.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                Intent intent= new Intent(Registro.this, Login.class);
+                                startActivity(intent);
+                            }
+                        });
+                AlertDialog alertDialog= builder.create();
+                alertDialog.show();
+
             }
         }
     }
@@ -181,4 +215,5 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
+
 }

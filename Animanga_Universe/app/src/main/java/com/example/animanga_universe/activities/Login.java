@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.Usuario;
+import com.example.animanga_universe.extras.PasswordEncryption;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -88,7 +89,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             Usuario u = d.getValue(Usuario.class);
                             if(u.getUsername().equals(usuario.getEditText().getText().toString().trim())){
                                 contador++;
-                                if(u.getPassword().equals(password.getEditText().getText().toString().trim())){
+                                if(PasswordEncryption.hashPassword(u.getPassword()).equals(PasswordEncryption.hashPassword(password.getEditText().getText().toString().trim()))){
                                     entrar(u);
                                 }else{
                                     Snackbar.make(v, getString(R.string.contraseñaIncorrecta), Snackbar.LENGTH_SHORT).show();

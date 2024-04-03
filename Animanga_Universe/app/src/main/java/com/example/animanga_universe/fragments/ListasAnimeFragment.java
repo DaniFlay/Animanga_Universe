@@ -99,7 +99,7 @@ public class ListasAnimeFragment extends Fragment {
         String anyo = "", info = "";
         if(user.getAnimes()!=null){
             for (AnimeUsuario a : user.getAnimes()) {
-                if (a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
+                if (a!=null&& a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
                     anyo = a.getAnime().getPremieredYear();
                 } else {
                     anyo = "?";
@@ -131,6 +131,7 @@ public class ListasAnimeFragment extends Fragment {
                 if (!animes.contains(e)) {
                     animes.add(e);
                 }
+            }
                 recyclerView = view.findViewById(R.id.recycler_view);
 
                 adaptadorLista = new AdaptadorLista(user, animes, getContext(), R.layout.element_lista_usuario,"Anime" );
@@ -146,7 +147,7 @@ public class ListasAnimeFragment extends Fragment {
 
                         if (tab.getPosition() == 0) {
                             for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
+                                if (a!=null&&a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
                                     anyo = a.getAnime().getPremieredYear();
                                 } else {
                                     anyo = "?";
@@ -183,7 +184,7 @@ public class ListasAnimeFragment extends Fragment {
                         } else if (tab.getPosition() == 1) {
                             check = R.color.enProceso;
                             for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getEstado().equals(getString(R.string.viendo))) {
+                                if (a!=null&&a.getEstado().equals(getString(R.string.viendo))) {
                                     if (a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
                                         anyo = a.getAnime().getPremieredYear();
                                     } else {
@@ -212,7 +213,7 @@ public class ListasAnimeFragment extends Fragment {
                         } else if (tab.getPosition() == 2) {
                             check = R.color.enlista;
                             for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getEstado().equals(getString(R.string.planeado))) {
+                                if (a!=null&&a.getEstado().equals(getString(R.string.planeado))) {
                                     if (a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
                                         anyo = a.getAnime().getPremieredYear();
                                     } else {
@@ -241,7 +242,7 @@ public class ListasAnimeFragment extends Fragment {
                         } else if (tab.getPosition() == 3) {
                             check = R.color.espera;
                             for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getEstado().equals(getString(R.string.enespera))) {
+                                if (a!=null&&a.getEstado().equals(getString(R.string.enespera))) {
                                     if (a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
                                         anyo = a.getAnime().getPremieredYear();
                                     } else {
@@ -270,7 +271,7 @@ public class ListasAnimeFragment extends Fragment {
                         } else if (tab.getPosition() == 4) {
                             check = R.color.dejado;
                             for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getEstado().equals(getString(R.string.dejado))) {
+                                if (a!=null&&a.getEstado().equals(getString(R.string.dejado))) {
                                     if (a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
                                         anyo = a.getAnime().getPremieredYear();
                                     } else {
@@ -299,7 +300,7 @@ public class ListasAnimeFragment extends Fragment {
                         } else if (tab.getPosition() == 5) {
                             check = R.color.completado;
                             for (AnimeUsuario a : user.getAnimes()) {
-                                if (a.getEstado().equals(getString(R.string.completado))) {
+                                if (a!=null&&a.getEstado().equals(getString(R.string.completado))) {
                                     if (a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
                                         anyo = a.getAnime().getPremieredYear();
                                     } else {
@@ -348,7 +349,7 @@ public class ListasAnimeFragment extends Fragment {
 
 
 
-            }
+
         }
 
         return view;

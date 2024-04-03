@@ -71,4 +71,8 @@
     <string name="ranking">Ranking</string>
     <string name="cargandoEleementos">Cargando elementos</string>
     <string name="cambiosGuardados">Los cambios han sido guardados con éxito</string>
+    <string name="guardarpassword">Quieres guardar el usuario para una autenticación  más rápida?</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="contraseñaguardada">Hay una contraseña guardada para tu usuario,¿ quieres utilizar el autorelleno?</string>
 </resources>

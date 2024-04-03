@@ -1,10 +1,12 @@
 package com.example.animanga_universe.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -37,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EditarItem extends AppCompatActivity implements View.OnClickListener, ChipGroup.OnCheckedStateChangeListener {
-    Usuario usuario;
+    Usuario usuario,user;
     Encapsulador e;
     String busqueda, estado, estadoAnime;
     ChipGroup cg;
@@ -54,6 +56,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
     ArrayList<AnimeUsuario> animes;
     ArrayList<MangaUsuario> mangas;
     Boolean complete;
+    DataSnapshot snapshot;
 
 
     @SuppressLint("SetTextI18n")
@@ -322,6 +325,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if(v.getId()== botonPlus.getId()){
+
             if(complete){
                 if(progreso.getEditText()!=null){
                     progressBar.setProgress(progressBar.getProgress()+1);
@@ -394,37 +398,13 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                     usuario.setAnimes(animes);
                 }
             }
+            guardarUsuario(usuario);
+            Intent intent= new Intent(EditarItem.this, MenuPrincipal.class);
+            intent.putExtra("usuario",(Parcelable) usuario);
+            startActivity(intent);
 
-
-ref.addValueEventListener(new ValueEventListener() {
-    @Override
-    public void onDataChange(@NonNull DataSnapshot snapshot) {
-        for(DataSnapshot d: snapshot.getChildren()){
-            Usuario user= d.getValue(Usuario.class);
-            assert user != null;
-            if(user.equals(usuario)){
-                d.getRef().setValue(usuario);
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError error) {
-
-    }
-});
-            Snackbar.make(v,getString(R.string.cambiosGuardados),Snackbar.LENGTH_SHORT).setAction(R.string.aceptar, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent= new Intent(EditarItem.this, MenuPrincipal.class);
-                    intent.putExtra("usuario",(Parcelable) usuario);
-                    startActivity(intent);
                 }
-            }).show();
-
         }
-    }
 
 
     @Override
@@ -462,4 +442,25 @@ ref.addValueEventListener(new ValueEventListener() {
             progreso.getEditText().setText("");
         }
     }
+    public void guardarUsuario(Usuario usuario){
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Usuario");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot d: snapshot.getChildren()){
+                    Usuario u= d.getValue(Usuario.class);
+                    if(u.equals(usuario)){
+                        d.getRef().setValue(usuario);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 }

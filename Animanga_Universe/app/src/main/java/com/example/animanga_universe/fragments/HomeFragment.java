@@ -101,9 +101,14 @@ public class HomeFragment extends Fragment {
         view= inflater.inflate(R.layout.fragment_home, container, false);
         progressBar= view.findViewById(R.id.progressBar);
         cargando= view.findViewById(R.id.cargando);
+        progressBar.setVisibility(View.VISIBLE);
         animes= new ArrayList<>();
         mangas= new ArrayList<>();
-
+        if(getActivity()!= null){
+            user= getActivity().getIntent().getParcelableExtra("usuario");
+        }
+        StrictMode.ThreadPolicy policy= new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
         tabLayout= view.findViewById(R.id.tab_layout);
         busqueda= "Anime";
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.anime)));
@@ -220,11 +225,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        if(getActivity()!= null){
-            user= getActivity().getIntent().getParcelableExtra("usuario");
-        }
-        StrictMode.ThreadPolicy policy= new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+
         return view;
     }
 }

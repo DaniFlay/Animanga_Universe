@@ -22,6 +22,7 @@ public class Usuario implements Serializable, Parcelable {
     String rol;
 ArrayList<MangaUsuario> mangas;
 ArrayList<AnimeUsuario> animes;
+Integer stability;
 
     public Usuario(String username, String password, String sexo, String correo, String fecha_de_nacimiento) {
         this.username = username;
@@ -38,6 +39,14 @@ ArrayList<AnimeUsuario> animes;
     }
 
     public Usuario() {
+    }
+
+    public Integer getStability() {
+        return stability;
+    }
+
+    public void setStability(Integer stability) {
+        this.stability = stability;
     }
 
     protected Usuario(Parcel in) {

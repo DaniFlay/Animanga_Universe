@@ -26,6 +26,8 @@ public class Anime implements Serializable, Parcelable {
     String scoredBy;
     String status;
     String studios;
+    String source;
+    String synopsis;
     String title;
     String titleEnglish;
     String titleJapanese;
@@ -33,6 +35,33 @@ public class Anime implements Serializable, Parcelable {
     String type;
 
     public Anime() {
+    }
+
+    public Anime(String airedFrom, String airedTo, String broadcastDay, String demographics, String duration, String episodes, String favorites, String genres, String malId, String mainPicture, String premieredSeason, String premieredYear, String producers, String score, String scoredBy, String status, String studios, String source, String synopsis, String title, String titleEnglish, String titleJapanese, String trailerUrl, String type) {
+        this.airedFrom = airedFrom;
+        this.airedTo = airedTo;
+        this.broadcastDay = broadcastDay;
+        this.demographics = demographics;
+        this.duration = duration;
+        this.episodes = episodes;
+        this.favorites = favorites;
+        this.genres = genres;
+        this.malId = malId;
+        this.mainPicture = mainPicture;
+        this.premieredSeason = premieredSeason;
+        this.premieredYear = premieredYear;
+        this.producers = producers;
+        this.score = score;
+        this.scoredBy = scoredBy;
+        this.status = status;
+        this.studios = studios;
+        this.source = source;
+        this.synopsis = synopsis;
+        this.title = title;
+        this.titleEnglish = titleEnglish;
+        this.titleJapanese = titleJapanese;
+        this.trailerUrl = trailerUrl;
+        this.type = type;
     }
 
     protected Anime(Parcel in) {
@@ -53,6 +82,8 @@ public class Anime implements Serializable, Parcelable {
         scoredBy = in.readString();
         status = in.readString();
         studios = in.readString();
+        source = in.readString();
+        synopsis = in.readString();
         title = in.readString();
         titleEnglish = in.readString();
         titleJapanese = in.readString();
@@ -71,34 +102,6 @@ public class Anime implements Serializable, Parcelable {
             return new Anime[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "Anime{" +
-                "airedFrom='" + airedFrom + '\'' +
-                ", airedTo='" + airedTo + '\'' +
-                ", broadcastDay='" + broadcastDay + '\'' +
-                ", demographics='" + demographics + '\'' +
-                ", duration='" + duration + '\'' +
-                ", episodes='" + episodes + '\'' +
-                ", favorites='" + favorites + '\'' +
-                ", genres='" + genres + '\'' +
-                ", malId='" + malId + '\'' +
-                ", mainPicture='" + mainPicture + '\'' +
-                ", premieredSeason='" + premieredSeason + '\'' +
-                ", premieredYear='" + premieredYear + '\'' +
-                ", producers='" + producers + '\'' +
-                ", score='" + score + '\'' +
-                ", scoredBy='" + scoredBy + '\'' +
-                ", status='" + status + '\'' +
-                ", studios='" + studios + '\'' +
-                ", title='" + title + '\'' +
-                ", titleEnglish='" + titleEnglish + '\'' +
-                ", titleJapanese='" + titleJapanese + '\'' +
-                ", trailerUrl='" + trailerUrl + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -249,6 +252,22 @@ public class Anime implements Serializable, Parcelable {
         this.studios = studios;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getSynopsis() {
+        return synopsis;
+    }
+
+    public void setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -289,29 +308,34 @@ public class Anime implements Serializable, Parcelable {
         this.type = type;
     }
 
-    public Anime(String airedFrom, String airedTo, String broadcastDay, String demographics, String duration, String episodes, String favorites, String genres, String malId, String mainPicture, String premieredSeason, String premieredYear, String producers, String score, String scoredBy, String status, String studios, String title, String titleEnglish, String titleJapanese, String trailerUrl, String type) {
-        this.airedFrom = airedFrom;
-        this.airedTo = airedTo;
-        this.broadcastDay = broadcastDay;
-        this.demographics = demographics;
-        this.duration = duration;
-        this.episodes = episodes;
-        this.favorites = favorites;
-        this.genres = genres;
-        this.malId = malId;
-        this.mainPicture = mainPicture;
-        this.premieredSeason = premieredSeason;
-        this.premieredYear = premieredYear;
-        this.producers = producers;
-        this.score = score;
-        this.scoredBy = scoredBy;
-        this.status = status;
-        this.studios = studios;
-        this.title = title;
-        this.titleEnglish = titleEnglish;
-        this.titleJapanese = titleJapanese;
-        this.trailerUrl = trailerUrl;
-        this.type = type;
+    @Override
+    public String toString() {
+        return "Anime{" +
+                "airedFrom='" + airedFrom + '\'' +
+                ", airedTo='" + airedTo + '\'' +
+                ", broadcastDay='" + broadcastDay + '\'' +
+                ", demographics='" + demographics + '\'' +
+                ", duration='" + duration + '\'' +
+                ", episodes='" + episodes + '\'' +
+                ", favorites='" + favorites + '\'' +
+                ", genres='" + genres + '\'' +
+                ", malId='" + malId + '\'' +
+                ", mainPicture='" + mainPicture + '\'' +
+                ", premieredSeason='" + premieredSeason + '\'' +
+                ", premieredYear='" + premieredYear + '\'' +
+                ", producers='" + producers + '\'' +
+                ", score='" + score + '\'' +
+                ", scoredBy='" + scoredBy + '\'' +
+                ", status='" + status + '\'' +
+                ", studios='" + studios + '\'' +
+                ", source='" + source + '\'' +
+                ", synopsis='" + synopsis + '\'' +
+                ", title='" + title + '\'' +
+                ", titleEnglish='" + titleEnglish + '\'' +
+                ", titleJapanese='" + titleJapanese + '\'' +
+                ", trailerUrl='" + trailerUrl + '\'' +
+                ", type='" + type + '\'' +
+                '}';
     }
 
     @Override
@@ -338,6 +362,8 @@ public class Anime implements Serializable, Parcelable {
         dest.writeString(scoredBy);
         dest.writeString(status);
         dest.writeString(studios);
+        dest.writeString(source);
+        dest.writeString(synopsis);
         dest.writeString(title);
         dest.writeString(titleEnglish);
         dest.writeString(titleJapanese);

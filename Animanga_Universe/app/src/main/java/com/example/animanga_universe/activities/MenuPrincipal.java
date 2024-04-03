@@ -29,15 +29,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MenuPrincipal extends AppCompatActivity {
-    DatabaseReference ref;
     Usuario user;
-
     ActivityMenuPrincipalBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         user= getIntent().getParcelableExtra("usuario");
-        ref= FirebaseDatabase.getInstance().getReference("Usuario");
         binding= ActivityMenuPrincipalBinding.inflate(getLayoutInflater());
         binding.toolBar.setTitleTextAppearance(this, R.style.NarutoFont);
         setContentView(binding.getRoot());

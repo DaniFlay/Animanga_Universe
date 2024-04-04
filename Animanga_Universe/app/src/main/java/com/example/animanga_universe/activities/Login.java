@@ -5,16 +5,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.Usuario;
+import com.example.animanga_universe.extras.Helper;
 import com.example.animanga_universe.extras.PasswordEncryption;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -28,53 +35,60 @@ import com.google.firebase.database.ValueEventListener;
  * de que se le haya olvidado
  * @author Daniel Seregin Kozlov
  */
-public class Login extends AppCompatActivity implements View.OnClickListener {
+public class Login extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
     TextInputLayout usuario, password;
-    Button login,registro;
+    Button login, registro;
     DatabaseReference ref;
     TextView cambioContraseña;
     int contador;
+    SQLiteDatabase db;
+    Helper helper;
+    BottomSheetDialog bottomSheetDialog;
+    String usuarioDummy, passwordDummy;
+
 
     /**
      * El método onCreate sobreescrito, donde conecto todos los elementos necesarios del xml para poder darles funcionalidad en java
      * Y también me conecto a Firebase
-     * @param savedInstanceState If the activity is being re-initialized after
-     *     previously being shut down then this Bundle contains the data it most
-     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
      *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *                           previously being shut down then this Bundle contains the data it most
+     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        contador=0;
-        usuario= findViewById(R.id.usuario);
-        password= findViewById(R.id.password);
-        login= findViewById(R.id.entrar);
-        registro= findViewById(R.id.registrarse);
-        cambioContraseña= findViewById(R.id.contraseñaOlvidada);
-        ref= FirebaseDatabase.getInstance().getReference("Usuario");
+        contador = 0;
+        usuario = findViewById(R.id.usuario);
+        password = findViewById(R.id.password);
+        login = findViewById(R.id.entrar);
+        registro = findViewById(R.id.registrarse);
+        cambioContraseña = findViewById(R.id.contraseñaOlvidada);
+        ref = FirebaseDatabase.getInstance().getReference("Usuario");
         login.setOnClickListener(this);
         registro.setOnClickListener(this);
         cambioContraseña.setOnClickListener(this);
+        usuario.getEditText().setOnFocusChangeListener(this);
 
     }
 
     /**
      * Método onClick sobreescrito para los botones y el textview de la contraseña olvidada
+     *
      * @param v The view that was clicked.
      */
     @Override
     public void onClick(View v) {
         //En el caso de registro inicio una nueva actividad
-        if(v.getId()==registro.getId()){
-            Intent intent= new Intent(Login.this, Registro.class);
+        if (v.getId() == registro.getId()) {
+            Intent intent = new Intent(Login.this, Registro.class);
             startActivity(intent);
 
         }
         //En el caso del login compreubo que todos los campos estén rellenos, y si es así compruebo si existe el usuario en la base de datos, y si
         //la contraseña introducida es correcta
-        else if(v.getId()==login.getId()) {
+        else if (v.getId() == login.getId()) {
             if (usuario.getEditText().getText().toString().trim().equals("")) {
                 Snackbar.make(v, getString(R.string.campoUsuarioVacio), Snackbar.LENGTH_SHORT).show();
                 usuario.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
@@ -87,15 +101,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot d : snapshot.getChildren()) {
                             Usuario u = d.getValue(Usuario.class);
-                            if(u.getUsername().equals(usuario.getEditText().getText().toString().trim())){
+                            if (u.getUsername().equals(usuario.getEditText().getText().toString().trim())) {
                                 contador++;
-                                if(PasswordEncryption.hashPassword(u.getPassword()).equals(PasswordEncryption.hashPassword(password.getEditText().getText().toString().trim()))){
+                                if (PasswordEncryption.hashPassword(u.getPassword()).equals(PasswordEncryption.hashPassword(password.getEditText().getText().toString().trim()))) {
                                     entrar(u);
-                                }else{
+                                } else {
                                     Snackbar.make(v, getString(R.string.contraseñaIncorrecta), Snackbar.LENGTH_SHORT).show();
                                 }
                             }
-                        }if(contador==0){
+                        }
+                        if (contador == 0) {
                             Snackbar.make(v, getString(R.string.usuarioNoExiste), Snackbar.LENGTH_SHORT).show();
                         }
                     }
@@ -108,16 +123,74 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             }
         }
         //En el caso de la contraseña olvidada inicio una nueva actividad
-        else{
+        else if (v.getId() == cambioContraseña.getId()) {
             Intent intent = new Intent(Login.this, CambioPasswordCorreo.class);
             startActivity(intent);
-
         }
     }
-    public void entrar(Usuario u){
 
-        Intent intent= new Intent(Login.this, MenuPrincipal.class);
-        intent.putExtra("usuario",(Parcelable) u);
+    public void entrar(Usuario u) {
+
+        Intent intent = new Intent(Login.this, MenuPrincipal.class);
+        intent.putExtra("usuario", (Parcelable) u);
         startActivity(intent);
+    }
+
+    public void buscarUsuario(String nombre) {
+        ref = FirebaseDatabase.getInstance().getReference("Usuario");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot d : snapshot.getChildren()) {
+                    Usuario user = d.getValue(Usuario.class);
+                    if (nombre.equals(user.getUsername())) {
+                        entrar(user);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(!hasFocus){
+            helper = new Helper(Login.this, "bbdd", null, 1);
+            db = helper.getWritableDatabase();
+            Log.d("usuario", "texto plano");
+            assert usuario.getEditText()!=null;
+            String[] usuarioIntroducido = {usuario.getEditText().getText().toString()};
+            Cursor cursor = db.rawQuery("select * from usuario where usuario=?", usuarioIntroducido);
+            if (cursor.moveToFirst()) {
+                usuarioDummy = cursor.getString(0);
+                passwordDummy = cursor.getString(1);
+                //Log.d("usuario", db.toString());
+                bottomSheetDialog = new BottomSheetDialog(Login.this, com.google.android.material.R.style.Base_ThemeOverlay_Material3_BottomSheetDialog);
+                View bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.modal_sheet, (LinearLayout) findViewById(R.id.modalsheet));
+                bottomSheetView.findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog.dismiss();
+                        cursor.close();
+
+
+                    }
+                });
+                bottomSheetView.findViewById(R.id.si).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        buscarUsuario(usuarioDummy);
+                        cursor.close();
+                    }
+                });
+                bottomSheetDialog.setContentView(bottomSheetView);
+                bottomSheetDialog.show();
+            }
+        }
     }
 }

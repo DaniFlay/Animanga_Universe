@@ -110,6 +110,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/cero"
+                android:textAlignment="center"
                 >
 
             </com.google.android.material.textfield.TextInputEditText>

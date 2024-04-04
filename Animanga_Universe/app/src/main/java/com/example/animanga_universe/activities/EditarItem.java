@@ -1,6 +1,7 @@
 package com.example.animanga_universe.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -19,9 +20,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.animanga_universe.R;
+import com.example.animanga_universe.clases.Anime;
 import com.example.animanga_universe.clases.AnimeUsuario;
+import com.example.animanga_universe.clases.Manga;
 import com.example.animanga_universe.clases.MangaUsuario;
 import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.encapsuladores.Encapsulador;
@@ -34,6 +38,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +51,14 @@ import java.util.List;
 public class EditarItem extends AppCompatActivity implements View.OnClickListener, ChipGroup.OnCheckedStateChangeListener {
     Usuario usuario,user;
     Encapsulador e;
+    CollectionReference collectionReference;
     String busqueda, estado, estadoAnime;
     ChipGroup cg;
     Chip completado, enProceso, enEspera, dejado, enLista, porDefecto;
     RatingBar ratingBar;
     ProgressBar progressBar;
     TextInputLayout progreso;
+    Toolbar toolbar;
     AppCompatImageButton botonPlus;
     Button botonGuardar;
     AnimeUsuario animeUsuario;
@@ -56,7 +68,6 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
     ArrayList<AnimeUsuario> animes;
     ArrayList<MangaUsuario> mangas;
     Boolean complete;
-    DataSnapshot snapshot;
 
 
     @SuppressLint("SetTextI18n")
@@ -65,6 +76,8 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_item);
         complete= true;
+        toolbar= findViewById(R.id.toolBar);
+        toolbar.setTitleTextAppearance(this, R.style.NarutoFont);
         animes = new ArrayList<>();
         mangas = new ArrayList<>();
         estadoAnime = "";
@@ -93,6 +106,7 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
         enLista = findViewById(R.id.planeado);
         porDefecto = findViewById(R.id.sinAsignar);
         assert progreso.getEditText() != null;
+
         if (e.getAnime()!=null && usuario.getAnimes() != null) {
             for (AnimeUsuario a : usuario.getAnimes()) {
                 if (a.getAnime().equals(e.getAnime())) {
@@ -351,8 +365,14 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                     } else if (cg.getCheckedChipId()== dejado.getId()) {
                         estado= getString(R.string.dejado);
                     }
+                    animeUsuario.setAnime(e.getAnime());
+                    actualizarRatingAnime(recalculoAnime(e.getAnime(),(ratingBar.getRating()*2)));
                     animeUsuario.setEstado(estado);
-                    animeUsuario.setEpisodios(progreso.getEditText().getText().toString());
+                    if(!progreso.getEditText().getText().toString().equals("")){
+                        animeUsuario.setEpisodios(progreso.getEditText().getText().toString());
+                    }else{
+                        animeUsuario.setEpisodios(getString(R.string.cero));
+                    }
                     animeUsuario.setNota(String.valueOf(ratingBar.getRating()));
                     if(usuario.getAnimes()!=null){
                         animes.addAll(usuario.getAnimes());
@@ -372,9 +392,15 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                     } else if (cg.getCheckedChipId()== dejado.getId()) {
                         estado= getString(R.string.dejado);
                     }
+                    mangaUsuario.setManga(e.getManga());
+                    actualizarRatingManga(recalculoManga(e.getManga(),(ratingBar.getRating()*2)));
                     mangaUsuario.setEstado(estado);
                     assert progreso.getEditText()!=null;
-                    mangaUsuario.setCapitulos(progreso.getEditText().getText().toString());
+                    if(!progreso.getEditText().getText().toString().equals("")){
+                        mangaUsuario.setCapitulos(progreso.getEditText().getText().toString());
+                    }else {
+                        mangaUsuario.setCapitulos(getString(R.string.cero));
+                    }
                     mangaUsuario.setNota(String.valueOf(ratingBar.getRating()));
                     if(usuario.getMangas()!=null){
                         mangas.addAll(usuario.getMangas());
@@ -388,17 +414,18 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
                         if(usuario.getMangas()!=null){
                             mangas.addAll(usuario.getMangas());
                         }
+                        mangaUsuario.setManga(e.getManga());
                         mangas.remove(mangaUsuario);
                         usuario.setMangas(mangas);
                 } else if (busqueda.equals("Anime")) {
                     if(usuario.getAnimes()!=null){
                         animes.addAll(usuario.getAnimes());
                     }
+                    animeUsuario.setAnime(e.getAnime());
                     animes.remove(animeUsuario);
                     usuario.setAnimes(animes);
                 }
             }
-            guardarUsuario(usuario);
             Intent intent= new Intent(EditarItem.this, MenuPrincipal.class);
             intent.putExtra("usuario",(Parcelable) usuario);
             startActivity(intent);
@@ -442,25 +469,55 @@ public class EditarItem extends AppCompatActivity implements View.OnClickListene
             progreso.getEditText().setText("");
         }
     }
-    public void guardarUsuario(Usuario usuario){
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Usuario");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+public void actualizarRatingAnime(Anime anime){
+        collectionReference= FirebaseFirestore.getInstance().collection("Anime");
+        collectionReference.whereEqualTo("title",anime.getTitle()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot d: snapshot.getChildren()){
-                    Usuario u= d.getValue(Usuario.class);
-                    if(u.equals(usuario)){
-                        d.getRef().setValue(usuario);
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(value!=null){
+                    for(DocumentSnapshot d:value.getDocuments()){
+                        if(d.toObject(Anime.class).equals(anime)){
+                            d.getReference().set(anime);
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+}
+public void actualizarRatingManga(Manga manga){
+    collectionReference= FirebaseFirestore.getInstance().collection("Manga");
+    collectionReference.whereEqualTo("title",manga.getTitle()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        @Override
+        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+            if(value!=null){
+                for(DocumentSnapshot d:value.getDocuments()){
+                    if(d.toObject(Manga.class).equals(manga)){
+                        d.getReference().set(manga);
                         break;
                     }
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        }
+    });
+}
+public Anime recalculoAnime(Anime anime, float nota){
+        int personas = Integer.parseInt(anime.getScoredBy());
+        personas++;
+        float score = Float.parseFloat(anime.getScore());
+        float newScore= ((score*personas)+nota)/(personas);
+        anime.setScore(String.valueOf(newScore));
+        anime.setScoredBy(String.valueOf(personas));
+        return anime;
+}
+    public Manga recalculoManga(Manga manga, float nota){
+        int personas = Integer.parseInt(manga.getScoredBy());
+        personas++;
+        double score = manga.getScore();
+        double newScore= ((score*personas)+nota)/(personas);
+        manga.setScore(newScore);
+        manga.setScoredBy(String.valueOf(personas));
+        return manga;
     }
-
 }

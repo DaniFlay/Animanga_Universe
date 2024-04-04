@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -16,6 +17,7 @@ import android.widget.CompoundButton;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.databinding.ActivityMenuPrincipalBinding;
+import com.example.animanga_universe.extras.Helper;
 import com.example.animanga_universe.fragments.BuscarFragment;
 import com.example.animanga_universe.fragments.ForumsFragment;
 import com.example.animanga_universe.fragments.HomeFragment;
@@ -31,14 +33,19 @@ import com.google.firebase.database.ValueEventListener;
 public class MenuPrincipal extends AppCompatActivity {
     Usuario user;
     ActivityMenuPrincipalBinding binding;
+    SQLiteDatabase db;
+    Helper helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        helper= new Helper(this, "bbdd",null,1);
+        db= helper.getWritableDatabase();
         user= getIntent().getParcelableExtra("usuario");
         binding= ActivityMenuPrincipalBinding.inflate(getLayoutInflater());
         binding.toolBar.setTitleTextAppearance(this, R.style.NarutoFont);
         setContentView(binding.getRoot());
         reemplazarFragment(new HomeFragment());
+        guardarUsuario(user);
         binding.bottonNavigationView.setOnItemSelectedListener(item -> {
             int id= item.getItemId();
             if(id==R.id.ranking){
@@ -86,5 +93,54 @@ public class MenuPrincipal extends AppCompatActivity {
             fragmentTransaction.commit();
 
         }
+    public void guardarUsuario(Usuario usuario){
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Usuario");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot d: snapshot.getChildren()){
+                    Usuario u= d.getValue(Usuario.class);
+                    if(u.equals(usuario)){
+                        d.getRef().setValue(usuario);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+    public Usuario devolverUser(){
+        return user;
+    }
+    public void actualizarUsuario(String userNuevo, String userAntiguo){
+        db.execSQL("update usuario set usuario= '"+userNuevo+"' where usuario= '"+userAntiguo+"'");
+    }
+    public void actualizarPassword(String user, String password){
+        db.execSQL("update usuario set password= '"+password+"' where usuario ='"+user+"'");
+    }
+    public void guardarUsuarioNuevo(Usuario usuario, String name){
+        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Usuario");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot d: snapshot.getChildren()){
+                    Usuario u= d.getValue(Usuario.class);
+                    if(u.getUsername().equals(name)){
+                        d.getRef().setValue(usuario);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 }

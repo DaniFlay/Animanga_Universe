@@ -74,5 +74,11 @@
     <string name="guardarpassword">Quieres guardar el usuario para una autenticación  más rápida?</string>
     <string name="si">Si</string>
     <string name="no">No</string>
-    <string name="contraseñaguardada">Hay una contraseña guardada para tu usuario,¿ quieres utilizar el autorelleno?</string>
+    <string name="contraseñaguardada">Hay una contraseña guardada para tu usuario, ¿Quieres utilizar el autorelleno?</string>
+    <string name="cero">0</string>
+    <string name="contraseñaAntigua">Contraseña antigua</string>
+    <string name="contraseñaNueva">Contraseña nueva</string>
+    <string name="contraseñaAvacio">EL campo contrasñea antigua está vacío</string>
+    <string name="contraseñaNvacio">El campo contraseña nueva está vacío</string>
+    <string name="ok">Ok</string>
 </resources>

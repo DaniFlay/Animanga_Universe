@@ -102,6 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="*"
+                android:layout_marginStart="10dp"
                 >
                 <TableRow
                     android:layout_width="match_parent"
@@ -116,7 +117,7 @@
                         android:id="@+id/todos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/todos"
+                        android:text="@string/cero"
                         android:textSize="20sp"/>
                 </TableRow>
                 <TableRow
@@ -132,7 +133,7 @@
                         android:id="@+id/completados"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/todos"
+                        android:text="@string/cero"
                         android:textSize="20sp"/>
                 </TableRow>
                 <TableRow
@@ -148,7 +149,7 @@
                         android:id="@+id/enespera"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/todos"
+                        android:text="@string/cero"
                         android:textSize="20sp"/>
                 </TableRow>
                 <TableRow
@@ -164,7 +165,7 @@
                         android:id="@+id/enlista"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/todos"
+                        android:text="@string/cero"
                         android:textSize="20sp"/>
                 </TableRow>
                 <TableRow
@@ -180,7 +181,7 @@
                         android:id="@+id/dejado"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/todos"
+                        android:text="@string/cero"
                         android:textSize="20sp"/>
                 </TableRow>
                 <TableRow
@@ -197,7 +198,7 @@
                         android:id="@+id/enproceso"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/todos"
+                        android:text="@string/cero"
                         android:textSize="20sp"/>
                 </TableRow>
             </TableLayout>

@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -189,6 +190,7 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                                 bbdd.insert("usuario",null, cv);
                                 Intent intent= new Intent(Registro.this, Login.class);
                                 startActivity(intent);
+
                             }
                         })
                         .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {

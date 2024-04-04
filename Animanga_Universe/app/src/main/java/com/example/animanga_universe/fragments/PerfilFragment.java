@@ -13,6 +13,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.animanga_universe.R;
+import com.example.animanga_universe.activities.MenuPrincipal;
 import com.example.animanga_universe.clases.AnimeUsuario;
 import com.example.animanga_universe.clases.MangaUsuario;
 import com.example.animanga_universe.clases.Usuario;
@@ -29,6 +30,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
     TableLayout tableLayout;
     Usuario user;
     int counter;
+    MenuPrincipal menuPrincipal;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -62,9 +64,8 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        View view= inflater.inflate(R.layout.fragment_perfil, container, false);
-        if(getActivity()!=null){
-            user= getActivity().getIntent().getParcelableExtra("usuario");
-        }
+       menuPrincipal= (MenuPrincipal) getActivity();
+       user= menuPrincipal.devolverUser();
        todos=view.findViewById(R.id.todos);
        counter=0;
        completado= view.findViewById(R.id.completados);
@@ -98,16 +99,26 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
         editarPerfil.setOnClickListener(this);
         cambiarContraseña.setOnClickListener(this);
         viendo.setText(R.string.viendo);
-        todos.setText(String.valueOf(user.getAnimes().size()));
-        rellenarAnimes();
+        if(user.getAnimes()!=null){
+            todos.setText(String.valueOf(user.getAnimes().size()));
+            rellenarAnimes();
+        }
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
                 if (tab.getPosition() == 0) {
-                    rellenarAnimes();
+                    if(user.getAnimes()!=null){
+
+                        rellenarAnimes();
+                    }
+
                 } else if (tab.getPosition() == 1) {
-                        rellenarMangas();
+                        if(user.getMangas()!=null){
+
+                            rellenarMangas();
+                        }
                 }
             }
 
@@ -127,7 +138,11 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
+if(v.getId()==editarPerfil.getId()){
+    menuPrincipal.reemplazarFragment(new EditarPerfilFragment());
+} else if (v.getId()== cambiarContraseña.getId()) {
+    menuPrincipal.reemplazarFragment(new CambiarPasswordFragment());
+}
     }
     public void rellenarAnimes(){
         viendo.setText(R.string.viendo);

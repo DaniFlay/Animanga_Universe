@@ -17,10 +17,12 @@ import javax.mail.internet.MimeMessage;
 /**
  * API para poder mandar correos para el cambio de contraseña
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class MailAPI extends AsyncTask<Void, Void, Void> {
 
     @SuppressLint("StaticFieldLeak")
+    final
     Context context;
     private final String recipient;
     private final String subject;

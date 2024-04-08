@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +19,7 @@ import android.widget.TextView;
 
 import com.example.animanga_universe.R;
 
-import com.example.animanga_universe.clases.Usuario;
+import com.example.animanga_universe.classes.User;
 import com.example.animanga_universe.extras.Helper;
 import com.example.animanga_universe.extras.PasswordEncryption;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -32,10 +31,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 /**
  * La actividad Login, donde el usuario puede entrar en la aplicacion con sus datos, registrarse o cambiar la contraseña en el caso
  * de que se le haya olvidado
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class Login extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
     TextInputLayout usuario, password;
@@ -62,7 +64,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         contador = 0;
-        usuario = findViewById(R.id.usuario);
+        usuario = findViewById(R.id.user);
         password = findViewById(R.id.password);
         login = findViewById(R.id.entrar);
         registro = findViewById(R.id.registrarse);
@@ -71,7 +73,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
         login.setOnClickListener(this);
         registro.setOnClickListener(this);
         cambioContraseña.setOnClickListener(this);
-        usuario.getEditText().setOnFocusChangeListener(this);
+        Objects.requireNonNull(usuario.getEditText()).setOnFocusChangeListener(this);
 
     }
 
@@ -84,17 +86,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
     public void onClick(View v) {
         //En el caso de registro inicio una nueva actividad
         if (v.getId() == registro.getId()) {
-            Intent intent = new Intent(Login.this, Registro.class);
+            Intent intent = new Intent(Login.this, Register.class);
             startActivity(intent);
 
         }
         //En el caso del login compruebo que todos los campos estén rellenos, y si es así compruebo si existe el usuario en la base de datos, y si
         //la contraseña introducida es correcta
         else if (v.getId() == login.getId()) {
-            if (usuario.getEditText().getText().toString().trim().equals("")) {
+            if (Objects.requireNonNull(usuario.getEditText()).getText().toString().trim().equals("")) {
                 Snackbar.make(v, getString(R.string.campoUsuarioVacio), Snackbar.LENGTH_SHORT).show();
                 usuario.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-            } else if (password.getEditText().getText().toString().trim().equals("")) {
+            } else if (Objects.requireNonNull(password.getEditText()).getText().toString().trim().equals("")) {
                 Snackbar.make(v, getString(R.string.campoContraseñaVacio), Snackbar.LENGTH_SHORT).show();
                 password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             } else {
@@ -102,8 +104,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot d : snapshot.getChildren()) {
-                            Usuario u = d.getValue(Usuario.class);
-                            if (u.getUsername().equals(usuario.getEditText().getText().toString().trim())) {
+                            User u = d.getValue(User.class);
+                            if (Objects.requireNonNull(u).getUsername().equals(usuario.getEditText().getText().toString().trim())) {
                                 contador++;
                                 if (u.getPassword().equals(PasswordEncryption.hashPassword(password.getEditText().getText().toString().trim()))) {
                                     entrar(u);
@@ -126,7 +128,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
         }
         //En el caso de la contraseña olvidada inicio una nueva actividad
         else if (v.getId() == cambioContraseña.getId()) {
-            Intent intent = new Intent(Login.this, CambioPasswordCorreo.class);
+            Intent intent = new Intent(Login.this, ChangePasswordMail.class);
             startActivity(intent);
         }
     }
@@ -135,9 +137,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
      * Esta función crea un intent y entra en la actividad del menú prinicpal mandando como extra el usuario
      * @param u el usuario que se manda como extra
      */
-    public void entrar(Usuario u) {
+    public void entrar(User u) {
 
-        Intent intent = new Intent(Login.this, MenuPrincipal.class);
+        Intent intent = new Intent(Login.this, MainMenu.class);
         intent.putExtra("usuario", (Parcelable) u);
         startActivity(intent);
     }
@@ -152,8 +154,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot d : snapshot.getChildren()) {
-                    Usuario user = d.getValue(Usuario.class);
-                    if (nombre.equals(user.getUsername())) {
+                    User user = d.getValue(User.class);
+                    if (nombre.equals(Objects.requireNonNull(user).getUsername())) {
                         entrar(user);
                         break;
                     }
@@ -189,21 +191,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
                 passwordDummy = cursor.getString(1);
                 bottomSheetDialog = new BottomSheetDialog(Login.this, com.google.android.material.R.style.Base_ThemeOverlay_Material3_BottomSheetDialog);
                 View bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.modal_sheet, (LinearLayout) findViewById(R.id.modalsheet));
-                bottomSheetView.findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bottomSheetDialog.dismiss();
-                        cursor.close();
+                bottomSheetView.findViewById(R.id.no).setOnClickListener(v12 -> {
+                    bottomSheetDialog.dismiss();
+                    cursor.close();
 
 
-                    }
                 });
-                bottomSheetView.findViewById(R.id.si).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        buscarUsuario(usuarioDummy);
-                        cursor.close();
-                    }
+                bottomSheetView.findViewById(R.id.si).setOnClickListener(v1 -> {
+                    buscarUsuario(usuarioDummy);
+                    cursor.close();
                 });
                 bottomSheetDialog.setContentView(bottomSheetView);
                 bottomSheetDialog.show();

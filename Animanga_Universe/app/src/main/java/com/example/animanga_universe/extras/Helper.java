@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
  * @author Daniel Seregin Kozlov
  */
 public class Helper extends SQLiteOpenHelper {
-    String sqlCreacion="create table usuario(usuario text primary key, password text)";
-    String sqlBorrado="drop table if exists usuario";
+    final String sqlCreacion="create table usuario(usuario text primary key, password text)";
+    final String sqlBorrado="drop table if exists usuario";
 
     public Helper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

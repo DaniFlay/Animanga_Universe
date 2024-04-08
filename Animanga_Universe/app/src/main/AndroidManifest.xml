@@ -15,6 +15,7 @@
 
 
     <application
+        android:enableOnBackInvokedCallback="true"
         android:allowBackup="true"
         android:largeHeap="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,24 +25,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Animanga_Universe"
-        tools:targetApi="31">
+        >
         <activity
-            android:name=".activities.EditarItem"
+            android:name=".activities.MainMenu"
             android:exported="false" />
         <activity
-            android:name=".activities.MenuPrincipal"
+            android:name=".activities.ChangePassword"
             android:exported="false" />
         <activity
-            android:name=".activities.CambioPassword"
+            android:name=".activities.VerificationCode"
             android:exported="false" />
         <activity
-            android:name=".activities.CodigoVerificacion"
+            android:name=".activities.ChangePasswordMail"
             android:exported="false" />
         <activity
-            android:name=".activities.CambioPasswordCorreo"
-            android:exported="false" />
-        <activity
-            android:name=".activities.Registro"
+            android:name=".activities.Register"
             android:exported="false" />
         <activity
             android:name=".activities.Login"

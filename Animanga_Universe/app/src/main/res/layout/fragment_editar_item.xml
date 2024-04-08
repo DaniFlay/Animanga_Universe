@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.EditarItemFragment">
+    tools:context=".fragments.EditItemFragment">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
             android:id="@+id/episodiosTotales"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="/?"
+            android:text="@string/desconocido"
             app:layout_constraintTop_toBottomOf="@+id/progresoText"
             app:layout_constraintStart_toEndOf="@+id/progreso"
             android:layout_marginTop="15dp"

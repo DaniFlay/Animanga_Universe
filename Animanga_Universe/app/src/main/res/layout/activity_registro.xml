@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.Registro">
+    tools:context=".activities.Register">
 
     <TextView
         android:id="@+id/app_name"
@@ -18,7 +18,7 @@
         android:text="@string/AnimangaUniverse"
         android:textSize="40sp" />
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/usuario"
+        android:id="@+id/user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/app_name"
@@ -28,7 +28,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/usuario">
+            android:hint="@string/user">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
@@ -36,7 +36,7 @@
         android:id="@+id/correo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/usuario"
+        android:layout_below="@+id/user"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="15dp">

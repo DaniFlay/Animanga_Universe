@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Animanga_Universe</string>
     <string name="AnimangaUniverse">Animanga Universe</string>
-    <string name="usuario">Usuario</string>
+    <string name="user">Usuario</string>
     <string name="password">Contraseña</string>
     <string name="password2">Repite contraseña</string>
     <string name="entrar">Entrar</string>
     <string name="registrarse">Registrarse</string>
     <string name="contraseñaOlvidada">Se me ha olvidado la contraseña</string>
-    <string name="campoUsuarioVacio">El campo usuario está vacío</string>
+    <string name="campoUsuarioVacio">El campo user está vacío</string>
     <string name="campoContraseñaVacio">El campo contraseña está vacío</string>
     <string name="campoCorreoVacio">El campo correo está vacío</string>
     <string name="campoFechaNacimientoVacio">El campo fecha de nacimiento está vacío</string>
@@ -15,7 +15,7 @@
     <string name="campoContraseña2Vacio">El campo repetir contraseña está vacío</string>
     <string name="camposContraseñaNoCoinciden">Los campos contraseña y repetir contraseña no coinciden</string>
     <string name="contraseñaIncorrecta">La contraseña introducida no es correcta</string>
-    <string name="usuarioNoExiste">El usuario introducido no existe</string>
+    <string name="usuarioNoExiste">El user introducido no existe</string>
     <string name="correo">Correo</string>
     <string name="sexo">Sexo</string>
     <array name="sexos">
@@ -36,21 +36,17 @@
     <string name="codigoNoCoincide">El código de verificación es incorrecto</string>
     <string name="contraseñaCambiada">La contraseña ha sido cambiada con éxito</string>
     <string name="aceptar">Aceptar</string>
-    <string name="usuarioExiste">El usuario ya existe</string>
-    <string name="home">Home</string>
+    <string name="usuarioExiste">El user ya existe</string>
     <string name="forums">Forums</string>
     <string name="buscar">Buscar</string>
     <string name="perfil">Perfil</string>
     <string name="listas">Listas</string>
     <string name="anime">Anime</string>
     <string name="manga">Manga</string>
-    <string name="personajes">Personajes</string>
     <string name="imagen">Imagen del elemento</string>
     <string name="titulo">Titulo</string>
     <string name="info">Info</string>
     <string name="rating">Rating</string>
-    <string name="nombre">Nombre</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="estado">Estado</string>
     <string name="progreso">Progreso</string>
     <string name="viendo">Viendo</string>
@@ -71,14 +67,15 @@
     <string name="ranking">Ranking</string>
     <string name="cargandoEleementos">Cargando elementos</string>
     <string name="cambiosGuardados">Los cambios han sido guardados con éxito</string>
-    <string name="guardarpassword">Quieres guardar el usuario para una autenticación  más rápida?</string>
+    <string name="guardarpassword">Quieres guardar el user para una autenticación  más rápida?</string>
     <string name="si">Si</string>
     <string name="no">No</string>
-    <string name="contraseñaguardada">Hay una contraseña guardada para tu usuario, ¿Quieres utilizar el autorelleno?</string>
+    <string name="contraseñaguardada">Hay una contraseña guardada para tu user, ¿Quieres utilizar el autorelleno?</string>
     <string name="cero">0</string>
     <string name="contraseñaAntigua">Contraseña antigua</string>
     <string name="contraseñaNueva">Contraseña nueva</string>
     <string name="contraseñaAvacio">EL campo contrasñea antigua está vacío</string>
     <string name="contraseñaNvacio">El campo contraseña nueva está vacío</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
+    <string name="desconocido">/?</string>
 </resources>

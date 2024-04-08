@@ -3,6 +3,7 @@ package com.example.animanga_universe.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.animanga_universe.R;
+
 import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.extras.Helper;
 import com.example.animanga_universe.extras.PasswordEncryption;
@@ -86,7 +88,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
             startActivity(intent);
 
         }
-        //En el caso del login compreubo que todos los campos estén rellenos, y si es así compruebo si existe el usuario en la base de datos, y si
+        //En el caso del login compruebo que todos los campos estén rellenos, y si es así compruebo si existe el usuario en la base de datos, y si
         //la contraseña introducida es correcta
         else if (v.getId() == login.getId()) {
             if (usuario.getEditText().getText().toString().trim().equals("")) {
@@ -103,7 +105,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
                             Usuario u = d.getValue(Usuario.class);
                             if (u.getUsername().equals(usuario.getEditText().getText().toString().trim())) {
                                 contador++;
-                                if (PasswordEncryption.hashPassword(u.getPassword()).equals(PasswordEncryption.hashPassword(password.getEditText().getText().toString().trim()))) {
+                                if (u.getPassword().equals(PasswordEncryption.hashPassword(password.getEditText().getText().toString().trim()))) {
                                     entrar(u);
                                 } else {
                                     Snackbar.make(v, getString(R.string.contraseñaIncorrecta), Snackbar.LENGTH_SHORT).show();
@@ -129,6 +131,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
         }
     }
 
+    /**
+     * Esta función crea un intent y entra en la actividad del menú prinicpal mandando como extra el usuario
+     * @param u el usuario que se manda como extra
+     */
     public void entrar(Usuario u) {
 
         Intent intent = new Intent(Login.this, MenuPrincipal.class);
@@ -136,6 +142,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
         startActivity(intent);
     }
 
+    /**
+     * Esta función busca si existe el usuario en la base de datos, y en el caso de existir se hace el uso de la función entrar para entrar en la aplicación
+     * @param nombre el nombre del usuario para buscar en la base de datos
+     */
     public void buscarUsuario(String nombre) {
         ref = FirebaseDatabase.getInstance().getReference("Usuario");
         ref.addValueEventListener(new ValueEventListener() {
@@ -157,19 +167,26 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
         });
     }
 
+    /**
+     * La función para el escuchador del enfoque para el campo del usuario, se usa para que cuando se quite el enfoque del campo usuario, se
+     * compruebe en la base de datos interna si existe el usuario introducido, en el caso de existir ofrece la función de entrar sin introducir la contraseña
+     * ya que ya se encuentra guardada en la base de datos interna y así acelerar el proceso
+     * @param v The view whose state has changed.
+     * @param hasFocus The new focus state of v.
+     */
+    @SuppressLint("PrivateResource")
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if(!hasFocus){
+
             helper = new Helper(Login.this, "bbdd", null, 1);
             db = helper.getWritableDatabase();
-            Log.d("usuario", "texto plano");
             assert usuario.getEditText()!=null;
             String[] usuarioIntroducido = {usuario.getEditText().getText().toString()};
             Cursor cursor = db.rawQuery("select * from usuario where usuario=?", usuarioIntroducido);
             if (cursor.moveToFirst()) {
                 usuarioDummy = cursor.getString(0);
                 passwordDummy = cursor.getString(1);
-                //Log.d("usuario", db.toString());
                 bottomSheetDialog = new BottomSheetDialog(Login.this, com.google.android.material.R.style.Base_ThemeOverlay_Material3_BottomSheetDialog);
                 View bottomSheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.modal_sheet, (LinearLayout) findViewById(R.id.modalsheet));
                 bottomSheetView.findViewById(R.id.no).setOnClickListener(new View.OnClickListener() {

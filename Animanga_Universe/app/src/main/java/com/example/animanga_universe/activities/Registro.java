@@ -174,6 +174,8 @@ public class Registro extends AppCompatActivity implements View.OnClickListener 
                 Snackbar.make(v,getString(R.string.usuarioExiste),Snackbar.LENGTH_SHORT).show();
                 requestFocus(usuario);
             }else{
+                //Se encripta la contraseña y se le pregunta al usuario si quiere guardar el usuario para un acceso más rápido, en el caso de que pulse si,
+                //se guardan el usuario y la contraseña en la base de datos interna, en el caso de pulsar no, no se guarda nada
                 hashedPassword= PasswordEncryption.hashPassword(password);
                 Usuario user= new Usuario(usuario2,hashedPassword,sexo2,correo2,fechaNacimiento);
                 ref.push().setValue(user);

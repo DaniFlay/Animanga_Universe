@@ -41,7 +41,12 @@ MenuPrincipal menuPrincipal;
     public CambiarPasswordFragment() {
 
     }
-
+    /**
+     * Se crea la instancia del fragment
+     * @param param1 Parameter 1 creado automáticamente
+     * @param param2 Parameter 2 creado automáticamente
+     * @return Nueva instancia del Fragment
+     */
     public static CambiarPasswordFragment newInstance(String param1, String param2) {
         CambiarPasswordFragment fragment = new CambiarPasswordFragment();
         Bundle args = new Bundle();

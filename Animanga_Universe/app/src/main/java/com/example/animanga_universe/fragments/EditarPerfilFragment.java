@@ -20,9 +20,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditarPerfilFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Frgament para la edición de perfil del usuario
+ * @author Daniel Seregin Kozlov
  */
 public class EditarPerfilFragment extends Fragment implements View.OnClickListener {
     String usuarioAntiguo;
@@ -43,7 +42,12 @@ public class EditarPerfilFragment extends Fragment implements View.OnClickListen
     public EditarPerfilFragment() {
 
     }
-
+    /**
+     * Se crea la instancia del fragment
+     * @param param1 Parameter 1 creado automáticamente
+     * @param param2 Parameter 2 creado automáticamente
+     * @return Nueva instancia del Fragment
+     */
     public static EditarPerfilFragment newInstance(String param1, String param2) {
         EditarPerfilFragment fragment = new EditarPerfilFragment();
         Bundle args = new Bundle();
@@ -86,6 +90,7 @@ public class EditarPerfilFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        //Si se pulsa el botón de guardar se recogen los datos, y aparece un SnackBar indicando que se han guardado con éxito
         if(v.getId()==guardar.getId()){
             user.setUsername(usuario.getEditText().getText().toString());
             user.setCorreo(correo.getEditText().getText().toString());
@@ -94,6 +99,7 @@ public class EditarPerfilFragment extends Fragment implements View.OnClickListen
 
             Snackbar.make(v, getString(R.string.cambiosGuardados), Snackbar.LENGTH_INDEFINITE)
                             .setAction(getString(R.string.ok), new View.OnClickListener() {
+                                //En el caso de pulsar el boton que aparece en el SnackBar se guardan los datos en las de datos y se cambia de fragemnt
                                 @Override
                                 public void onClick(View v) {
                                     menuPrincipal.guardarUsuarioNuevo(user,usuarioAntiguo);
@@ -103,6 +109,7 @@ public class EditarPerfilFragment extends Fragment implements View.OnClickListen
                             }).show();
 
         }else if(v.getId()== elegirFecha.getId()){
+            //En el caso de que se pulse el boton de elegir fecha, se abre un DatePciker para elegir la fecha de nacimiento
             Calendar c= Calendar.getInstance();
             int dia= c.get(Calendar.DAY_OF_MONTH);
             int mes= c.get(Calendar.MONTH);

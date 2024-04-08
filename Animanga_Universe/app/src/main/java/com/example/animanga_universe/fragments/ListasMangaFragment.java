@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.animanga_universe.R;
+import com.example.animanga_universe.activities.MenuPrincipal;
 import com.example.animanga_universe.adaptadores.AdaptadorLista;
 import com.example.animanga_universe.clases.AnimeUsuario;
 import com.example.animanga_universe.clases.MangaUsuario;
@@ -33,9 +34,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListasMangaFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment para mostrar las listas de los mangas del usuario filtrados por su estado
+ * @author Daniel Seregin Kozlov
  */
 public class ListasMangaFragment extends Fragment {
     TabLayout tabLayout;
@@ -55,9 +55,14 @@ public class ListasMangaFragment extends Fragment {
     private String mParam2;
 
     public ListasMangaFragment() {
-        // Required empty public constructor
-    }
 
+    }
+    /**
+     * Se crea la instancia del fragment
+     * @param param1 Parameter 1 creado automáticamente
+     * @param param2 Parameter 2 creado automáticamente
+     * @return Nueva instancia del Fragment
+     */
     public static ListasMangaFragment newInstance(String param1, String param2) {
         ListasMangaFragment fragment = new ListasMangaFragment();
         Bundle args = new Bundle();
@@ -82,7 +87,8 @@ public class ListasMangaFragment extends Fragment {
                              Bundle savedInstanceState) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        user = getActivity().getIntent().getParcelableExtra("usuario");
+        MenuPrincipal menuPrincipal= (MenuPrincipal) getActivity();
+        user= menuPrincipal.devolverUser();
         view = inflater.inflate(R.layout.fragment_listas_manga, container, false);
         tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.todos));
@@ -93,6 +99,7 @@ public class ListasMangaFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.completado));
         mangas = new ArrayList<>();
         String anyo = "", info = "";
+        //Se hace el relleno de los encapsuladores para mostrar las listas que tiene el usuario
         if(user.getMangas()!=null){
             for (MangaUsuario m : user.getMangas()) {
                 if (m.getManga().getPublishedFrom() != null && !m.getManga().getPublishedFrom().equals("")) {
@@ -134,6 +141,7 @@ public class ListasMangaFragment extends Fragment {
                 layoutManager = new LinearLayoutManager(getContext());
                 recyclerView.setLayoutManager(layoutManager);
                 tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                    //Según el tab seleccionado se filtra la lista mostrada según su estado
                     @SuppressLint("UseCompatLoadingForDrawables")
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {

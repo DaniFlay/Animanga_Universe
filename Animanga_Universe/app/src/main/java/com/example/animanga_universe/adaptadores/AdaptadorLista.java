@@ -1,10 +1,7 @@
 package com.example.animanga_universe.adaptadores;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,25 +14,17 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.animanga_universe.R;
-import com.example.animanga_universe.activities.EditarItem;
-import com.example.animanga_universe.clases.AnimeUsuario;
-import com.example.animanga_universe.clases.MangaUsuario;
+import com.example.animanga_universe.activities.MenuPrincipal;
 import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.encapsuladores.Encapsulador;
-import com.example.animanga_universe.fragments.BuscarFragment;
-import com.example.animanga_universe.fragments.HomeFragment;
-import com.example.animanga_universe.fragments.ListasAnimeFragment;
-import com.example.animanga_universe.fragments.ListasMangaFragment;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.animanga_universe.fragments.EditarItemFragment;
 
 import java.util.ArrayList;
 
-
+/**
+ * El adaptador para los listados de animes en la cuenta del usuario
+ * @author Daniel Seregin Kozlov
+ */
 public class AdaptadorLista extends RecyclerView.Adapter<AdaptadorLista.ViewHolder> {
         Usuario usuario;
         String busqueda;
@@ -74,12 +63,9 @@ public AdaptadorLista.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, i
             holder.boton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    Intent intent= new Intent(context, EditarItem.class);
-                    intent.putExtra("usuario",(Parcelable) usuario);
-                    intent.putExtra("encapsulador",(Parcelable) e);
-                    intent.putExtra("busqueda",busqueda);
-                    context.startActivity(intent);
+                    ((MenuPrincipal)context).setBusqueda(busqueda);
+                    ((MenuPrincipal)context).setEncapsulador(e);
+                    ((MenuPrincipal)context).reemplazarFragment(new EditarItemFragment());
                 }
             });
 

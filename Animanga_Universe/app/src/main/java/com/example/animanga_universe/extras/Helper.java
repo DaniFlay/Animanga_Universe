@@ -6,6 +6,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+/**
+ * Helper para la creación y trabajo con la base de datos interna de SQLite
+ * @author Daniel Seregin Kozlov
+ */
 public class Helper extends SQLiteOpenHelper {
     String sqlCreacion="create table usuario(usuario text primary key, password text)";
     String sqlBorrado="drop table if exists usuario";

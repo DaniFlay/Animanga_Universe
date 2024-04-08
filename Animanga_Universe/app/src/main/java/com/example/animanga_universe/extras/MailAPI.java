@@ -14,6 +14,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+/**
+ * API para poder mandar correos para el cambio de contraseña
+ * @author Daniel Seregin Kozlov
+ */
 public class MailAPI extends AsyncTask<Void, Void, Void> {
 
     @SuppressLint("StaticFieldLeak")

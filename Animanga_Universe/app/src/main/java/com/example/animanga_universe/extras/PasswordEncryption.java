@@ -3,6 +3,10 @@ package com.example.animanga_universe.extras;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Función para encriptar la contraseña para una mayor seguridad
+ * @author Daniel Seregin Kozlov
+ */
 public class PasswordEncryption {
     public static String hashPassword(String password){
         try{

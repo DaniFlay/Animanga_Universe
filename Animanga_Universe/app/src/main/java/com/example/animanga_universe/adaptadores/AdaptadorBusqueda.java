@@ -14,14 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.animanga_universe.activities.EditarItem;
 import com.example.animanga_universe.R;
+import com.example.animanga_universe.activities.MenuPrincipal;
 import com.example.animanga_universe.clases.Usuario;
 import com.example.animanga_universe.encapsuladores.Encapsulador;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.animanga_universe.fragments.EditarItemFragment;
 
 import java.util.ArrayList;
 
+/**
+ * El adaptador para el recycler view de la búsqueda de los animes, en el fragment de búsqueda
+ * @author Daniel Seregin Kozlov
+ */
 public class AdaptadorBusqueda extends RecyclerView.Adapter<AdaptadorBusqueda.ViewHolder> {
     Usuario usuario;
     String busqueda;
@@ -57,12 +61,9 @@ public class AdaptadorBusqueda extends RecyclerView.Adapter<AdaptadorBusqueda.Vi
         holder.boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent= new Intent(context, EditarItem.class);
-                intent.putExtra("usuario",(Parcelable) usuario);
-                intent.putExtra("encapsulador",(Parcelable) e);
-                intent.putExtra("busqueda",busqueda);
-                context.startActivity(intent);
+                ((MenuPrincipal)context).setBusqueda(busqueda);
+                ((MenuPrincipal)context).setEncapsulador(e);
+                ((MenuPrincipal)context).reemplazarFragment(new EditarItemFragment());
             }
         });
     }

@@ -5,25 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.EditarItem">
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:title="@string/AnimangaUniverse"
-        android:background="@color/darknavy"
-        app:titleTextColor="@color/white"
-        app:titleCentered="true"
-        style="@style/Widget.Material3.Toolbar">
-    </com.google.android.material.appbar.MaterialToolbar>
+    tools:context=".fragments.EditarItemFragment">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/estado"
-        app:layout_constraintTop_toBottomOf="@+id/toolBar"
+        app:layout_constraintTop_toTopOf="parent"
         android:textSize="20sp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"

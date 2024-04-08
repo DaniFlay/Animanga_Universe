@@ -20,9 +20,8 @@ import com.example.animanga_universe.clases.Usuario;
 import com.google.android.material.tabs.TabLayout;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link PerfilFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * El Fragment del Perfil, que muestra la información relevante del usuario y donde se puede cambiar la contraseña o editar el perfil
+ * @author Daniel Seregin Kozlov
  */
 public class PerfilFragment extends Fragment implements View.OnClickListener {
     TextView usuario, sexo, fechaNac, fechaReg, correo, editarPerfil, cambiarContraseña, todos, enProceso, completado, dejado, enLista, enEspera, viendo;
@@ -41,7 +40,12 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
     }
 
-
+    /**
+     * Se crea la instancia del fragment
+     * @param param1 Parameter 1 creado automáticamente
+     * @param param2 Parameter 2 creado automáticamente
+     * @return Nueva instancia del Fragment
+     */
     public static PerfilFragment newInstance(String param1, String param2) {
         PerfilFragment fragment = new PerfilFragment();
         Bundle args = new Bundle();
@@ -103,20 +107,18 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
             todos.setText(String.valueOf(user.getAnimes().size()));
             rellenarAnimes();
         }
-
+//Dependiedo del tab seleccionado se muestran las estadísticas de los animes o de los mangas por sus estados
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
                 if (tab.getPosition() == 0) {
                     if(user.getAnimes()!=null){
-
                         rellenarAnimes();
                     }
 
                 } else if (tab.getPosition() == 1) {
                         if(user.getMangas()!=null){
-
                             rellenarMangas();
                         }
                 }
@@ -138,12 +140,19 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        //Si se pulsa editar perfil, se cambia al fragment de la ediccón del perfil
 if(v.getId()==editarPerfil.getId()){
     menuPrincipal.reemplazarFragment(new EditarPerfilFragment());
+    //Si se pulsa el cambio de contraseña se cambia al fragment del cambio de contraseña
 } else if (v.getId()== cambiarContraseña.getId()) {
     menuPrincipal.reemplazarFragment(new CambiarPasswordFragment());
 }
     }
+
+    /**
+     * Esta función rellena la tabla con las estadísticas de los animes del usuario, mostradno todos los estados y el número de animes que tiene
+     * de cada estado
+     */
     public void rellenarAnimes(){
         viendo.setText(R.string.viendo);
         todos.setText(String.valueOf(user.getAnimes().size()));
@@ -183,6 +192,11 @@ if(v.getId()==editarPerfil.getId()){
         enProceso.setText(String.valueOf(counter));
         counter=0;
     }
+
+    /**
+     * Esta función rellena la tabla con las estadísticas de los mangas del usuario, mostradno todos los estados y el número de mangas que tiene
+     * de cada estado
+     */
     public void rellenarMangas(){
             viendo.setText(getString(R.string.leyendo));
             todos.setText(String.valueOf(user.getMangas().size()));

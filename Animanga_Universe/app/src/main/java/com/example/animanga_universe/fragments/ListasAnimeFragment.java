@@ -35,9 +35,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListasAnimeFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * El fragment qu emuestra las listas de los animes del usuario, que se filtran por su estado
+ * @author Daniel Seregin Kozlov
  */
 public class ListasAnimeFragment extends Fragment {
     TabLayout tabLayout;
@@ -59,7 +58,12 @@ public class ListasAnimeFragment extends Fragment {
 
     public ListasAnimeFragment() {
     }
-
+    /**
+     * Se crea la instancia del fragment
+     * @param param1 Parameter 1 creado automáticamente
+     * @param param2 Parameter 2 creado automáticamente
+     * @return Nueva instancia del Fragment
+     */
     public static ListasAnimeFragment newInstance(String param1, String param2) {
         ListasAnimeFragment fragment = new ListasAnimeFragment();
         Bundle args = new Bundle();
@@ -85,7 +89,7 @@ public class ListasAnimeFragment extends Fragment {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         MenuPrincipal activity= (MenuPrincipal) getActivity();
-        user = getActivity().getIntent().getParcelableExtra("usuario");
+        user = activity.devolverUser();
 
         view = inflater.inflate(R.layout.fragment_anime_listas, container, false);
         tabLayout = view.findViewById(R.id.tab_layout);
@@ -97,6 +101,7 @@ public class ListasAnimeFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText(R.string.completado));
         animes = new ArrayList<>();
         String anyo = "", info = "";
+        //Se hace el relleno de los encapsuladores
         if(user.getAnimes()!=null){
             for (AnimeUsuario a : user.getAnimes()) {
                 if (a!=null&& a.getAnime().getPremieredYear() != null && !a.getAnime().getPremieredYear().equals("")) {
@@ -141,6 +146,7 @@ public class ListasAnimeFragment extends Fragment {
                 tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                     @SuppressLint("UseCompatLoadingForDrawables")
                     @Override
+                    //Dependiedo del tab seleccionado se muestra la lista de los animes flitrados según su estado
                     public void onTabSelected(TabLayout.Tab tab) {
                         animes.clear();
                         String anyo = "", info = "";

@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.animanga_universe.activities.MenuPrincipal;
 import com.example.animanga_universe.adaptadores.AdaptadorBusqueda;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.clases.Anime;
@@ -36,9 +37,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link BuscarFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment de búsqueda, contiene una barra de búsqueda para buscar el anime/manga y 2 tabs para una búsqueda separada de animes y mangas
+ * Al buscar aparecerá un recycler view con los animes/mangas que contienen lo introducido
  */
 public class BuscarFragment extends Fragment  {
     View view;
@@ -47,37 +47,32 @@ public class BuscarFragment extends Fragment  {
     RecyclerView recyclerView;
     CollectionReference cr;
     Usuario user;
-    int color;
     String info, rating, nombre, busqueda;
     AppCompatImageButton boton;
     Drawable drawable;
     ArrayList<Encapsulador> animes;
     AdaptadorBusqueda adaptadorBusqueda;
     RecyclerView.LayoutManager layoutManager;
+    MenuPrincipal menuPrincipal;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+
     private String mParam1;
     private String mParam2;
 
     public BuscarFragment() {
-        // Required empty public constructor
+
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BuscarFragment.
+     * Se crea la instancia del fragment
+     * @param param1 Parameter 1 creado automáticamente
+     * @param param2 Parameter 2 creado automáticamente
+     * @return Nueva instancia del Fragment
      */
-    // TODO: Rename and change types and number of parameters
+
     public static BuscarFragment newInstance(String param1, String param2) {
         BuscarFragment fragment = new BuscarFragment();
         Bundle args = new Bundle();
@@ -109,9 +104,8 @@ public class BuscarFragment extends Fragment  {
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.anime)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.manga)));
         boton= view.findViewById(R.id.boton);
-
-
-
+        menuPrincipal= (MenuPrincipal)getActivity();
+        //se cambia la variable de busqueda al cambiar de tab
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -119,9 +113,7 @@ public class BuscarFragment extends Fragment  {
                 if(tab.getPosition()==0){
                     busqueda="Anime";
                 } else if (tab.getPosition()==1) {
-                    busqueda= "Manga";
-                }else{
-                    busqueda="Personaje";
+                    busqueda = "Manga";
                 }
             }
 
@@ -144,17 +136,21 @@ public class BuscarFragment extends Fragment  {
                 animes.clear();
                 nombre="";
                 String[] palabras = query.split(" ");
+                //Se realiza un cambio de lo introducido, se coge palabra por palabra y y se pone en mayúsucla la primera letra de cada palabra y en minúsculas el resto
+                //para realizar la búsqueda en la base de datos
                 for(String s: palabras){
                     nombre+= s.substring(0,1).toUpperCase()+s.substring(1).toLowerCase()+" ";
                 }
                 nombre=nombre.trim();
                 if(busqueda.equals(getString(R.string.anime))){
                     cr=FirebaseFirestore.getInstance().collection(busqueda);
+                    //Se busca por titulo y que contenga lo introducido
                     cr.orderBy("title").startAt(nombre).endAt(nombre+"\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @SuppressLint("UseCompatLoadingForDrawables")
                         @Override
                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                             if(value!=null){
+                                //Se recogen los datos necesarios para crear el encapsulador
                                 for(DocumentSnapshot d: value.getDocuments()){
                                     Anime a= d.toObject(Anime.class);
                                     String anyo="";
@@ -181,7 +177,7 @@ public class BuscarFragment extends Fragment  {
                                         if(!animes.contains(e)){
                                             animes.add(e);
                                         }
-                                        adaptadorBusqueda= new AdaptadorBusqueda(getActivity().getIntent().getParcelableExtra("usuario"),animes, getContext(), R.layout.element_busqueda,busqueda);
+                                        adaptadorBusqueda= new AdaptadorBusqueda(menuPrincipal.devolverUser(),animes, getContext(), R.layout.element_busqueda,busqueda);
 
                                         recyclerView.setAdapter(adaptadorBusqueda);
                                         layoutManager= new LinearLayoutManager(getContext());
@@ -195,6 +191,8 @@ public class BuscarFragment extends Fragment  {
                             }
 
                     });
+                    //Se hace el mismo proceso para los mangas, pero cambian algunos atributos en el encapsulador, y se realiza la búsqueda en una tabla
+                    //diferente en la base de datos
                 } else if (busqueda.equals(getString(R.string.manga))) {
                     CollectionReference cr=FirebaseFirestore.getInstance().collection(busqueda);
                     cr.orderBy("title").startAt(nombre).endAt(nombre+"\uf8ff").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -228,7 +226,7 @@ public class BuscarFragment extends Fragment  {
                                         if(!animes.contains(e)){
                                             animes.add(e);
                                         }
-                                        adaptadorBusqueda= new AdaptadorBusqueda(getActivity().getIntent().getParcelableExtra("usuario"),animes, getContext(), R.layout.element_busqueda,busqueda);
+                                        adaptadorBusqueda= new AdaptadorBusqueda(menuPrincipal.devolverUser(),animes, getContext(), R.layout.element_busqueda,busqueda);
 
                                         recyclerView.setAdapter(adaptadorBusqueda);
                                         layoutManager= new LinearLayoutManager(getContext());

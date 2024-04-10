@@ -32,6 +32,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     public ProfileFragment() {
 
     }
@@ -65,6 +66,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
        View view= inflater.inflate(R.layout.fragment_perfil, container, false);
        mainMenu = (MainMenu) getActivity();
+       mainMenu.guardarUsuario(mainMenu.devolverUser());
         if (mainMenu != null) {
             user= mainMenu.devolverUser();
         }
@@ -140,7 +142,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         //Si se pulsa editar perfil, se cambia al fragment de la ediccón del perfil
 if(v.getId()==editarPerfil.getId()){
-    mainMenu.reemplazarFragment(new EditarPerfilFragment());
+    mainMenu.reemplazarFragment(new EditProfileFragment());
     //Si se pulsa el cambio de contraseña se cambia al fragment del cambio de contraseña
 } else if (v.getId()== cambiarContraseña.getId()) {
     mainMenu.reemplazarFragment(new ChangePasswordFragment());

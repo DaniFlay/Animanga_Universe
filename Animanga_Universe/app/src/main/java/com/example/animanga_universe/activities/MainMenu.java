@@ -13,8 +13,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import com.example.animanga_universe.R;
+import com.example.animanga_universe.classes.Anime;
+import com.example.animanga_universe.classes.Manga;
 import com.example.animanga_universe.classes.User;
 import com.example.animanga_universe.databinding.ActivityMenuPrincipalBinding;
 import com.example.animanga_universe.encapsulators.Encapsulator;
@@ -38,7 +41,7 @@ import java.util.ArrayList;
  * También contiene varias funciones y variables que se estarán utilizando en los fragments
  * @author Daniel Seregin Kozlov
  */
-public class MainMenu extends AppCompatActivity {
+public class MainMenu extends AppCompatActivity  {
     User user;
     ActivityMenuPrincipalBinding binding;
     SQLiteDatabase db;
@@ -47,41 +50,51 @@ public class MainMenu extends AppCompatActivity {
     String busqueda;
     ArrayList<Encapsulator> animes;
     ArrayList<Encapsulator> mangas;
+    boolean perfil= false;
+    Anime anime;
+    Manga manga;
+    ToggleButton toggleButton;
+
 
     /**
-     * funcion onCreate que se utiliza para crear la actividad
-     * @param savedInstanceState En el caso de que se reinicie la actvidad es el Budnle que contiene la información goardada
+     * Funcion onCreate que se utiliza para crear la actividad
+     * @param savedInstanceState En el caso de que se reinicie la actvidad es el Bundle que contiene la información goardada
      *
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Hola","Hola");
         helper= new Helper(this, "bbdd",null,1);
         db= helper.getWritableDatabase();
         user= getIntent().getParcelableExtra("usuario");
+        toggleButton=findViewById(R.id.toggle);
         binding= ActivityMenuPrincipalBinding.inflate(getLayoutInflater());
         binding.toolBar.setTitleTextAppearance(this, R.style.NarutoFont);
         setContentView(binding.getRoot());
         animes= new ArrayList<>();
         mangas=new ArrayList<>();
+        reemplazarFragment(new RankingFragment());
         //Listener para la navegación entre framents
         binding.bottonNavigationView.setOnItemSelectedListener(item -> {
             int id= item.getItemId();
             if(id==R.id.ranking){
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new RankingFragment());
+                binding.toggle.setVisibility(View.GONE);
             }else if(id== R.id.forums){
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new ForumsFragment());
+                binding.toggle.setVisibility(View.GONE);
 
             }else if(id== R.id.buscar){
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new SearchFragment());
+                binding.toggle.setVisibility(View.GONE);
 
             } else if (id== R.id.listas) {
                 binding.switchButton.setVisibility(View.VISIBLE);
                 binding.switchButton.setChecked(false);
+                binding.toggle.setVisibility(View.GONE);
 
                 reemplazarFragment(new AnimeListFragment());
                 binding.switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -96,22 +109,31 @@ public class MainMenu extends AppCompatActivity {
                         if(isChecked){
                             binding.switchButton.setThumbIconDrawable(getDrawable(R.drawable.ic_m_foreground));
                             reemplazarFragment(new MangaListFragment());
+                            binding.toggle.setVisibility(View.GONE);
                         }else{
                             binding.switchButton.setThumbIconDrawable(getDrawable(R.drawable.ic_a_foreground));
                             reemplazarFragment(new AnimeListFragment());
+                            binding.toggle.setVisibility(View.GONE);
                         }
                     }
                 });
             } else if (id==R.id.perfil) {
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new ProfileFragment());
+                binding.toggle.setVisibility(View.GONE);
 
             }
 
             return true;
         });
-
         }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ProfileFragment profileFragment= new ProfileFragment();
+        outState.putString("tag",profileFragment.getTag());
+    }
 
     /**
      * Función para cambiar de fragment
@@ -183,24 +205,31 @@ public class MainMenu extends AppCompatActivity {
      * @param name el nombre del usuario con el que está guardado en la base de datos
      */
     public void guardarUsuarioNuevo(User user, String name){
-        DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Usuario");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot d: snapshot.getChildren()){
-                    User u= d.getValue(User.class);
-                    if (u != null && u.getUsername().equals(name)) {
-                        d.getRef().setValue(user);
-                        break;
+        try{
+            DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Usuario");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot d: snapshot.getChildren()){
+                        User u= d.getValue(User.class);
+                        if (u != null && u.getUsername().equals(name)) {
+                            d.getRef().setValue(user);
+                            break;
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        } catch (Exception ex) {
+            Log.d("excepcim", ex.getMessage());
+        }
+
     }
 
     /**
@@ -281,4 +310,36 @@ public class MainMenu extends AppCompatActivity {
         return animes;
     }
 
+    public void setAnime(Anime a){
+        anime= a;
+    }
+    public Anime getAnime(){
+        return anime;
+    }
+    public void setManga(Manga m){
+        manga= m;
+    }
+    public Manga getManga(){
+        return manga;
+    }
+
+public void changeToggle(){
+        if(binding.toggle.getVisibility()==View.GONE){
+            binding.toggle.setVisibility(View.VISIBLE);
+        }else {
+            binding.toggle.setVisibility(View.GONE);
+        }
+
+}
+public void toggleState(){
+        if(binding.switchButton.getVisibility()==View.GONE){
+            binding.switchButton.setVisibility(View.VISIBLE);
+        }else {
+            binding.switchButton.setVisibility(View.GONE);
+        }
+    }
+
+public ToggleButton getToggle(){
+        return binding.toggle;
+}
 }

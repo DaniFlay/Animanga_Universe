@@ -63,6 +63,7 @@ public ListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int 
             holder.boton.setOnClickListener(v -> {
                 ((MainMenu)context).setBusqueda(busqueda);
                 ((MainMenu)context).setEncapsulador(e);
+                ((MainMenu)context).switchButton();
                 ((MainMenu)context).reemplazarFragment(new EditItemFragment());
             });
 

@@ -23,7 +23,7 @@ import java.util.Objects;
  * Frgament para la edición de perfil del usuario
  * @author Daniel Seregin Kozlov
  */
-public class EditarPerfilFragment extends Fragment implements View.OnClickListener {
+public class EditProfileFragment extends Fragment implements View.OnClickListener {
     String usuarioAntiguo;
     TextInputLayout usuario, correo, fecha, sexo;
     Button elegirFecha, guardar;
@@ -36,7 +36,7 @@ public class EditarPerfilFragment extends Fragment implements View.OnClickListen
     private static final String ARG_PARAM2 = "param2";
 
 
-    public EditarPerfilFragment() {
+    public EditProfileFragment() {
 
     }
     /**
@@ -45,8 +45,8 @@ public class EditarPerfilFragment extends Fragment implements View.OnClickListen
      * @param param2 Parameter 2 creado automáticamente
      * @return Nueva instancia del Fragment
      */
-    public static EditarPerfilFragment newInstance(String param1, String param2) {
-        EditarPerfilFragment fragment = new EditarPerfilFragment();
+    public static EditProfileFragment newInstance(String param1, String param2) {
+        EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

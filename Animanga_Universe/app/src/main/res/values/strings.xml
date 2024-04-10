@@ -78,4 +78,6 @@
     <string name="contraseñaNvacio">El campo contraseña nueva está vacío</string>
     <string name="ok">OK</string>
     <string name="desconocido">/?</string>
+    <string name="enemision">En emisión</string>
+    <string name="terminado">Terminado</string>
 </resources>

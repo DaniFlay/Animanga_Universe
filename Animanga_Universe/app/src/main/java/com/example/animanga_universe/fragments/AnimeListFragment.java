@@ -43,6 +43,7 @@ public class AnimeListFragment extends Fragment {
     RecyclerView recyclerView;
 
 
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -130,6 +131,14 @@ public class AnimeListFragment extends Fragment {
                 recyclerView = view.findViewById(R.id.recycler_view);
 
                 listAdapter = new ListAdapter(user, animes, getContext(), R.layout.element_lista_usuario,"Anime" );
+                listAdapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int posicion= recyclerView.getChildAdapterPosition(v);
+                        activity.setAnime(animes.get(posicion).getAnime());
+                        activity.reemplazarFragment(new AnimeDescriptionFragment());
+                    }
+                });
                 recyclerView.setAdapter(listAdapter);
                 layoutManager = new LinearLayoutManager(getContext());
                 recyclerView.setLayoutManager(layoutManager);
@@ -324,6 +333,16 @@ public class AnimeListFragment extends Fragment {
                         recyclerView = view.findViewById(R.id.recycler_view);
 
                         listAdapter = new ListAdapter(user, animes, getContext(), R.layout.element_lista_usuario,"Anime" );
+                        listAdapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int posicion= recyclerView.getChildAdapterPosition(v);
+                                activity.changeToggle();
+                                activity.switchButton();
+                                activity.setAnime(animes.get(posicion).getAnime());
+                                activity.reemplazarFragment(new AnimeDescriptionFragment());
+                            }
+                        });
                         recyclerView.setAdapter(listAdapter);
                         layoutManager = new LinearLayoutManager(getContext());
                         recyclerView.setLayoutManager(layoutManager);

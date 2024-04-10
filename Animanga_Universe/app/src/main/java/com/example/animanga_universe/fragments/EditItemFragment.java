@@ -415,10 +415,11 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
             }
             Snackbar.make(v, getString(R.string.cambiosGuardados), Snackbar.LENGTH_INDEFINITE)
                     .setAction(getString(R.string.ok), v1 -> {
-                        mainMenu.tab();
+                       mainMenu.tab();
                         mainMenu.switchButton();
+                        String username= user.getUsername();
+                        mainMenu.reemplazarFragment(new RankingFragment());
                         mainMenu.guardarUsuarioNuevo(user, user.getUsername());
-                        //mainMenu.reemplazarFragment(new ProfileFragment());
                     }).show();
 
         }

@@ -80,4 +80,6 @@
     <string name="desconocido">/?</string>
     <string name="enemision">En emisión</string>
     <string name="terminado">Terminado</string>
+    <string name="discusion">Discusion</string>
+    <string name="fecha">Fecha</string>
 </resources>

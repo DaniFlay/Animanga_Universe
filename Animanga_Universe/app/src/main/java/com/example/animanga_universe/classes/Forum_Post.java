@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Forum_Post implements Serializable, Parcelable {
@@ -13,23 +15,26 @@ public class Forum_Post implements Serializable, Parcelable {
     Anime anime;
     Manga manga;
     String topic;
-    String mensaje;
+    String message;
     ArrayList<Comment> comments;
+    String date;
 
-    public Forum_Post(User user, Anime anime, String topic, String mensaje, ArrayList<Comment> comments) {
+    public Forum_Post(User user, Anime anime, String topic, String message) {
         this.user = user;
         this.anime = anime;
         this.topic = topic;
-        this.mensaje = mensaje;
-        this.comments = comments;
+        this.message = message;
+        this.comments = new ArrayList<>();
+        this.date= LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
-    public Forum_Post(User user, Manga manga, String topic, String mensaje, ArrayList<Comment> comments) {
+    public Forum_Post(User user, Manga manga, String topic, String message ) {
         this.user = user;
         this.manga = manga;
         this.topic = topic;
-        this.mensaje = mensaje;
-        this.comments = comments;
+        this.message = message;
+        this.comments = new ArrayList<>();
+        this.date= LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
     public Forum_Post() {
@@ -39,7 +44,7 @@ public class Forum_Post implements Serializable, Parcelable {
         anime = in.readParcelable(Anime.class.getClassLoader());
         manga = in.readParcelable(Manga.class.getClassLoader());
         topic = in.readString();
-        mensaje = in.readString();
+        message = in.readString();
         comments = in.createTypedArrayList(Comment.CREATOR);
     }
 
@@ -87,20 +92,36 @@ public class Forum_Post implements Serializable, Parcelable {
         this.topic = topic;
     }
 
-    public String getMensaje() {
-        return mensaje;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
+    public void setMessage(String mensaje) {
+        this.message = mensaje;
     }
 
-    public ArrayList<Comment> getComentarios() {
+    public ArrayList<Comment> getComments() {
         return comments;
     }
 
-    public void setComentarios(ArrayList<Comment> comments) {
+    public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     @Override
@@ -113,7 +134,7 @@ public class Forum_Post implements Serializable, Parcelable {
         dest.writeParcelable(anime, flags);
         dest.writeParcelable(manga, flags);
         dest.writeString(topic);
-        dest.writeString(mensaje);
+        dest.writeString(message);
         dest.writeTypedList(comments);
     }
 }

@@ -510,6 +510,8 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
         personas++;
         float score = Float.parseFloat(anime.getScore());
         float newScore = ((score * personas) + nota) / (personas);
+        DecimalFormat formato = new DecimalFormat("#.##");
+        newScore= Float.parseFloat(formato.format(newScore));
         anime.setScore(String.valueOf(newScore));
         anime.setScoredBy(String.valueOf(personas));
         return anime;
@@ -525,6 +527,8 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
         personas++;
         double score = manga.getScore();
         double newScore = ((score * personas) + nota) / (personas);
+        DecimalFormat formato = new DecimalFormat("#.##");
+        newScore= Float.parseFloat(formato.format(newScore));
         manga.setScore(newScore);
         manga.setScoredBy(String.valueOf(personas));
         return manga;

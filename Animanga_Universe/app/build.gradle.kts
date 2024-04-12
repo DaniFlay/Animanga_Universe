@@ -58,5 +58,4 @@ dependencies {
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     implementation ("com.google.firebase:firebase-ml-natural-language:22.0.1")
     implementation("com.google.mlkit:translate:17.0.2")
-
 }

@@ -9,23 +9,60 @@ import java.io.Serializable;
 
 public class Comment implements Serializable, Parcelable {
     User user;
-    Forum_Post post;
     String comentario;
+    int likes;
+    int dislikes;
 
-    public Comment(User user, Forum_Post post, String comentario) {
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
         this.user = user;
-        this.post = post;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getDislikes() {
+        return dislikes;
+    }
+
+    public void setDislikes(int dislikes) {
+        this.dislikes = dislikes;
     }
 
     public Comment() {
     }
 
-    protected Comment(Parcel in) {
-        comentario = in.readString();
+    public Comment(User user, String comentario, int likes, int dislikes) {
+        this.user = user;
+        this.comentario = comentario;
+        this.likes = likes;
+        this.dislikes = dislikes;
     }
 
-    public static final Creator<Comment> CREATOR = new Creator<>() {
+    protected Comment(Parcel in) {
+        user = in.readParcelable(User.class.getClassLoader());
+        comentario = in.readString();
+        likes = in.readInt();
+        dislikes = in.readInt();
+    }
+
+    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
         @Override
         public Comment createFromParcel(Parcel in) {
             return new Comment(in);
@@ -37,30 +74,6 @@ public class Comment implements Serializable, Parcelable {
         }
     };
 
-    public User getUsuario() {
-        return user;
-    }
-
-    public void setUsuario(User user) {
-        this.user = user;
-    }
-
-    public Forum_Post getPost() {
-        return post;
-    }
-
-    public void setPost(Forum_Post post) {
-        this.post = post;
-    }
-
-    public String getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -68,6 +81,9 @@ public class Comment implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeParcelable(user, flags);
         dest.writeString(comentario);
+        dest.writeInt(likes);
+        dest.writeInt(dislikes);
     }
 }

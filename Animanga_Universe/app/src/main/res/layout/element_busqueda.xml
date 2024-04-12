@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="80dp"
+            android:layout_width="80dp"
+            android:layout_height="120dp"
             android:id="@+id/imagen"
             android:scaleType="fitCenter"
             android:src="@mipmap/ic_launcher"
             android:contentDescription="@string/imagen"
+            android:layout_marginHorizontal="10dp"
             />
     <LinearLayout
         android:layout_width="0dp"
@@ -23,13 +24,16 @@
             android:text="@string/titulo"
             android:textStyle="bold"
             android:id="@+id/titulo"
+            android:layout_marginBottom="5dp"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:text="@string/info"
             android:id="@+id/infoAdicional"/>
         <TextView
+            android:layout_marginBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rating"

@@ -83,7 +83,7 @@ public class RankingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if(getContext()!=null) {
-            view = inflater.inflate(R.layout.fragment_home, container, false);
+            view = inflater.inflate(R.layout.fragment_ranking, container, false);
             progressBar = view.findViewById(R.id.progressBar);
             cargando = view.findViewById(R.id.cargando);
             progressBar.setVisibility(View.VISIBLE);

@@ -6,9 +6,12 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Comment implements Serializable, Parcelable {
     User user;
+    String date;
     String comentario;
     int likes;
     int dislikes;
@@ -48,11 +51,20 @@ public class Comment implements Serializable, Parcelable {
     public Comment() {
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public Comment(User user, String comentario, int likes, int dislikes) {
         this.user = user;
         this.comentario = comentario;
         this.likes = likes;
         this.dislikes = dislikes;
+        this.date= LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
     protected Comment(Parcel in) {
@@ -85,5 +97,6 @@ public class Comment implements Serializable, Parcelable {
         dest.writeString(comentario);
         dest.writeInt(likes);
         dest.writeInt(dislikes);
+        dest.writeString(date);
     }
 }

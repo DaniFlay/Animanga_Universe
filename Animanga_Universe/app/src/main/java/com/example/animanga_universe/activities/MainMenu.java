@@ -17,6 +17,7 @@ import android.widget.ToggleButton;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.classes.Anime;
+import com.example.animanga_universe.classes.Forum_Post;
 import com.example.animanga_universe.classes.Manga;
 import com.example.animanga_universe.classes.User;
 import com.example.animanga_universe.databinding.ActivityMenuPrincipalBinding;
@@ -50,11 +51,12 @@ public class MainMenu extends AppCompatActivity  {
     String busqueda;
     ArrayList<Encapsulator> animes;
     ArrayList<Encapsulator> mangas;
-    boolean perfil= false;
+    ArrayList<Forum_Post> posts;
     Anime anime;
     Manga manga;
     ToggleButton toggleButton;
-
+    DatabaseReference ref;
+    Forum_Post forumPost;
 
     /**
      * Funcion onCreate que se utiliza para crear la actividad
@@ -73,6 +75,8 @@ public class MainMenu extends AppCompatActivity  {
         setContentView(binding.getRoot());
         animes= new ArrayList<>();
         mangas=new ArrayList<>();
+        posts= new ArrayList<>();
+        fillPosts();
         reemplazarFragment(new RankingFragment());
         //Listener para la navegación entre framents
         binding.bottonNavigationView.setOnItemSelectedListener(item -> {
@@ -342,4 +346,33 @@ public void toggleState(){
 public ToggleButton getToggle(){
         return binding.toggle;
 }
+    public void fillPosts(){
+        ref= FirebaseDatabase.getInstance().getReference("Forum_Posts");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot d: snapshot.getChildren()){
+                    Forum_Post f= d.getValue(Forum_Post.class);
+                    posts.add(f);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+    public ArrayList<Forum_Post> getPosts(){
+        return posts;
+    }
+    public void setPost(Forum_Post forumPost){
+        this.forumPost= forumPost;
+    }
+    public Forum_Post getPost(){
+        return this.forumPost;
+    }
+
 }

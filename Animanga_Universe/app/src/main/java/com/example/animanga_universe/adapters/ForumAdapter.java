@@ -21,14 +21,14 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class ForumAdaoter extends RecyclerView.Adapter<ForumAdaoter.ViewHolder>{
+public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
     User user;
     ArrayList<?> list;
     Context context;
     int layout_id;
     View.OnClickListener onClickListener;
 
-    public ForumAdaoter(User user, ArrayList<?> list, Context context, int layout_id) {
+    public ForumAdapter(User user, ArrayList<?> list, Context context, int layout_id) {
         this.user = user;
         this.list = list;
         this.context = context;
@@ -50,6 +50,7 @@ public class ForumAdaoter extends RecyclerView.Adapter<ForumAdaoter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Forum_Post f= (Forum_Post) list.get(position);
+        holder.representation(f);
 
     }
 
@@ -60,15 +61,14 @@ public class ForumAdaoter extends RecyclerView.Adapter<ForumAdaoter.ViewHolder>{
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         Context context;
-        TextView title, date, topic, comments;
+        TextView title, discussion, comments;
         ImageView imageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             context= itemView.getContext();
-            title= itemView.findViewById(R.id.usuario);
-            date= itemView.findViewById(R.id.date);
-            topic= itemView.findViewById(R.id.topic);
+            title= itemView.findViewById(R.id.titulo);
+            discussion= itemView.findViewById(R.id.topic);
             comments= itemView.findViewById(R.id.comments);
             imageView= itemView.findViewById(R.id.imagen);
         }
@@ -92,9 +92,10 @@ public class ForumAdaoter extends RecyclerView.Adapter<ForumAdaoter.ViewHolder>{
                     e.getStackTrace();
                 }
             }
-            date.setText(f.getDate());
-            topic.setText(f.getTopic());
-            comments.setText(f.getComments().size());
+            discussion.setText(f.getTopic());
+            if(f.getComments()!=null){
+                comments.setText(String.valueOf(f.getComments().size()-1));
+            }
             imageView.setImageDrawable(drawable);
 
         }

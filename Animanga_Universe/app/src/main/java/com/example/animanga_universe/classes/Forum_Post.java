@@ -41,14 +41,32 @@ public class Forum_Post implements Serializable, Parcelable {
     }
 
     protected Forum_Post(Parcel in) {
+        user = in.readParcelable(User.class.getClassLoader());
         anime = in.readParcelable(Anime.class.getClassLoader());
         manga = in.readParcelable(Manga.class.getClassLoader());
         topic = in.readString();
         message = in.readString();
         comments = in.createTypedArrayList(Comment.CREATOR);
+        date = in.readString();
     }
 
-    public static final Creator<Forum_Post> CREATOR = new Creator<>() {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(user, flags);
+        dest.writeParcelable(anime, flags);
+        dest.writeParcelable(manga, flags);
+        dest.writeString(topic);
+        dest.writeString(message);
+        dest.writeTypedList(comments);
+        dest.writeString(date);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Forum_Post> CREATOR = new Creator<Forum_Post>() {
         @Override
         public Forum_Post createFromParcel(Parcel in) {
             return new Forum_Post(in);
@@ -60,11 +78,11 @@ public class Forum_Post implements Serializable, Parcelable {
         }
     };
 
-    public User getUsuario() {
+    public User getUser() {
         return user;
     }
 
-    public void setUsuario(User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -96,8 +114,8 @@ public class Forum_Post implements Serializable, Parcelable {
         return message;
     }
 
-    public void setMessage(String mensaje) {
-        this.message = mensaje;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public ArrayList<Comment> getComments() {
@@ -108,33 +126,11 @@ public class Forum_Post implements Serializable, Parcelable {
         this.comments = comments;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getDate() {
         return date;
     }
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeParcelable(anime, flags);
-        dest.writeParcelable(manga, flags);
-        dest.writeString(topic);
-        dest.writeString(message);
-        dest.writeTypedList(comments);
     }
 }

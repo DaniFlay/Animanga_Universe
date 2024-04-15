@@ -3,12 +3,19 @@ package com.example.animanga_universe.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.example.animanga_universe.R;
+import com.example.animanga_universe.activities.MainMenu;
+import com.example.animanga_universe.adapters.ThreadAdapter;
+import com.google.android.material.appbar.MaterialToolbar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,29 +23,31 @@ import com.example.animanga_universe.R;
  * create an instance of this fragment.
  */
 public class DiscussionFragment extends Fragment {
+    View view;
+    ThreadAdapter threadAdapter;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView recyclerView;
+    MaterialToolbar toolbar;
+    EditText message;
+    ImageButton send;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public DiscussionFragment() {
-        // Required empty public constructor
+
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Crea una nueva instancia del fragment
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DiscussionFragment.
+     * @return Nueva instancia del fragment
      */
-    // TODO: Rename and change types and number of parameters
     public static DiscussionFragment newInstance(String param1, String param2) {
         DiscussionFragment fragment = new DiscussionFragment();
         Bundle args = new Bundle();
@@ -60,7 +69,15 @@ public class DiscussionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discussion, container, false);
+        view= inflater.inflate(R.layout.fragment_discussion, container, false);
+        toolbar= view.findViewById(R.id.toolbar);
+        recyclerView= view.findViewById(R.id.recycler);
+        message= view.findViewById(R.id.message);
+        send= view.findViewById(R.id.sendmsg);
+        threadAdapter= new ThreadAdapter(((MainMenu)getActivity()).devolverUser(),((MainMenu)getActivity()).getPost(),((MainMenu)getActivity()).getPost().getComments(),getContext(),R.layout.element_comment);
+        recyclerView.setAdapter(threadAdapter);
+        layoutManager= new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        return view;
     }
 }

@@ -82,4 +82,7 @@
     <string name="terminado">Terminado</string>
     <string name="discusion">Discusion</string>
     <string name="fecha">Fecha</string>
+    <string name="mensaje">Mensaje</string>
+    <string name="publicar">Publicar</string>
+    <string name="obra">Obra</string>
 </resources>

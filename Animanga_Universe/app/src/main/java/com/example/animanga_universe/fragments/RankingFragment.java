@@ -104,11 +104,27 @@ public class RankingFragment extends Fragment {
                         busqueda = "Anime";
                         searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_busqueda, busqueda);
                         recyclerView.setAdapter(searchAdapter);
+                        searchAdapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int posicion= recyclerView.getChildAdapterPosition(v);
+                                ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
+                                ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
+                            }
+                        });
                         layoutManager = new LinearLayoutManager(getContext());
                         recyclerView.setLayoutManager(layoutManager);
                     } else if (tab.getPosition() == 1) {
                         busqueda = "Manga";
                         searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getMangas(), getContext(), R.layout.element_busqueda, busqueda);
+                        searchAdapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int posicion= recyclerView.getChildAdapterPosition(v);
+                                ((MainMenu)getActivity()).setManga(mainMenu.getMangas().get(posicion).getManga());
+                                ((MainMenu)getActivity()).reemplazarFragment(new MangaDescriptionFragment());
+                            }
+                        });
                         recyclerView.setAdapter(searchAdapter);
                         layoutManager = new LinearLayoutManager(getContext());
                         recyclerView.setLayoutManager(layoutManager);
@@ -160,6 +176,14 @@ public class RankingFragment extends Fragment {
                                     mainMenu.getAnimes().add(e);
                                 }
                                 searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_busqueda, busqueda);
+                                searchAdapter.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        int posicion= recyclerView.getChildAdapterPosition(v);
+                                        ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
+                                        ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
+                                    }
+                                });
                                 recyclerView.setAdapter(searchAdapter);
                                 layoutManager = new LinearLayoutManager(getContext());
                                 recyclerView.setLayoutManager(layoutManager);
@@ -172,6 +196,14 @@ public class RankingFragment extends Fragment {
 
             }else {
                 searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_busqueda, busqueda);
+                searchAdapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int posicion= recyclerView.getChildAdapterPosition(v);
+                        ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
+                        ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
+                    }
+                });
                 recyclerView.setAdapter(searchAdapter);
                 layoutManager = new LinearLayoutManager(getContext());
                 recyclerView.setLayoutManager(layoutManager);

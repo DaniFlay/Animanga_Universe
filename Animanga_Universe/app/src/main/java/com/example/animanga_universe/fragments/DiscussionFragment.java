@@ -15,14 +15,16 @@ import android.widget.ImageButton;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.adapters.ThreadAdapter;
+import com.example.animanga_universe.classes.Comment;
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link DiscussionFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * El fragment de las discusiones, donde se muestra el hilo de una discusión
  */
-public class DiscussionFragment extends Fragment {
+public class DiscussionFragment extends Fragment implements View.OnClickListener {
     View view;
     ThreadAdapter threadAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -70,14 +72,27 @@ public class DiscussionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_discussion, container, false);
-        toolbar= view.findViewById(R.id.toolbar);
+        toolbar= ((MainMenu)getActivity()).getToolbar();
+        toolbar.setTitle((((MainMenu) requireActivity()).getPost().getTopic()));
+        toolbar.setTitleTextAppearance(getContext(), R.style.RobotoFont);
         recyclerView= view.findViewById(R.id.recycler);
         message= view.findViewById(R.id.message);
         send= view.findViewById(R.id.sendmsg);
-        threadAdapter= new ThreadAdapter(((MainMenu)getActivity()).devolverUser(),((MainMenu)getActivity()).getPost(),((MainMenu)getActivity()).getPost().getComments(),getContext(),R.layout.element_comment);
+        threadAdapter= new ThreadAdapter(((MainMenu) requireActivity()).devolverUser(),((MainMenu) requireActivity()).getPost(),((MainMenu) requireActivity()).getPost().getComments(),getContext(),R.layout.element_comment);
         recyclerView.setAdapter(threadAdapter);
         layoutManager= new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+        send.setOnClickListener(this);
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Comment c= new Comment(((MainMenu)getActivity()).devolverUser(),message.getText().toString(),0,0);
+        ArrayList<Comment> comments= ((MainMenu)getActivity()).getPost().getComments();
+        message.setText("");
+        comments.add(c);
+        ((MainMenu)getActivity()).getPost().setComments(comments);
+        threadAdapter.notifyItemInserted(comments.size()-1);
     }
 }

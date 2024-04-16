@@ -18,8 +18,9 @@
     </FrameLayout>
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolBar"
+        android:paddingVertical="20dp"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

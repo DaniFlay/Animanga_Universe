@@ -1,29 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.DiscussionFragment">
-    <com.google.android.material.appbar.MaterialToolbar
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/darknavy"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/toolbar"
-        style="@style/Widget.Material3.Toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:title="@string/discusion"
-        app:titleTextColor="@color/white"
-        />
     <androidx.recyclerview.widget.RecyclerView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/recycler"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+        app:layout_constraintBottom_toTopOf="parent"
+        android:layout_marginBottom="55dp"
+        />
     <LinearLayout
         android:id="@+id/chatlayout"
         android:layout_width="match_parent"
@@ -41,7 +32,6 @@
             android:background="@null"
             android:inputType="textCapSentences|textMultiLine"
             android:padding="15dp" />
-
         <ImageButton
             android:id="@+id/sendmsg"
             android:layout_width="40dp"

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,7 +79,12 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_forums, container, false);
         user= ((MainMenu)getActivity()).devolverUser();
-        posts= ((MainMenu)getActivity()).getPosts();
+        posts=new ArrayList<>();
+        for(Forum_Post f: ((MainMenu)getActivity()).getPosts() ){
+            if(!posts.contains(f)){
+                posts.add(f);
+            }
+        }
         recyclerView= view.findViewById(R.id.recycler);
         forumAdapter= new ForumAdapter(user,posts,getContext(),R.layout.element_discussion);
         forumAdapter.serOnClickListener(new View.OnClickListener() {

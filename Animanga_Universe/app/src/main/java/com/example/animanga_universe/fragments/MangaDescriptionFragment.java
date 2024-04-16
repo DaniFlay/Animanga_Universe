@@ -4,22 +4,20 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.classes.Anime;
+import com.example.animanga_universe.classes.Manga;
 import com.example.animanga_universe.classes.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,41 +34,41 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Fragment que muestra toda la información relevante del amime seleccionado
- * @author Daniel Seregin Kozlov
+ * Crea una instancia del fragment
  */
-public class AnimeDescriptionFragment extends Fragment implements View.OnClickListener {
+public class MangaDescriptionFragment extends Fragment implements View.OnClickListener {
+
     View view;
     Drawable drawable;
-    String status, sinop, temp;
-    Anime anime;
-    YouTubePlayerView youTubePlayerView;
+    String status, sinop;
+    Manga manga;
     User user;
     MainMenu menu;
-    TextView score, estado, episodios, duracion, titulo, generos,sinopsis, temporada, anyo, valoradoPor, fuente, compania, tituloJapones;
+    TextView capitulos, estado, volumenes,  titulo, generos,sinopsis, tipo, anyo, valoradoPor, tituloIngles, autores, tituloJapones,score;
     FloatingActionButton fab;
     ToggleButton toggleButton;
     ImageView imageView;
-
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private String mParam1;
     private String mParam2;
 
-    public AnimeDescriptionFragment() {
+    public MangaDescriptionFragment() {
+
     }
 
     /**
-     * Se usa para crear una nueva instancia del fragment
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return Nueva instancia del fragment
+     * @return A new instance of fragment MangaDescriptionFragment.
      */
-
-    public static AnimeDescriptionFragment newInstance(String param1, String param2) {
-        AnimeDescriptionFragment fragment = new AnimeDescriptionFragment();
+    // TODO: Rename and change types and number of parameters
+    public static MangaDescriptionFragment newInstance(String param1, String param2) {
+        MangaDescriptionFragment fragment = new MangaDescriptionFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -90,25 +88,24 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view= inflater.inflate(R.layout.fragment_anime_description, container, false);
+
+        view= inflater.inflate(R.layout.fragment_manga_description, container, false);
         menu= (MainMenu) getActivity();
         assert menu != null;
-        anime= menu.getAnime();
+        manga= menu.getManga();
         imageView= view.findViewById(R.id.imagen);
-        youTubePlayerView= view.findViewById(R.id.youtubePlayer);
-        getLifecycle().addObserver(youTubePlayerView);
         score= view.findViewById(R.id.score);
         estado= view.findViewById(R.id.estado);
-        episodios= view.findViewById(R.id.episodios);
-        duracion= view.findViewById(R.id.duracion);
+        capitulos= view.findViewById(R.id.capitulos);
+        volumenes= view.findViewById(R.id.volumenes);
         titulo= view.findViewById(R.id.titulo);
         generos= view.findViewById(R.id.generos);
         sinopsis= view.findViewById(R.id.sinopsis);
-        temporada= view.findViewById(R.id.temporada);
+        tipo= view.findViewById(R.id.tipo);
         anyo= view.findViewById(R.id.anyo);
         valoradoPor= view.findViewById(R.id.valoradoPor);
-        fuente= view.findViewById(R.id.fuente);
-        compania= view.findViewById(R.id.compania);
+        tituloIngles= view.findViewById(R.id.tituloIngles);
+        autores= view.findViewById(R.id.autores);
         tituloJapones= view.findViewById(R.id.tituloJapones);
         user= menu.devolverUser();
         fab= view.findViewById(R.id.FAB);
@@ -116,7 +113,7 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
         toggleButton= menu.getToggle();
         menu.toggleState();
         menu.changeToggle();
-        rellenoInformacion2(anime);
+        rellenoInformacion2(manga);
         TranslatorOptions options= new TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
                 .setTargetLanguage(TranslateLanguage.SPANISH)
@@ -133,97 +130,57 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
                     }
                 });
         getLifecycle().addObserver(translator1);
-        if(anime.getStatus().contains("Finished")){
-            status="Emisión finalizada";
+        if(manga.getStatus().contains("Finished")){
+            status="Publicación finalizada";
         }else{
-            status= "En emisión";
+            status= "Publicando";
         }
-        translator1.translate(anime.getSynopsis()).addOnSuccessListener(new OnSuccessListener<String>() {
+        translator1.translate(manga.getSynopsis()).addOnSuccessListener(new OnSuccessListener<String>() {
             @Override
             public void onSuccess(String s) {
                 sinop= s;
             }
         });
-        translator1.translate(anime.getPremieredSeason()).addOnSuccessListener(new OnSuccessListener<String>() {
-            @Override
-            public void onSuccess(String s) {
-                temp= s;
-            }
-        });
+
 
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    rellenoDeInformacion(anime);
+                    rellenoDeInformacion(manga);
                 }else {
-                    rellenoInformacion2(anime);
+                    rellenoInformacion2(manga);
                 }
             }
         });
-if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
-    youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-        @Override
-        public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-            String[] divisionLink= anime.getTrailerUrl().split("v=");
-            youTubePlayer.cueVideo(divisionLink[1],0);
-        }
-    });
-}else {
-    youTubePlayerView.setVisibility(View.GONE);
-}
-
         return view;
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId()==fab.getId()) {
-            //menu.setEncapsulador(new Encapsulator(anime,));
-            menu.reemplazarFragment(new EditItemFragment());
-        }
-    }
 
-    /**
-     * Esta función se encarga de coger el dato de la duración del anime, y hacer el formateo necesario, y devuelve el dato formateado
-     * @param a Es el anime del que se va a recoger el dato de la duración
-     * @return String de la duración formateado
-     */
-    public String conversionEpisodios(Anime a){
-        if(a.getDuration().contains("per")){
-            return a.getDuration().split(" per ")[0]+getString(R.string.divisor)+a.getDuration().split(" per ")[1];
-        }else if(a.getDuration()==null||a.getDuration().equals("")){
-            return "? mins";
-        }else {
-            return a.getDuration();
-        }
     }
-
-    /**
-     * Esta función hace el formateo de los episodios de un anime, en el caso de que no esté acabado el anime, es decir, sigue en emisión
-     * se mostrará el símbolo de incógnita, en el caso contrario los episodios totales
-     * @param a E anime del que se deben obtener los epidosios
-     * @return String de los episodios
-     */
-    public String episodios(Anime a){
-        if(a.getEpisodes()==null||a.getEpisodes().equals("")){
+    public String capitulos(Manga m){
+        if(m.getChapters()==null){
             return "?";
         }else {
-            return a.getEpisodes();
+            return String.valueOf(m.getChapters());
         }
 
     }
+    public String volumenes(Manga m){
+        if(m.getVolumes()==null){
+            return "?";
+        }else {
+            return String.valueOf(m.getVolumes());
+        }
 
-    /**
-     * Esta función obtiene todos los generos del anime pasado, y los formatea de una manera determinada
-     * @param a El anime del que se quieren recoger los generos
-     * @return Los generos formateados
-     */
-    public String generos(Anime a){
+    }
+    public String generos(Manga m){
         String formateo="";
-        String generos= a.getGenres().substring(1,a.getGenres().length()-1);
+        String generos= m.getGenres().substring(1,m.getGenres().length()-1);
         String[] generosSeparados= generos.split(",");
-        String demographics= a.getDemographics().substring(1,a.getDemographics().length()-1);
+        String demographics= m.getDemographics().substring(1,m.getDemographics().length()-1);
         String[] demographicsSeparados= demographics.split(",");
         int counter=0;
         for(int i=0; i<generosSeparados.length;i++){
@@ -244,15 +201,9 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
         }
         return formateo;
     }
-
-    /**
-     * Esta funcion recibe el anime, y se rellenan toda la información necesaria en la página
-     * en algunos casos haciendo uso de otras funciones para formateo
-     * @param a El anime del que se quiere recoger la información
-     */
-    public void rellenoDeInformacion(Anime a){
+    public void rellenoDeInformacion(Manga m){
         try {
-            InputStream is = (InputStream) new URL(a.getMainPicture()).getContent();
+            InputStream is = (InputStream) new URL(m.getMainPicture()).getContent();
             drawable = Drawable.createFromStream(is, "src name");
 
         } catch (IOException e) {
@@ -261,40 +212,38 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
         imageView.setImageDrawable(drawable);
         estado.setText(status);
         sinopsis.setText(sinop);
-        score.setText(a.getScore());
-        episodios.setText(episodios(a));
-        duracion.setText(conversionEpisodios(a));
-        titulo.setText(a.getTitle());
-        generos.setText(generos(a));
-        temporada.setText(temp);
-        anyo.setText(a.getPremieredYear());
-        valoradoPor.setText(a.getScoredBy());
-        fuente.setText(a.getSource());
-        compania.setText(a.getStudios().substring(1,a.getStudios().length()-1));
-        tituloJapones.setText(a.getTitleJapanese());
+        score.setText(String.valueOf(m.getScore()));
+        capitulos.setText(capitulos(m));
+        volumenes.setText(volumenes(m));
+        titulo.setText(m.getTitle());
+        generos.setText(generos(m));
+        tipo.setText(m.getType());
+        anyo.setText(m.getPublishedFrom().substring(m.getPublishedFrom().length()-4));
+        valoradoPor.setText(m.getScoredBy());
+        tituloIngles.setText(m.getTitleEnglish());
+        autores.setText(m.getAuthors().substring(8,m.getAuthors().length()-3));
+        tituloJapones.setText(m.getTitleJapanese());
     }
-    public void rellenoInformacion2(Anime a){
+    public void rellenoInformacion2(Manga m){
         try {
-            InputStream is = (InputStream) new URL(a.getMainPicture()).getContent();
+            InputStream is = (InputStream) new URL(m.getMainPicture()).getContent();
             drawable = Drawable.createFromStream(is, "src name");
 
         } catch (IOException e) {
             drawable = getResources().getDrawable(R.drawable.ic_launcher_foreground);
         }
         imageView.setImageDrawable(drawable);
-        estado.setText(a.getStatus());
-        score.setText(a.getScore());
-        episodios.setText(episodios(a));
-        duracion.setText(conversionEpisodios(a));
-        titulo.setText(a.getTitle());
-        generos.setText(generos(a));
-        sinopsis.setText(a.getSynopsis());
-        temporada.setText(a.getPremieredSeason());
-        anyo.setText(a.getPremieredYear());
-        valoradoPor.setText(a.getScoredBy());
-        fuente.setText(a.getSource());
-        compania.setText(a.getStudios().substring(1,a.getStudios().length()-1));
-        tituloJapones.setText(a.getTitleJapanese());
+        estado.setText(m.getStatus());
+        score.setText(String.valueOf(m.getScore()));
+        capitulos.setText(capitulos(m));
+        volumenes.setText(volumenes(m));
+        titulo.setText(m.getTitle());
+        generos.setText(generos(m));
+        tipo.setText(m.getType());
+        anyo.setText(m.getPublishedFrom().substring(m.getPublishedFrom().length()-4));
+        valoradoPor.setText(m.getScoredBy());
+        tituloIngles.setText(m.getTitleEnglish());
+        autores.setText(m.getAuthors().substring(8,m.getAuthors().length()-3));
+        tituloJapones.setText(m.getTitleJapanese());
     }
-
 }

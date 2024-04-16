@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class Comment implements Serializable, Parcelable {
     User user;
@@ -53,6 +54,19 @@ public class Comment implements Serializable, Parcelable {
 
     public String getDate() {
         return date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return Objects.equals(user, comment.user) && Objects.equals(date, comment.date) && Objects.equals(comentario, comment.comentario);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, date, comentario);
     }
 
     public void setDate(String date) {

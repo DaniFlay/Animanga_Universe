@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Forum_Post implements Serializable, Parcelable {
     User user;
@@ -38,6 +39,19 @@ public class Forum_Post implements Serializable, Parcelable {
     }
 
     public Forum_Post() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Forum_Post forumPost = (Forum_Post) o;
+        return Objects.equals(user, forumPost.user) && Objects.equals(anime, forumPost.anime) && Objects.equals(manga, forumPost.manga) && Objects.equals(topic, forumPost.topic) && Objects.equals(message, forumPost.message) && Objects.equals(date, forumPost.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, anime, manga, topic, message, date);
     }
 
     protected Forum_Post(Parcel in) {

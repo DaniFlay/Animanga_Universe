@@ -14,21 +14,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
+import android.widget.Toolbar;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.classes.Anime;
+import com.example.animanga_universe.classes.Comment;
+import com.example.animanga_universe.classes.CommentScore;
 import com.example.animanga_universe.classes.Forum_Post;
 import com.example.animanga_universe.classes.Manga;
 import com.example.animanga_universe.classes.User;
 import com.example.animanga_universe.databinding.ActivityMenuPrincipalBinding;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.example.animanga_universe.extras.Helper;
+import com.example.animanga_universe.fragments.DiscussionFragment;
 import com.example.animanga_universe.fragments.SearchFragment;
 import com.example.animanga_universe.fragments.ForumsFragment;
 import com.example.animanga_universe.fragments.RankingFragment;
 import com.example.animanga_universe.fragments.AnimeListFragment;
 import com.example.animanga_universe.fragments.MangaListFragment;
 import com.example.animanga_universe.fragments.ProfileFragment;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -71,7 +76,7 @@ public class MainMenu extends AppCompatActivity  {
         user= getIntent().getParcelableExtra("usuario");
         toggleButton=findViewById(R.id.toggle);
         binding= ActivityMenuPrincipalBinding.inflate(getLayoutInflater());
-        binding.toolBar.setTitleTextAppearance(this, R.style.NarutoFont);
+        setToolbar();
         setContentView(binding.getRoot());
         animes= new ArrayList<>();
         mangas=new ArrayList<>();
@@ -82,20 +87,28 @@ public class MainMenu extends AppCompatActivity  {
         binding.bottonNavigationView.setOnItemSelectedListener(item -> {
             int id= item.getItemId();
             if(id==R.id.ranking){
+                setToolbar();
+                updateThread(forumPost);
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new RankingFragment());
                 binding.toggle.setVisibility(View.GONE);
             }else if(id== R.id.forums){
+                setToolbar();
+                updateThread(forumPost);
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new ForumsFragment());
                 binding.toggle.setVisibility(View.GONE);
 
             }else if(id== R.id.buscar){
+                setToolbar();
+                updateThread(forumPost);
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new SearchFragment());
                 binding.toggle.setVisibility(View.GONE);
 
             } else if (id== R.id.listas) {
+                setToolbar();
+                updateThread(forumPost);
                 binding.switchButton.setVisibility(View.VISIBLE);
                 binding.switchButton.setChecked(false);
                 binding.toggle.setVisibility(View.GONE);
@@ -122,6 +135,8 @@ public class MainMenu extends AppCompatActivity  {
                     }
                 });
             } else if (id==R.id.perfil) {
+                setToolbar();
+                updateThread(forumPost);
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new ProfileFragment());
                 binding.toggle.setVisibility(View.GONE);
@@ -132,18 +147,12 @@ public class MainMenu extends AppCompatActivity  {
         });
         }
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        ProfileFragment profileFragment= new ProfileFragment();
-        outState.putString("tag",profileFragment.getTag());
-    }
-
     /**
      * Función para cambiar de fragment
      * @param fragment es el fragment al que se quiere cambiar
      */
     public void reemplazarFragment(Fragment fragment){
+
             FragmentManager fragmentManager= getSupportFragmentManager();
             FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame_layout, fragment);
@@ -347,6 +356,7 @@ public ToggleButton getToggle(){
         return binding.toggle;
 }
     public void fillPosts(){
+        posts.clear();
         ref= FirebaseDatabase.getInstance().getReference("Forum_Posts");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -374,5 +384,75 @@ public ToggleButton getToggle(){
     public Forum_Post getPost(){
         return this.forumPost;
     }
+public MaterialToolbar getToolbar(){
+       return binding.toolBar;
 
+}
+public void setToolbar(){
+        binding.toolBar.setTitleTextAppearance(this, R.style.NarutoFont);
+        binding.toolBar.setTitle(getString(R.string.AnimangaUniverse));
+}
+public void updateThread(Forum_Post forumPost){
+        if(forumPost!=null){
+            ref= FirebaseDatabase.getInstance().getReference("Forum_Posts");
+            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot d: snapshot.getChildren()){
+                        Forum_Post f= d.getValue(Forum_Post.class);
+                        if(forumPost.equals(f)){
+                            d.getRef().setValue(forumPost);
+                            break;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+}
+public void commentScore(CommentScore cs){
+        ref= FirebaseDatabase.getInstance().getReference("CommentScore");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int counter=0;
+                for(DataSnapshot d: snapshot.getChildren()){
+                    if(d.getValue(CommentScore.class).equals(cs)){
+                        counter++;
+                        d.getRef().setValue(cs);
+                    }
+                }if(counter==0){
+                    ref.push().setValue(cs);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+}
+public void CommentScoreRemove(CommentScore cs){
+        ref= FirebaseDatabase.getInstance().getReference("CommentScore");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot d: snapshot.getChildren()){
+                    if(d.getValue(CommentScore.class).equals(cs)){
+                        d.getRef().removeValue();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+}
 }

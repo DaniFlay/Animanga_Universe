@@ -20,15 +20,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
     User user;
-    ArrayList<?> list;
+    ArrayList<Forum_Post> list;
     Context context;
     int layout_id;
     View.OnClickListener onClickListener;
 
-    public ForumAdapter(User user, ArrayList<?> list, Context context, int layout_id) {
+    public ForumAdapter(User user, ArrayList<Forum_Post> list, Context context, int layout_id) {
         this.user = user;
         this.list = list;
         this.context = context;

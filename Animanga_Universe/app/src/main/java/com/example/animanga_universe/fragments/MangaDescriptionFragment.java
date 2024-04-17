@@ -47,7 +47,7 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
     TextView capitulos, estado, volumenes,  titulo, generos,sinopsis, tipo, anyo, valoradoPor, tituloIngles, autores, tituloJapones,score;
     FloatingActionButton fab;
     ToggleButton toggleButton;
-    ImageView imageView;
+    ImageView imageView, back;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -59,14 +59,12 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
+     * Crea una nueva instancia del fragment
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MangaDescriptionFragment.
+     * @return Una nueva instancia del fragment
      */
-    // TODO: Rename and change types and number of parameters
+
     public static MangaDescriptionFragment newInstance(String param1, String param2) {
         MangaDescriptionFragment fragment = new MangaDescriptionFragment();
         Bundle args = new Bundle();
@@ -93,6 +91,9 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         menu= (MainMenu) getActivity();
         assert menu != null;
         manga= menu.getManga();
+        back= menu.getBack();
+        back.setVisibility(View.VISIBLE);
+        back.setOnClickListener(this);
         imageView= view.findViewById(R.id.imagen);
         score= view.findViewById(R.id.score);
         estado= view.findViewById(R.id.estado);
@@ -111,8 +112,6 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         fab= view.findViewById(R.id.FAB);
         fab.setOnClickListener(this);
         toggleButton= menu.getToggle();
-        menu.toggleState();
-        menu.changeToggle();
         rellenoInformacion2(manga);
         TranslatorOptions options= new TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
@@ -158,6 +157,17 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        if(v.getId()==back.getId()){
+            int id= menu.getNavBarId();
+            back.setVisibility(View.GONE);
+            if(id==R.id.ranking) {
+                menu.reemplazarFragment(new RankingFragment());
+            } else if (id== R.id.buscar) {
+                menu.reemplazarFragment(new SearchFragment());
+            } else if (id== R.id.listas) {
+                menu.reemplazarFragment(new MangaListFragment());
+            }
+        }
 
     }
     public String capitulos(Manga m){
@@ -221,7 +231,7 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         anyo.setText(m.getPublishedFrom().substring(m.getPublishedFrom().length()-4));
         valoradoPor.setText(m.getScoredBy());
         tituloIngles.setText(m.getTitleEnglish());
-        autores.setText(m.getAuthors().substring(8,m.getAuthors().length()-3));
+        autores.setText(authors(m));
         tituloJapones.setText(m.getTitleJapanese());
     }
     public void rellenoInformacion2(Manga m){
@@ -240,10 +250,32 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         titulo.setText(m.getTitle());
         generos.setText(generos(m));
         tipo.setText(m.getType());
+        sinopsis.setText(m.getSynopsis());
         anyo.setText(m.getPublishedFrom().substring(m.getPublishedFrom().length()-4));
         valoradoPor.setText(m.getScoredBy());
         tituloIngles.setText(m.getTitleEnglish());
-        autores.setText(m.getAuthors().substring(8,m.getAuthors().length()-3));
+        autores.setText(authors(m));
         tituloJapones.setText(m.getTitleJapanese());
+    }
+    public String authors(Manga m){
+        String a= m.getAuthors();
+        char[] array1= a.toCharArray();
+        a="";
+        for(int i=0; i<array1.length;i++){
+            if(array1[i]!='['&&array1[i]!=']'&&array1[i]!='('&&array1[i]!=')'){
+                a+=array1[i];
+            }
+        }
+        String[] array2= a.split(",");
+        a="";
+        for(int i=0; i<array2.length;i++){
+            if(array2[i].contains("'")){
+                a+=array2[i];
+                if(i<array2.length-1){
+                    a+=",";
+                }
+            }
+        }
+        return a;
     }
 }

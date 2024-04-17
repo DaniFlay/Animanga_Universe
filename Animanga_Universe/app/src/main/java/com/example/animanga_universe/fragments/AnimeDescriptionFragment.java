@@ -50,7 +50,7 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
     TextView score, estado, episodios, duracion, titulo, generos,sinopsis, temporada, anyo, valoradoPor, fuente, compania, tituloJapones;
     FloatingActionButton fab;
     ToggleButton toggleButton;
-    ImageView imageView;
+    ImageView imageView, back;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -94,6 +94,9 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
         menu= (MainMenu) getActivity();
         assert menu != null;
         anime= menu.getAnime();
+        back= menu.getBack();
+        back.setVisibility(View.VISIBLE);
+        back.setOnClickListener(this);
         imageView= view.findViewById(R.id.imagen);
         youTubePlayerView= view.findViewById(R.id.youtubePlayer);
         getLifecycle().addObserver(youTubePlayerView);
@@ -114,8 +117,6 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
         fab= view.findViewById(R.id.FAB);
         fab.setOnClickListener(this);
         toggleButton= menu.getToggle();
-        menu.toggleState();
-        menu.changeToggle();
         rellenoInformacion2(anime);
         TranslatorOptions options= new TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
@@ -181,6 +182,17 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
         if (v.getId()==fab.getId()) {
             //menu.setEncapsulador(new Encapsulator(anime,));
             menu.reemplazarFragment(new EditItemFragment());
+        }else if(v.getId()==back.getId()){
+            int id = menu.getNavBarId();
+            back.setVisibility(View.GONE);
+            if(id==R.id.ranking) {
+                menu.reemplazarFragment(new RankingFragment());
+            } else if (id== R.id.buscar) {
+                menu.reemplazarFragment(new SearchFragment());
+            } else if (id== R.id.listas) {
+                menu.reemplazarFragment(new AnimeListFragment());
+            }
+
         }
     }
 

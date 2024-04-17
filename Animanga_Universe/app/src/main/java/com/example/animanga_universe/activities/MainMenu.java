@@ -1,6 +1,7 @@
 package com.example.animanga_universe.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ToggleButton;
 import android.widget.Toolbar;
 
@@ -39,6 +41,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -47,7 +55,7 @@ import java.util.ArrayList;
  * También contiene varias funciones y variables que se estarán utilizando en los fragments
  * @author Daniel Seregin Kozlov
  */
-public class MainMenu extends AppCompatActivity  {
+public class MainMenu extends AppCompatActivity {
     User user;
     ActivityMenuPrincipalBinding binding;
     SQLiteDatabase db;
@@ -62,6 +70,9 @@ public class MainMenu extends AppCompatActivity  {
     ToggleButton toggleButton;
     DatabaseReference ref;
     Forum_Post forumPost;
+    ArrayList<String> allMangas;
+    ArrayList<String> allAnimes;
+    ImageView back;
 
     /**
      * Funcion onCreate que se utiliza para crear la actividad
@@ -76,6 +87,10 @@ public class MainMenu extends AppCompatActivity  {
         user= getIntent().getParcelableExtra("usuario");
         toggleButton=findViewById(R.id.toggle);
         binding= ActivityMenuPrincipalBinding.inflate(getLayoutInflater());
+        allMangas= new ArrayList<>();
+        allAnimes= new ArrayList<>();
+        fillAnimes(allAnimes);
+        fillMangas(allMangas);
         setToolbar();
         setContentView(binding.getRoot());
         animes= new ArrayList<>();
@@ -455,4 +470,48 @@ public void CommentScoreRemove(CommentScore cs){
             }
         });
 }
+public void fillAnimes(ArrayList<String> animes){
+    CollectionReference cr= FirebaseFirestore.getInstance().collection("Anime");
+    cr.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        @Override
+        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+            for(DocumentSnapshot d: value.getDocuments()){
+                Anime a= d.toObject(Anime.class);
+                animes.add(a.getTitle());
+            }
+        }
+    });
+}
+    public void fillMangas(ArrayList<String> mangas){
+        CollectionReference cr= FirebaseFirestore.getInstance().collection("Manga");
+        cr.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                for(DocumentSnapshot d: value.getDocuments()){
+                    Manga m= d.toObject(Manga.class);
+                    mangas.add(m.getTitle());
+                }
+            }
+        });
+    }
+    public String[] getAnimesNames(){
+        String[] names= new String[allAnimes.size()];
+        for(int i=0; i<names.length;i++){
+            names[i]= allAnimes.get(i);
+        }
+        return names;
+    }
+    public String[] getMangaNames(){
+        String[] names= new String[allMangas.size()];
+        for(int i=0; i<names.length;i++){
+            names[i]= allMangas.get(i);
+        }
+        return names;
+    }
+    public ImageView getBack(){
+        return binding.back;
+    }
+    public int getNavBarId(){
+        return binding.bottonNavigationView.getSelectedItemId();
+    }
 }

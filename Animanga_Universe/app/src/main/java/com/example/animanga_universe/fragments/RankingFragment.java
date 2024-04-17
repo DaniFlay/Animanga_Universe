@@ -108,6 +108,7 @@ public class RankingFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 int posicion= recyclerView.getChildAdapterPosition(v);
+                                mainMenu.changeToggle();
                                 ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
                                 ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
                             }
@@ -121,6 +122,7 @@ public class RankingFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 int posicion= recyclerView.getChildAdapterPosition(v);
+                                mainMenu.changeToggle();
                                 ((MainMenu)getActivity()).setManga(mainMenu.getMangas().get(posicion).getManga());
                                 ((MainMenu)getActivity()).reemplazarFragment(new MangaDescriptionFragment());
                             }
@@ -180,6 +182,7 @@ public class RankingFragment extends Fragment {
                                     @Override
                                     public void onClick(View v) {
                                         int posicion= recyclerView.getChildAdapterPosition(v);
+                                        mainMenu.changeToggle();
                                         ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
                                         ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
                                     }
@@ -200,6 +203,7 @@ public class RankingFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         int posicion= recyclerView.getChildAdapterPosition(v);
+                        mainMenu.changeToggle();
                         ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
                         ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
                     }

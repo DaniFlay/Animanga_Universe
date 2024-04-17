@@ -135,6 +135,8 @@ public class AnimeListFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         int posicion= recyclerView.getChildAdapterPosition(v);
+                        activity.switchButton();
+                        activity.toggleState();
                         activity.setAnime(animes.get(posicion).getAnime());
                         activity.reemplazarFragment(new AnimeDescriptionFragment());
                     }

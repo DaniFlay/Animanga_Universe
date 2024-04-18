@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
@@ -19,7 +20,6 @@ import com.example.animanga_universe.classes.Comment;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * El fragment de las discusiones, donde se muestra el hilo de una discusión
@@ -32,47 +32,25 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
     MaterialToolbar toolbar;
     EditText message;
     ImageButton send;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+    ImageView back;
 
     public DiscussionFragment() {
 
     }
 
-    /**
-     * Crea una nueva instancia del fragment
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return Nueva instancia del fragment
-     */
-    public static DiscussionFragment newInstance(String param1, String param2) {
-        DiscussionFragment fragment = new DiscussionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view= inflater.inflate(R.layout.fragment_discussion, container, false);
-        toolbar= ((MainMenu)getActivity()).getToolbar();
+        back= ((MainMenu) requireActivity()).getBack();
+        back.setVisibility(View.VISIBLE);
+        back.setOnClickListener(this);
+        toolbar= ((MainMenu) requireActivity()).getToolbar();
         toolbar.setTitle((((MainMenu) requireActivity()).getPost().getTopic()));
         toolbar.setTitleTextAppearance(getContext(), R.style.RobotoFont);
         recyclerView= view.findViewById(R.id.recycler);
@@ -88,11 +66,17 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        Comment c= new Comment(((MainMenu)getActivity()).devolverUser(),message.getText().toString(),0,0);
-        ArrayList<Comment> comments= ((MainMenu)getActivity()).getPost().getComments();
-        message.setText("");
-        comments.add(c);
-        ((MainMenu)getActivity()).getPost().setComments(comments);
-        threadAdapter.notifyItemInserted(comments.size()-1);
+        if(v.getId()== send.getId()){
+            Comment c= new Comment(((MainMenu) requireActivity()).devolverUser(),message.getText().toString(),0,0);
+            ArrayList<Comment> comments= ((MainMenu) requireActivity()).getPost().getComments();
+            message.setText("");
+            comments.add(c);
+            ((MainMenu) requireActivity()).getPost().setComments(comments);
+            threadAdapter.notifyItemInserted(comments.size()-1);
+        } else if (v.getId()==back.getId()) {
+            back.setVisibility(View.GONE);
+            ((MainMenu) requireActivity()).reemplazarFragment(new ForumsFragment());
+        }
+
     }
 }

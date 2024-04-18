@@ -116,108 +116,32 @@ public class Anime implements Serializable, Parcelable {
         return Objects.hash(malId, title);
     }
 
-    public String getAiredFrom() {
-        return airedFrom;
-    }
-
-    public void setAiredFrom(String airedFrom) {
-        this.airedFrom = airedFrom;
-    }
-
-    public String getAiredTo() {
-        return airedTo;
-    }
-
-    public void setAiredTo(String airedTo) {
-        this.airedTo = airedTo;
-    }
-
-    public String getBroadcastDay() {
-        return broadcastDay;
-    }
-
-    public void setBroadcastDay(String broadcastDay) {
-        this.broadcastDay = broadcastDay;
-    }
-
     public String getDemographics() {
         return demographics;
-    }
-
-    public void setDemographics(String demographics) {
-        this.demographics = demographics;
     }
 
     public String getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
     public String getEpisodes() {
         return episodes;
-    }
-
-    public void setEpisodes(String episodes) {
-        this.episodes = episodes;
-    }
-
-    public String getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(String favorites) {
-        this.favorites = favorites;
     }
 
     public String getGenres() {
         return genres;
     }
 
-    public void setGenres(String genres) {
-        this.genres = genres;
-    }
-
-    public String getMalId() {
-        return malId;
-    }
-
-    public void setMalId(String malId) {
-        this.malId = malId;
-    }
-
     public String getMainPicture() {
         return mainPicture;
-    }
-
-    public void setMainPicture(String mainPicture) {
-        this.mainPicture = mainPicture;
     }
 
     public String getPremieredSeason() {
         return premieredSeason;
     }
 
-    public void setPremieredSeason(String premieredSeason) {
-        this.premieredSeason = premieredSeason;
-    }
-
     public String getPremieredYear() {
         return premieredYear;
-    }
-
-    public void setPremieredYear(String premieredYear) {
-        this.premieredYear = premieredYear;
-    }
-
-    public String getProducers() {
-        return producers;
-    }
-
-    public void setProducers(String producers) {
-        this.producers = producers;
     }
 
     public String getScore() {
@@ -240,72 +164,28 @@ public class Anime implements Serializable, Parcelable {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getStudios() {
         return studios;
-    }
-
-    public void setStudios(String studios) {
-        this.studios = studios;
     }
 
     public String getSource() {
         return source;
     }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
-
     public String getSynopsis() {
         return synopsis;
-    }
-
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitleEnglish() {
-        return titleEnglish;
-    }
-
-    public void setTitleEnglish(String titleEnglish) {
-        this.titleEnglish = titleEnglish;
-    }
-
     public String getTitleJapanese() {
         return titleJapanese;
     }
 
-    public void setTitleJapanese(String titleJapanese) {
-        this.titleJapanese = titleJapanese;
-    }
-
     public String getTrailerUrl() {
         return trailerUrl;
-    }
-
-    public void setTrailerUrl(String trailerUrl) {
-        this.trailerUrl = trailerUrl;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     @NonNull

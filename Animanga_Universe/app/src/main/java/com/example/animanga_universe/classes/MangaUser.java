@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
+/** @noinspection deprecation*/
 public class MangaUser implements Serializable, Parcelable {
     Manga manga;
     String capitulos;

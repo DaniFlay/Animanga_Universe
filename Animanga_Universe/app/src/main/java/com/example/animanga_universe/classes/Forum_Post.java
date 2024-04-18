@@ -3,14 +3,13 @@ package com.example.animanga_universe.classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/** @noinspection deprecation */
 public class Forum_Post implements Serializable, Parcelable {
     User user;
     Anime anime;
@@ -80,7 +79,7 @@ public class Forum_Post implements Serializable, Parcelable {
         return 0;
     }
 
-    public static final Creator<Forum_Post> CREATOR = new Creator<Forum_Post>() {
+    public static final Creator<Forum_Post> CREATOR = new Creator<>() {
         @Override
         public Forum_Post createFromParcel(Parcel in) {
             return new Forum_Post(in);
@@ -92,44 +91,20 @@ public class Forum_Post implements Serializable, Parcelable {
         }
     };
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Anime getAnime() {
         return anime;
-    }
-
-    public void setAnime(Anime anime) {
-        this.anime = anime;
     }
 
     public Manga getManga() {
         return manga;
     }
 
-    public void setManga(Manga manga) {
-        this.manga = manga;
-    }
-
     public String getTopic() {
         return topic;
     }
 
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public ArrayList<Comment> getComments() {
@@ -140,11 +115,4 @@ public class Forum_Post implements Serializable, Parcelable {
         this.comments = comments;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 }

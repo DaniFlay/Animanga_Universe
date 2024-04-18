@@ -18,6 +18,7 @@ import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.classes.User;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.example.animanga_universe.fragments.EditItemFragment;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         final Context context;
         final int layout_id;
         View.OnClickListener onClickListener;
+        MaterialSwitch materialSwitch;
 
 
 public ListAdapter(User user, ArrayList<?> listado, Context context, int layout_id, String busqueda) {
@@ -51,7 +53,7 @@ public void setOnClickListener( View.OnClickListener onClickListener){
     @NonNull
 @Override
 public ListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View elemento= LayoutInflater.from(parent.getContext()).inflate(R.layout.element_lista_usuario,parent,false);
+        View elemento= LayoutInflater.from(parent.getContext()).inflate(R.layout.element_list_user,parent,false);
         elemento.setOnClickListener(onClickListener);
         return new ViewHolder(elemento);
         }
@@ -63,7 +65,8 @@ public ListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int 
             holder.boton.setOnClickListener(v -> {
                 ((MainMenu)context).setBusqueda(busqueda);
                 ((MainMenu)context).setEncapsulador(e);
-                ((MainMenu)context).switchButton();
+                materialSwitch= (((MainMenu) context).getSwitchButton());
+                materialSwitch.setVisibility(View.GONE);
                 ((MainMenu)context).reemplazarFragment(new EditItemFragment());
             });
 

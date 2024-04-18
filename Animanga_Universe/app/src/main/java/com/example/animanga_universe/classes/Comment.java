@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+/** @noinspection deprecation*/
 public class Comment implements Serializable, Parcelable {
     User user;
     String date;
@@ -21,16 +22,8 @@ public class Comment implements Serializable, Parcelable {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public String getComentario() {
         return comentario;
-    }
-
-    public void setComentario(String comentario) {
-        this.comentario = comentario;
     }
 
     public int getLikes() {
@@ -69,10 +62,6 @@ public class Comment implements Serializable, Parcelable {
         return Objects.hash(user, date, comentario);
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public Comment(User user, String comentario, int likes, int dislikes) {
         this.user = user;
         this.comentario = comentario;
@@ -88,7 +77,7 @@ public class Comment implements Serializable, Parcelable {
         dislikes = in.readInt();
     }
 
-    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
+    public static final Creator<Comment> CREATOR = new Creator<>() {
         @Override
         public Comment createFromParcel(Parcel in) {
             return new Comment(in);

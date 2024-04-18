@@ -43,8 +43,8 @@
             <ToggleButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textOff="EN"
-                android:textOn="ES"
+                android:textOff="@string/en"
+                android:textOn="@string/es"
                 android:layout_gravity="end"
                 android:backgroundTint="@color/bluesky"
                 android:id="@+id/toggle"
@@ -76,6 +76,6 @@
     app:tint="@color/white"
     android:id="@+id/back"
     android:visibility="gone"
-    android:contentDescription="TODO" />
+    android:contentDescription="@string/boton_atras_desc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

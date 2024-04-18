@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Objects;
 
+/** @noinspection deprecation */
 public class AnimeScore implements Serializable, Parcelable {
     Anime anime;
     String nota;
@@ -67,23 +68,8 @@ public class AnimeScore implements Serializable, Parcelable {
         return anime;
     }
 
-    public void setAnime(Anime anime) {
-        this.anime = anime;
-    }
-
     public String getNota() {
         return nota;
     }
 
-    public void setNota(String nota) {
-        this.nota = nota;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/baseline_search_24"
         android:id="@+id/searchButton"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/image_button" />
 </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
@@ -52,6 +52,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab_layout"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/realiza_una_busqueda"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:id="@+id/empty"/>
 
 
 

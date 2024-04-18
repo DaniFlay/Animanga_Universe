@@ -143,72 +143,24 @@ public class Manga implements Serializable, Parcelable {
         return authors;
     }
 
-    public void setAuthors(String authors) {
-        this.authors = authors;
-    }
-
     public Long getChapters() {
         return chapters;
-    }
-
-    public void setChapters(Long chapters) {
-        this.chapters = chapters;
     }
 
     public String getDemographics() {
         return demographics;
     }
 
-    public void setDemographics(String demographics) {
-        this.demographics = demographics;
-    }
-
-    public Long getFavorites() {
-        return favorites;
-    }
-
-    public void setFavorites(Long favorites) {
-        this.favorites = favorites;
-    }
-
     public String getGenres() {
         return genres;
-    }
-
-    public void setGenres(String genres) {
-        this.genres = genres;
-    }
-
-    public String getMalId() {
-        return malId;
-    }
-
-    public void setMalId(String malId) {
-        this.malId = malId;
     }
 
     public String getMainPicture() {
         return mainPicture;
     }
 
-    public void setMainPicture(String mainPicture) {
-        this.mainPicture = mainPicture;
-    }
-
     public String getPublishedFrom() {
         return publishedFrom;
-    }
-
-    public void setPublishedFrom(String publishedFrom) {
-        this.publishedFrom = publishedFrom;
-    }
-
-    public String getPublishedTo() {
-        return publishedTo;
-    }
-
-    public void setPublishedTo(String publishedTo) {
-        this.publishedTo = publishedTo;
     }
 
     public Double getScore() {
@@ -231,56 +183,28 @@ public class Manga implements Serializable, Parcelable {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getSynopsis() {
         return synopsis;
-    }
-
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getTitleEnglish() {
         return titleEnglish;
-    }
-
-    public void setTitleEnglish(String titleEnglish) {
-        this.titleEnglish = titleEnglish;
     }
 
     public String getTitleJapanese() {
         return titleJapanese;
     }
 
-    public void setTitleJapanese(String titleJapanese) {
-        this.titleJapanese = titleJapanese;
-    }
-
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public Long getVolumes() {
         return volumes;
-    }
-
-    public void setVolumes(Long volumes) {
-        this.volumes = volumes;
     }
 
     @Override

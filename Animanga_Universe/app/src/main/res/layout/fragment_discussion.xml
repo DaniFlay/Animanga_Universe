@@ -16,7 +16,6 @@
         android:layout_marginBottom="55dp"
         />
     <LinearLayout
-        android:id="@+id/chatlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -31,14 +30,16 @@
             android:layout_weight="1"
             android:background="@null"
             android:inputType="textCapSentences|textMultiLine"
-            android:padding="15dp" />
+            android:padding="15dp"
+            tools:ignore="LabelFor"
+            android:autofillHints="" />
         <ImageButton
             android:id="@+id/sendmsg"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:backgroundTint="@color/white"
             android:src="@drawable/send_alt_1_svgrepo_com"
-            />
+            android:importantForAccessibility="no" />
 
     </LinearLayout>
 

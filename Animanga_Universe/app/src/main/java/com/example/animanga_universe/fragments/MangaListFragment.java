@@ -82,7 +82,7 @@ public class MangaListFragment extends Fragment {
         if (mainMenu != null) {
             user= mainMenu.devolverUser();
         }
-        view = inflater.inflate(R.layout.fragment_listas_manga, container, false);
+        view = inflater.inflate(R.layout.fragment_lists_manga, container, false);
         tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.todos));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.leyendo));
@@ -129,13 +129,13 @@ public class MangaListFragment extends Fragment {
                 }
                 recyclerView = view.findViewById(R.id.recycler_view);
 
-                listAdapter = new ListAdapter(user, mangas, getContext(), R.layout.element_lista_usuario, "Manga");
+                listAdapter = new ListAdapter(user, mangas, getContext(), R.layout.element_list_user, "Manga");
                 listAdapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int posicion= recyclerView.getChildAdapterPosition(v);
-                        ((MainMenu)getActivity()).changeToggle();
-                        ((MainMenu)getActivity()).switchButton();
+                        ((MainMenu)getActivity()).getToggle().setVisibility(View.VISIBLE);
+                        ((MainMenu)getActivity()).getSwitchButton().setVisibility(View.GONE);
                         ((MainMenu)getActivity()).setManga(mangas.get(posicion).getManga());
                         ((MainMenu)getActivity()).reemplazarFragment(new MangaDescriptionFragment());
 
@@ -336,13 +336,13 @@ public class MangaListFragment extends Fragment {
                         }
                         recyclerView = view.findViewById(R.id.recycler_view);
 
-                        listAdapter = new ListAdapter(user, mangas, getContext(), R.layout.element_lista_usuario, "Manga");
+                        listAdapter = new ListAdapter(user, mangas, getContext(), R.layout.element_list_user, "Manga");
                         listAdapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 int posicion= recyclerView.getChildAdapterPosition(v);
-                                ((MainMenu)getActivity()).changeToggle();
-                                ((MainMenu)getActivity()).switchButton();
+                                ((MainMenu)getActivity()).getToggle().setVisibility(View.VISIBLE);
+                                ((MainMenu)getActivity()).getSwitchButton().setVisibility(View.GONE);
                                 ((MainMenu)getActivity()).setManga(mangas.get(posicion).getManga());
                                 ((MainMenu)getActivity()).reemplazarFragment(new MangaDescriptionFragment());
                             }

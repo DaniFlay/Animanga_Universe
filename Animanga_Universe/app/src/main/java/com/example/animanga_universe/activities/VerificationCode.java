@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputLayout;
  * El usuario deberia haber recibido un correo con un codigo de verificacion, en esta actividad se introduce el codigo, y si coincide, se le
  * permite realizar el cambio de contraseña
  * @author Daniel Seregin Kozlov
+ * @noinspection deprecation
  */
 public class VerificationCode extends AppCompatActivity implements View.OnClickListener {
     TextInputLayout codigo;
@@ -33,7 +34,7 @@ public class VerificationCode extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_codigo_verificacion);
+        setContentView(R.layout.activity_verification_code);
         codigo = findViewById(R.id.codigoVerificacion);
         confirmar= findViewById(R.id.botonConfirmar);
         codigoVerificacion= getIntent().getStringExtra("codigo");

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
+/** @noinspection deprecation */
 public class MangaScore implements Serializable, Parcelable {
     String nota;
     Manga manga;
@@ -57,24 +58,8 @@ public class MangaScore implements Serializable, Parcelable {
         return nota;
     }
 
-    public void setNota(String nota) {
-        this.nota = nota;
-    }
-
     public Manga getManga() {
         return manga;
-    }
-
-    public void setManga(Manga manga) {
-        this.manga = manga;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     @Override

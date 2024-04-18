@@ -13,6 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.example.animanga_universe"
         minSdk = 33
+        //noinspection OldTargetApi
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -38,7 +39,6 @@ android {
         viewBinding = true
     }
 }
-
 dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -49,7 +49,7 @@ dependencies {
     implementation(files("libs/additional.jar"))
     implementation(files("libs/mail.jar"))
     implementation("com.google.firebase:firebase-core:21.1.1")
-    implementation("com.google.firebase:firebase-firestore:24.11.0")
+    implementation("com.google.firebase:firebase-firestore:24.11.1")
     implementation(files("libs/core-12.1.0-javadoc.jar"))
     implementation("com.google.firebase:firebase-config:21.6.3")
     testImplementation("junit:junit:4.13.2")
@@ -58,4 +58,5 @@ dependencies {
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     implementation ("com.google.firebase:firebase-ml-natural-language:22.0.1")
     implementation("com.google.mlkit:translate:17.0.2")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

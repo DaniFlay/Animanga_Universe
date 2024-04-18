@@ -1,33 +1,29 @@
 package com.example.animanga_universe.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
-import com.example.animanga_universe.classes.Anime;
 import com.example.animanga_universe.classes.Manga;
+import com.example.animanga_universe.classes.MangaUser;
 import com.example.animanga_universe.classes.User;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.mlkit.common.model.DownloadConditions;
 import com.google.mlkit.nl.translate.TranslateLanguage;
 import com.google.mlkit.nl.translate.Translation;
 import com.google.mlkit.nl.translate.TranslatorOptions;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,6 +31,7 @@ import java.net.URL;
 
 /**
  * Crea una instancia del fragment
+ * @noinspection deprecation
  */
 public class MangaDescriptionFragment extends Fragment implements View.OnClickListener {
 
@@ -48,39 +45,14 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
     FloatingActionButton fab;
     ToggleButton toggleButton;
     ImageView imageView, back;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
 
     public MangaDescriptionFragment() {
 
     }
 
-    /**
-     * Crea una nueva instancia del fragment
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return Una nueva instancia del fragment
-     */
-
-    public static MangaDescriptionFragment newInstance(String param1, String param2) {
-        MangaDescriptionFragment fragment = new MangaDescriptionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -112,6 +84,7 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         fab= view.findViewById(R.id.FAB);
         fab.setOnClickListener(this);
         toggleButton= menu.getToggle();
+        toggleButton.setVisibility(View.VISIBLE);
         rellenoInformacion2(manga);
         TranslatorOptions options= new TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
@@ -122,11 +95,8 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
                 .requireWifi()
                 .build();
         translator1.downloadModelIfNeeded(conditions)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
+                .addOnSuccessListener(unused -> {
 
-                    }
                 });
         getLifecycle().addObserver(translator1);
         if(manga.getStatus().contains("Finished")){
@@ -134,22 +104,14 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         }else{
             status= "Publicando";
         }
-        translator1.translate(manga.getSynopsis()).addOnSuccessListener(new OnSuccessListener<String>() {
-            @Override
-            public void onSuccess(String s) {
-                sinop= s;
-            }
-        });
+        translator1.translate(manga.getSynopsis()).addOnSuccessListener(s -> sinop = s);
 
 
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    rellenoDeInformacion(manga);
-                }else {
-                    rellenoInformacion2(manga);
-                }
+        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                rellenoDeInformacion(manga);
+            }else {
+                rellenoInformacion2(manga);
             }
         });
         return view;
@@ -160,13 +122,51 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         if(v.getId()==back.getId()){
             int id= menu.getNavBarId();
             back.setVisibility(View.GONE);
+            toggleButton.setVisibility(View.GONE);
+            menu.getSwitchButton().setVisibility(View.GONE);
             if(id==R.id.ranking) {
                 menu.reemplazarFragment(new RankingFragment());
             } else if (id== R.id.buscar) {
                 menu.reemplazarFragment(new SearchFragment());
             } else if (id== R.id.listas) {
+                menu.getSwitchButton().setVisibility(View.VISIBLE);
                 menu.reemplazarFragment(new MangaListFragment());
             }
+        } else if (v.getId()== fab.getId()) {
+            toggleButton.setVisibility(View.GONE);
+            menu.setBusqueda("Anime");
+            String dummy="", info, year;
+            int progress=0, check=0;
+            if (manga!=null&& manga.getPublishedFrom() != null && !manga.getPublishedFrom().equals("")) {
+                year = manga.getPublishedFrom().substring(manga.getPublishedFrom().length()-4);
+            } else {
+                year = "?";
+            }
+            if (manga != null && manga.getChapters()!=null) {
+                info = manga.getChapters() + " cap, " + year;
+            }else {
+                info= "? cap, "+year;
+            }
+            for(MangaUser mangaUser: user.getMangas()){
+                if(mangaUser.getManga().equals(manga)){
+                    dummy= mangaUser.getEstado();
+                    progress= Math.toIntExact(manga.getChapters());
+                    break;
+                }
+            }
+            if (dummy.equals(getString(R.string.completado))) {
+                check = R.color.completado;
+            } else if (dummy.equals(getString(R.string.dejado))) {
+                check = R.color.dejado;
+            } else if (dummy.equals(getString(R.string.enespera))) {
+                check = R.color.espera;
+            } else if (dummy.equals(getString(R.string.viendo))) {
+                check = R.color.enProceso;
+            } else if (dummy.equals(getString(R.string.planeado))) {
+                check = R.color.enlista;
+            }
+            menu.setEncapsulador(new Encapsulator(manga,drawable,check, manga.getTitle(),info, progress ));
+            menu.reemplazarFragment(new EditItemFragment());
         }
 
     }
@@ -187,30 +187,31 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
 
     }
     public String generos(Manga m){
-        String formateo="";
+        StringBuilder formateo= new StringBuilder();
         String generos= m.getGenres().substring(1,m.getGenres().length()-1);
         String[] generosSeparados= generos.split(",");
         String demographics= m.getDemographics().substring(1,m.getDemographics().length()-1);
         String[] demographicsSeparados= demographics.split(",");
         int counter=0;
-        for(int i=0; i<generosSeparados.length;i++){
-            formateo+=generosSeparados[i]+"\t";
+        for (String generosSeparado : generosSeparados) {
+            formateo.append(generosSeparado).append("\t");
             counter++;
-            if(counter==2){
-                formateo+="\n";
-                counter=0;
+            if (counter == 2) {
+                formateo.append("\n");
+                counter = 0;
             }
         }
-        for(int i=0; i<demographicsSeparados.length;i++){
-            formateo+=demographicsSeparados[i]+"\t";
+        for (String demographicsSeparado : demographicsSeparados) {
+            formateo.append(demographicsSeparado).append("\t");
             counter++;
-            if(counter==2){
-                formateo+="\n";
-                counter=0;
+            if (counter == 2) {
+                formateo.append("\n");
+                counter = 0;
             }
         }
-        return formateo;
+        return formateo.toString();
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void rellenoDeInformacion(Manga m){
         try {
             InputStream is = (InputStream) new URL(m.getMainPicture()).getContent();
@@ -234,6 +235,7 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         autores.setText(authors(m));
         tituloJapones.setText(m.getTitleJapanese());
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void rellenoInformacion2(Manga m){
         try {
             InputStream is = (InputStream) new URL(m.getMainPicture()).getContent();
@@ -258,24 +260,24 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         tituloJapones.setText(m.getTitleJapanese());
     }
     public String authors(Manga m){
-        String a= m.getAuthors();
-        char[] array1= a.toCharArray();
-        a="";
-        for(int i=0; i<array1.length;i++){
-            if(array1[i]!='['&&array1[i]!=']'&&array1[i]!='('&&array1[i]!=')'){
-                a+=array1[i];
+        StringBuilder a= new StringBuilder(m.getAuthors());
+        char[] array1= a.toString().toCharArray();
+        a = new StringBuilder();
+        for (char c : array1) {
+            if (c != '[' && c != ']' && c != '(' && c != ')') {
+                a.append(c);
             }
         }
-        String[] array2= a.split(",");
-        a="";
+        String[] array2= a.toString().split(",");
+        a = new StringBuilder();
         for(int i=0; i<array2.length;i++){
             if(array2[i].contains("'")){
-                a+=array2[i];
+                a.append(array2[i]);
                 if(i<array2.length-1){
-                    a+=",";
+                    a.append(",");
                 }
             }
         }
-        return a;
+        return a.toString();
     }
 }

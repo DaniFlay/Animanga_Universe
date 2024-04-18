@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
@@ -34,6 +35,7 @@ View view;
 SQLiteDatabase db;
 MainMenu mainMenu;
 Helper helper;
+ImageView back;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -70,9 +72,12 @@ Helper helper;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view= inflater.inflate(R.layout.fragment_cambiar_password, container, false);
+        view= inflater.inflate(R.layout.fragment_change_password, container, false);
 
         mainMenu = (MainMenu) getActivity();
+        back= mainMenu.getBack();
+        back.setVisibility(View.VISIBLE);
+        back.setOnClickListener(this);
         user= Objects.requireNonNull(mainMenu).devolverUser();
         passwordAntigua= view.findViewById(R.id.contraseñaAntigua);
         passwordNueva= view.findViewById(R.id.contraseñaNueva);
@@ -124,6 +129,9 @@ Helper helper;
 
             }
             c.close();
+        } else if (v.getId()== back.getId()) {
+            back.setVisibility(View.GONE);
+            mainMenu.reemplazarFragment(new ProfileFragment());
         }
 
     }

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 /**
  * El adaptador para el recycler view de la búsqueda de los animes, en el fragment de búsqueda
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     final User user;
@@ -47,7 +48,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @NonNull
     @Override
     public SearchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View elemento= LayoutInflater.from(parent.getContext()).inflate(R.layout.element_busqueda,parent,false);
+        View elemento= LayoutInflater.from(parent.getContext()).inflate(R.layout.element_search,parent,false);
         elemento.setOnClickListener(onClickListener);
         return new ViewHolder(elemento);
     }

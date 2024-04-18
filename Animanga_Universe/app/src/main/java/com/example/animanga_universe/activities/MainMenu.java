@@ -1,7 +1,6 @@
 package com.example.animanga_universe.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,19 +15,16 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ToggleButton;
-import android.widget.Toolbar;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.classes.Anime;
-import com.example.animanga_universe.classes.Comment;
 import com.example.animanga_universe.classes.CommentScore;
 import com.example.animanga_universe.classes.Forum_Post;
 import com.example.animanga_universe.classes.Manga;
 import com.example.animanga_universe.classes.User;
-import com.example.animanga_universe.databinding.ActivityMenuPrincipalBinding;
+import com.example.animanga_universe.databinding.ActivityMainMenuBinding;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.example.animanga_universe.extras.Helper;
-import com.example.animanga_universe.fragments.DiscussionFragment;
 import com.example.animanga_universe.fragments.SearchFragment;
 import com.example.animanga_universe.fragments.ForumsFragment;
 import com.example.animanga_universe.fragments.RankingFragment;
@@ -36,6 +32,7 @@ import com.example.animanga_universe.fragments.AnimeListFragment;
 import com.example.animanga_universe.fragments.MangaListFragment;
 import com.example.animanga_universe.fragments.ProfileFragment;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,21 +40,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * La clase Menu Principal que es la actividad principal de la aplicación, y que contiene la navegación entre los fragments de la aplicación
  * También contiene varias funciones y variables que se estarán utilizando en los fragments
  * @author Daniel Seregin Kozlov
+ * @noinspection deprecation
  */
 public class MainMenu extends AppCompatActivity {
     User user;
-    ActivityMenuPrincipalBinding binding;
+    ActivityMainMenuBinding binding;
     SQLiteDatabase db;
     Helper helper;
     Encapsulator e;
@@ -67,12 +63,10 @@ public class MainMenu extends AppCompatActivity {
     ArrayList<Forum_Post> posts;
     Anime anime;
     Manga manga;
-    ToggleButton toggleButton;
     DatabaseReference ref;
     Forum_Post forumPost;
     ArrayList<String> allMangas;
     ArrayList<String> allAnimes;
-    ImageView back;
 
     /**
      * Funcion onCreate que se utiliza para crear la actividad
@@ -85,9 +79,10 @@ public class MainMenu extends AppCompatActivity {
         helper= new Helper(this, "bbdd",null,1);
         db= helper.getWritableDatabase();
         user= getIntent().getParcelableExtra("usuario");
-        toggleButton=findViewById(R.id.toggle);
-        binding= ActivityMenuPrincipalBinding.inflate(getLayoutInflater());
+
+        binding= ActivityMainMenuBinding.inflate(getLayoutInflater());
         allMangas= new ArrayList<>();
+        binding.toggle.setVisibility(View.GONE);
         allAnimes= new ArrayList<>();
         fillAnimes(allAnimes);
         fillMangas(allMangas);
@@ -255,7 +250,7 @@ public class MainMenu extends AppCompatActivity {
                 }
             });
         } catch (Exception ex) {
-            Log.d("excepcim", ex.getMessage());
+            Log.d("excepcim", Objects.requireNonNull(ex.getMessage()));
         }
 
     }
@@ -295,8 +290,8 @@ public class MainMenu extends AppCompatActivity {
     /**
      * La función para cambiar el estado del botón swtich a GONE
      */
-    public void switchButton(){
-        binding.switchButton.setVisibility(View.GONE);
+    public MaterialSwitch getSwitchButton(){
+        return binding.switchButton;
     }
 
     /**
@@ -349,22 +344,6 @@ public class MainMenu extends AppCompatActivity {
     }
     public Manga getManga(){
         return manga;
-    }
-
-public void changeToggle(){
-        if(binding.toggle.getVisibility()==View.GONE){
-            binding.toggle.setVisibility(View.VISIBLE);
-        }else {
-            binding.toggle.setVisibility(View.GONE);
-        }
-
-}
-public void toggleState(){
-        if(binding.switchButton.getVisibility()==View.GONE){
-            binding.switchButton.setVisibility(View.VISIBLE);
-        }else {
-            binding.switchButton.setVisibility(View.GONE);
-        }
     }
 
 public ToggleButton getToggle(){
@@ -437,7 +416,7 @@ public void commentScore(CommentScore cs){
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int counter=0;
                 for(DataSnapshot d: snapshot.getChildren()){
-                    if(d.getValue(CommentScore.class).equals(cs)){
+                    if(Objects.requireNonNull(d.getValue(CommentScore.class)).equals(cs)){
                         counter++;
                         d.getRef().setValue(cs);
                     }
@@ -457,7 +436,7 @@ public void CommentScoreRemove(CommentScore cs){
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot d: snapshot.getChildren()){
-                    if(d.getValue(CommentScore.class).equals(cs)){
+                    if(Objects.requireNonNull(d.getValue(CommentScore.class)).equals(cs)){
                         d.getRef().removeValue();
                         break;
                     }
@@ -472,25 +451,19 @@ public void CommentScoreRemove(CommentScore cs){
 }
 public void fillAnimes(ArrayList<String> animes){
     CollectionReference cr= FirebaseFirestore.getInstance().collection("Anime");
-    cr.addSnapshotListener(new EventListener<QuerySnapshot>() {
-        @Override
-        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-            for(DocumentSnapshot d: value.getDocuments()){
-                Anime a= d.toObject(Anime.class);
-                animes.add(a.getTitle());
-            }
+    cr.addSnapshotListener((value, error) -> {
+        for (DocumentSnapshot d : Objects.requireNonNull(value).getDocuments()) {
+            Anime a = d.toObject(Anime.class);
+            animes.add(Objects.requireNonNull(a).getTitle());
         }
     });
 }
     public void fillMangas(ArrayList<String> mangas){
         CollectionReference cr= FirebaseFirestore.getInstance().collection("Manga");
-        cr.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                for(DocumentSnapshot d: value.getDocuments()){
-                    Manga m= d.toObject(Manga.class);
-                    mangas.add(m.getTitle());
-                }
+        cr.addSnapshotListener((value, error) -> {
+            for (DocumentSnapshot d : Objects.requireNonNull(value).getDocuments()) {
+                Manga m = d.toObject(Manga.class);
+                mangas.add(Objects.requireNonNull(m).getTitle());
             }
         });
     }

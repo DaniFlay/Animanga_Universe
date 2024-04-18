@@ -55,7 +55,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registro);
+        setContentView(R.layout.activity_register);
         ref= FirebaseDatabase.getInstance().getReference("Usuario");
         usuario= findViewById(R.id.user);
         correo= findViewById(R.id.correo);

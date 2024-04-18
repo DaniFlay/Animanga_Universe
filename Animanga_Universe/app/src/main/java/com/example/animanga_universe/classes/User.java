@@ -22,7 +22,6 @@ public class User implements Serializable, Parcelable {
     String rol;
 ArrayList<MangaUser> mangas;
 ArrayList<AnimeUser> animes;
-int stability;
 
     public User(String username, String password, String sexo, String correo, String fecha_de_nacimiento) {
         this.username = username;

@@ -24,14 +24,12 @@ import com.example.animanga_universe.classes.User;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Fragment para crear un nuevo post en el foro
@@ -51,41 +49,14 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
     Anime an;
     Manga man;
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
-    private String mParam1;
-    private String mParam2;
 
     public NewForumPostFragment() {
 
     }
 
-    /**
-     * Crea una nueva instancia del fragment
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return Nueva instancia del fragment
-     */
-
-    public static NewForumPostFragment newInstance(String param1, String param2) {
-        NewForumPostFragment fragment = new NewForumPostFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -93,7 +64,7 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_new_forum_post, container, false);
-        user= ((MainMenu)getActivity()).devolverUser();
+        user= ((MainMenu) requireActivity()).devolverUser();
         names= new ArrayList<>();
         chipGroup= view.findViewById(R.id.chipsObras);
         anime= view.findViewById(R.id.chipAnime);
@@ -107,7 +78,7 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
         for(AnimeUser a: user.getAnimes()){
             names.add(a.getAnime().getTitle());
         }
-        adapter= new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,names);
+        adapter= new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item,names);
         obras.setAdapter(adapter);
         publicar.setOnClickListener(this);
         return view;
@@ -120,14 +91,14 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
             for(AnimeUser a: user.getAnimes()){
                 names.add(a.getAnime().getTitle());
             }
-            adapter= new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,names);
+            adapter= new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item,names);
             obras.setAdapter(adapter);
         }else if(group.getCheckedChipId()== manga.getId()){
             names.clear();
             for(MangaUser m: user.getMangas()){
                 names.add(m.getManga().getTitle());
             }
-            adapter= new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,names);
+            adapter= new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item,names);
             obras.setAdapter(adapter);
         }
     }
@@ -141,7 +112,7 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
                     break;
                 }
             }
-            forumPost= new Forum_Post(user,an,discusion.getEditText().getText().toString(),mensaje.getEditText().getText().toString());
+            forumPost= new Forum_Post(user,an, Objects.requireNonNull(discusion.getEditText()).getText().toString(), Objects.requireNonNull(mensaje.getEditText()).getText().toString());
         } else if (manga.isChecked()) {
             for(MangaUser m: user.getMangas()){
                 if(m.getManga().getTitle().equals(obras.getSelectedItem().toString())){
@@ -149,13 +120,13 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
                     break;
                 }
             }
-            forumPost= new Forum_Post(user,man,discusion.getEditText().getText().toString(),mensaje.getEditText().getText().toString());
+            forumPost= new Forum_Post(user,man, Objects.requireNonNull(discusion.getEditText()).getText().toString(), Objects.requireNonNull(mensaje.getEditText()).getText().toString());
         }
         ArrayList<Comment> comments= new ArrayList<>();
         comments.add(new Comment(user, forumPost.getMessage(),0,0));
         forumPost.setComments(comments);
         ref= FirebaseDatabase.getInstance().getReference("Forum_Posts");
         ref.push().setValue(forumPost);
-        ((MainMenu)getActivity()).reemplazarFragment(new ForumsFragment());
+        ((MainMenu) requireActivity()).reemplazarFragment(new ForumsFragment());
     }
 }

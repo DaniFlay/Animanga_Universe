@@ -1,27 +1,25 @@
 package com.example.animanga_universe.fragments;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.classes.Anime;
+import com.example.animanga_universe.classes.AnimeUser;
 import com.example.animanga_universe.classes.User;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.mlkit.common.model.DownloadConditions;
 import com.google.mlkit.nl.translate.TranslateLanguage;
@@ -38,6 +36,7 @@ import java.net.URL;
 /**
  * Fragment que muestra toda la información relevante del amime seleccionado
  * @author Daniel Seregin Kozlov
+ * @noinspection deprecation
  */
 public class AnimeDescriptionFragment extends Fragment implements View.OnClickListener {
     View view;
@@ -51,40 +50,15 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
     FloatingActionButton fab;
     ToggleButton toggleButton;
     ImageView imageView, back;
+    int check;
 
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
 
     public AnimeDescriptionFragment() {
-    }
-
-    /**
-     * Se usa para crear una nueva instancia del fragment
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return Nueva instancia del fragment
-     */
-
-    public static AnimeDescriptionFragment newInstance(String param1, String param2) {
-        AnimeDescriptionFragment fragment = new AnimeDescriptionFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -117,6 +91,7 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
         fab= view.findViewById(R.id.FAB);
         fab.setOnClickListener(this);
         toggleButton= menu.getToggle();
+        toggleButton.setVisibility(View.VISIBLE);
         rellenoInformacion2(anime);
         TranslatorOptions options= new TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
@@ -127,11 +102,8 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
                 .requireWifi()
                 .build();
         translator1.downloadModelIfNeeded(conditions)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
+                .addOnSuccessListener(unused -> {
 
-                    }
                 });
         getLifecycle().addObserver(translator1);
         if(anime.getStatus().contains("Finished")){
@@ -139,30 +111,17 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
         }else{
             status= "En emisión";
         }
-        translator1.translate(anime.getSynopsis()).addOnSuccessListener(new OnSuccessListener<String>() {
-            @Override
-            public void onSuccess(String s) {
-                sinop= s;
-            }
-        });
-        translator1.translate(anime.getPremieredSeason()).addOnSuccessListener(new OnSuccessListener<String>() {
-            @Override
-            public void onSuccess(String s) {
-                temp= s;
-            }
-        });
+        translator1.translate(anime.getSynopsis()).addOnSuccessListener(s -> sinop = s);
+        translator1.translate(anime.getPremieredSeason()).addOnSuccessListener(s -> temp = s);
 
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    rellenoDeInformacion(anime);
-                }else {
-                    rellenoInformacion2(anime);
-                }
+        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                rellenoDeInformacion(anime);
+            }else {
+                rellenoInformacion2(anime);
             }
         });
-if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
+if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
     youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
         @Override
         public void onReady(@NonNull YouTubePlayer youTubePlayer) {
@@ -180,9 +139,42 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
     @Override
     public void onClick(View v) {
         if (v.getId()==fab.getId()) {
-            //menu.setEncapsulador(new Encapsulator(anime,));
+
+            toggleButton.setVisibility(View.GONE);
+            menu.setBusqueda("Anime");
+            String dummy="", info="", year;
+            int progress=0;
+            if (anime!=null&& anime.getPremieredYear() != null && !anime.getPremieredYear().equals("")) {
+                year = anime.getPremieredYear();
+            } else {
+                year = "?";
+            }
+            if (anime != null && !anime.getEpisodes().equals("")) {
+                info = anime.getEpisodes() + " ep, " + year;
+            }
+            for(AnimeUser animeUser: user.getAnimes()){
+                if(animeUser.getAnime().equals(anime)){
+                    dummy= animeUser.getEstado();
+                    progress=Integer.parseInt(animeUser.getEpisodios());
+                    break;
+                }
+            }
+            if (dummy.equals(getString(R.string.completado))) {
+                check = R.color.completado;
+            } else if (dummy.equals(getString(R.string.dejado))) {
+                check = R.color.dejado;
+            } else if (dummy.equals(getString(R.string.enespera))) {
+                check = R.color.espera;
+            } else if (dummy.equals(getString(R.string.viendo))) {
+                check = R.color.enProceso;
+            } else if (dummy.equals(getString(R.string.planeado))) {
+                check = R.color.enlista;
+            }
+            menu.setEncapsulador(new Encapsulator(anime,drawable,check, anime.getTitle(),info, progress ));
             menu.reemplazarFragment(new EditItemFragment());
         }else if(v.getId()==back.getId()){
+            menu.getSwitchButton().setVisibility(View.GONE);
+            toggleButton.setVisibility(View.GONE);
             int id = menu.getNavBarId();
             back.setVisibility(View.GONE);
             if(id==R.id.ranking) {
@@ -190,6 +182,7 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
             } else if (id== R.id.buscar) {
                 menu.reemplazarFragment(new SearchFragment());
             } else if (id== R.id.listas) {
+                menu.getSwitchButton().setVisibility(View.VISIBLE);
                 menu.reemplazarFragment(new AnimeListFragment());
             }
 
@@ -232,29 +225,29 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
      * @return Los generos formateados
      */
     public String generos(Anime a){
-        String formateo="";
+        StringBuilder formateo= new StringBuilder();
         String generos= a.getGenres().substring(1,a.getGenres().length()-1);
         String[] generosSeparados= generos.split(",");
         String demographics= a.getDemographics().substring(1,a.getDemographics().length()-1);
         String[] demographicsSeparados= demographics.split(",");
         int counter=0;
-        for(int i=0; i<generosSeparados.length;i++){
-            formateo+=generosSeparados[i]+"\t";
+        for (String generosSeparado : generosSeparados) {
+            formateo.append(generosSeparado).append("\t");
             counter++;
-            if(counter==2){
-                formateo+="\n";
-                counter=0;
+            if (counter == 2) {
+                formateo.append("\n");
+                counter = 0;
             }
         }
-        for(int i=0; i<demographicsSeparados.length;i++){
-            formateo+=demographicsSeparados[i]+"\t";
+        for (String demographicsSeparado : demographicsSeparados) {
+            formateo.append(demographicsSeparado).append("\t");
             counter++;
-            if(counter==2){
-                formateo+="\n";
-                counter=0;
+            if (counter == 2) {
+                formateo.append("\n");
+                counter = 0;
             }
         }
-        return formateo;
+        return formateo.toString();
     }
 
     /**
@@ -262,6 +255,7 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
      * en algunos casos haciendo uso de otras funciones para formateo
      * @param a El anime del que se quiere recoger la información
      */
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void rellenoDeInformacion(Anime a){
         try {
             InputStream is = (InputStream) new URL(a.getMainPicture()).getContent();
@@ -285,6 +279,7 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().equals("")){
         compania.setText(a.getStudios().substring(1,a.getStudios().length()-1));
         tituloJapones.setText(a.getTitleJapanese());
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void rellenoInformacion2(Anime a){
         try {
             InputStream is = (InputStream) new URL(a.getMainPicture()).getContent();

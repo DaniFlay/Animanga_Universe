@@ -102,13 +102,13 @@ public class RankingFragment extends Fragment {
                 public void onTabSelected(TabLayout.Tab tab) {
                     if (tab.getPosition() == 0) {
                         busqueda = "Anime";
-                        searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_busqueda, busqueda);
+                        searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_search, busqueda);
                         recyclerView.setAdapter(searchAdapter);
                         searchAdapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 int posicion= recyclerView.getChildAdapterPosition(v);
-                                mainMenu.changeToggle();
+                                mainMenu.getToggle().setVisibility(View.VISIBLE);
                                 ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
                                 ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
                             }
@@ -117,12 +117,12 @@ public class RankingFragment extends Fragment {
                         recyclerView.setLayoutManager(layoutManager);
                     } else if (tab.getPosition() == 1) {
                         busqueda = "Manga";
-                        searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getMangas(), getContext(), R.layout.element_busqueda, busqueda);
+                        searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getMangas(), getContext(), R.layout.element_search, busqueda);
                         searchAdapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 int posicion= recyclerView.getChildAdapterPosition(v);
-                                mainMenu.changeToggle();
+                                mainMenu.getToggle().setVisibility(View.VISIBLE);
                                 ((MainMenu)getActivity()).setManga(mainMenu.getMangas().get(posicion).getManga());
                                 ((MainMenu)getActivity()).reemplazarFragment(new MangaDescriptionFragment());
                             }
@@ -177,12 +177,12 @@ public class RankingFragment extends Fragment {
                                 if (!mainMenu.getAnimes().contains(e)) {
                                     mainMenu.getAnimes().add(e);
                                 }
-                                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_busqueda, busqueda);
+                                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_search, busqueda);
                                 searchAdapter.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         int posicion= recyclerView.getChildAdapterPosition(v);
-                                        mainMenu.changeToggle();
+                                        mainMenu.getToggle().setVisibility(View.VISIBLE);
                                         ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
                                         ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
                                     }
@@ -198,12 +198,12 @@ public class RankingFragment extends Fragment {
                 });
 
             }else {
-                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_busqueda, busqueda);
+                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_search, busqueda);
                 searchAdapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int posicion= recyclerView.getChildAdapterPosition(v);
-                        mainMenu.changeToggle();
+                        mainMenu.getToggle().setVisibility(View.VISIBLE);
                         ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
                         ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
                     }

@@ -42,7 +42,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cambio_password);
+        setContentView(R.layout.activity_change_password);
         password= findViewById(R.id.password);
         password2= findViewById(R.id.password2);
         guardar= findViewById(R.id.botonGuardar);

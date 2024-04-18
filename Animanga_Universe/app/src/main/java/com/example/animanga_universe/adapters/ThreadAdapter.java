@@ -26,19 +26,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
 
 
+/** @noinspection ALL */
 public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder>{
-    User user;
-    Forum_Post forumPost;
-    ArrayList<Comment> comments;
-    Context context;
-    int layout_id;
+    final User user;
+    final Forum_Post forumPost;
+    final ArrayList<Comment> comments;
+    final Context context;
+    final int layout_id;
     View.OnClickListener onClickListener;
 
     public ThreadAdapter(User user, Forum_Post forumPost,ArrayList<Comment> comments, Context context, int layout_id) {
@@ -49,10 +47,6 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
         this.layout_id = layout_id;
 
     }
-    public void serOnClickListener(View.OnClickListener onClickListener){
-        this.onClickListener= onClickListener;
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -70,8 +64,8 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot d: snapshot.getChildren()){
-                    if(d.getValue(CommentScore.class).equals(new CommentScore(user,comment,true))){
-                        if(d.getValue(CommentScore.class).isLike()){
+                    if(Objects.requireNonNull(d.getValue(CommentScore.class)).equals(new CommentScore(user,comment,true))){
+                        if(Objects.requireNonNull(d.getValue(CommentScore.class)).isLike()){
                             holder.like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)));
                         }else {
                             holder.dislike.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)));
@@ -86,61 +80,55 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
             }
         });
-        holder.like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!Objects.equals(holder.like.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))){
-                    holder.like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)));
-                    holder.likes.setText(String.valueOf(Integer.parseInt(holder.likes.getText().toString())+1));
-                    comment.setLikes(comment.getLikes()+1);
-                    comments.set(position,comment);
-                    forumPost.setComments(comments);
-                    ((MainMenu)context).commentScore(new CommentScore(user,comment,true));
-                }else {
-                    holder.like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
-                    holder.likes.setText(String.valueOf(Integer.parseInt(holder.likes.getText().toString())-1));
-                    comment.setLikes(comment.getLikes()-1);
-                    comments.set(position,comment);
-                    forumPost.setComments(comments);
-                    ((MainMenu)context).CommentScoreRemove(new CommentScore(user,comment,true));
-                }
-                if(Objects.equals(holder.dislike.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))) {
-                    holder.dislike.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
-                    holder.dislikes.setText(String.valueOf(Integer.parseInt(holder.dislikes.getText().toString()) - 1));
-                    comment.setDislikes(comment.getDislikes()-1);
-                    comments.set(position,comment);
-                    forumPost.setComments(comments);
-                }
-
+        holder.like.setOnClickListener(v -> {
+            if(!Objects.equals(holder.like.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))){
+                holder.like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)));
+                holder.likes.setText(String.valueOf(Integer.parseInt(holder.likes.getText().toString())+1));
+                comment.setLikes(comment.getLikes()+1);
+                comments.set(position,comment);
+                forumPost.setComments(comments);
+                ((MainMenu)context).commentScore(new CommentScore(user,comment,true));
+            }else {
+                holder.like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+                holder.likes.setText(String.valueOf(Integer.parseInt(holder.likes.getText().toString())-1));
+                comment.setLikes(comment.getLikes()-1);
+                comments.set(position,comment);
+                forumPost.setComments(comments);
+                ((MainMenu)context).CommentScoreRemove(new CommentScore(user,comment,true));
             }
+            if(Objects.equals(holder.dislike.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))) {
+                holder.dislike.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+                holder.dislikes.setText(String.valueOf(Integer.parseInt(holder.dislikes.getText().toString()) - 1));
+                comment.setDislikes(comment.getDislikes()-1);
+                comments.set(position,comment);
+                forumPost.setComments(comments);
+            }
+
         });
-        holder.dislike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!Objects.equals(holder.dislike.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))){
-                    holder.dislike.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)));
-                    holder.dislikes.setText(String.valueOf(Integer.parseInt(holder.dislikes.getText().toString())+1));
-                    comment.setDislikes(comment.getDislikes()+1);
-                    comments.set(position,comment);
-                    forumPost.setComments(comments);
-                    ((MainMenu)context).commentScore(new CommentScore(user,comment,false));
-                }else {
-                    holder.dislike.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
-                    holder.dislikes.setText(String.valueOf(Integer.parseInt(holder.dislikes.getText().toString())-1));
-                    comment.setDislikes(comment.getDislikes()-1);
-                    comments.set(position,comment);
-                    forumPost.setComments(comments);
-                    ((MainMenu)context).CommentScoreRemove(new CommentScore(user,comment,true));
-                }
-                if(Objects.equals(holder.like.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))) {
-                    holder.like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
-                    holder.likes.setText(String.valueOf(Integer.parseInt(holder.likes.getText().toString()) - 1));
-                    comment.setLikes(comment.getLikes()-1);
-                    comments.set(position,comment);
-                    forumPost.setComments(comments);
-                }
-
+        holder.dislike.setOnClickListener(v -> {
+            if(!Objects.equals(holder.dislike.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))){
+                holder.dislike.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)));
+                holder.dislikes.setText(String.valueOf(Integer.parseInt(holder.dislikes.getText().toString())+1));
+                comment.setDislikes(comment.getDislikes()+1);
+                comments.set(position,comment);
+                forumPost.setComments(comments);
+                ((MainMenu)context).commentScore(new CommentScore(user,comment,false));
+            }else {
+                holder.dislike.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+                holder.dislikes.setText(String.valueOf(Integer.parseInt(holder.dislikes.getText().toString())-1));
+                comment.setDislikes(comment.getDislikes()-1);
+                comments.set(position,comment);
+                forumPost.setComments(comments);
+                ((MainMenu)context).CommentScoreRemove(new CommentScore(user,comment,true));
             }
+            if(Objects.equals(holder.like.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))) {
+                holder.like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
+                holder.likes.setText(String.valueOf(Integer.parseInt(holder.likes.getText().toString()) - 1));
+                comment.setLikes(comment.getLikes()-1);
+                comments.set(position,comment);
+                forumPost.setComments(comments);
+            }
+
         });
 
     }
@@ -155,11 +143,17 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
 
     }
 
+    /** @noinspection deprecation*/
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        Context context;
-        TextView user, date, comment, likes, dislikes;
-        ImageView imageView;
-        ImageButton like, dislike;
+        final Context context;
+        final TextView user;
+        final TextView date;
+        final TextView comment;
+        final TextView likes;
+        final TextView dislikes;
+        final ImageView imageView;
+        final ImageButton like;
+        final ImageButton dislike;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

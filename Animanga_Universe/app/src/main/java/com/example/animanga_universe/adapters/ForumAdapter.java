@@ -20,13 +20,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 
+/** @noinspection unused, unused, unused, unused */
 public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
-    User user;
-    ArrayList<Forum_Post> list;
-    Context context;
-    int layout_id;
+    final User user;
+    final ArrayList<Forum_Post> list;
+    final Context context;
+    final int layout_id;
     View.OnClickListener onClickListener;
 
     public ForumAdapter(User user, ArrayList<Forum_Post> list, Context context, int layout_id) {
@@ -60,10 +60,13 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
         return list.size();
     }
 
+    /** @noinspection deprecation*/
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        Context context;
-        TextView title, discussion, comments;
-        ImageView imageView;
+        final Context context;
+        final TextView title;
+        final TextView discussion;
+        final TextView comments;
+        final ImageView imageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

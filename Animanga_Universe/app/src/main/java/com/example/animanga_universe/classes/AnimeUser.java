@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
+/** @noinspection deprecation*/
 public class AnimeUser implements Serializable, Parcelable {
     Anime anime;
     String episodios;

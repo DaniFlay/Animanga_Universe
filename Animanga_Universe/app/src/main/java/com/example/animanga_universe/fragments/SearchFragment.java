@@ -1,18 +1,13 @@
 package com.example.animanga_universe.fragments;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.StrictMode;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.MultiAutoCompleteTextView;
+import android.widget.TextView;
 
 import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.adapters.SearchAdapter;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.classes.Anime;
 import com.example.animanga_universe.classes.Manga;
-import com.example.animanga_universe.classes.User;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
@@ -51,7 +45,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
     TabLayout tabLayout;
     RecyclerView recyclerView;
     CollectionReference cr;
-    User user;
     String info, rating, nombre, busqueda, query;
     AppCompatImageButton boton;
     Drawable drawable;
@@ -60,6 +53,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
     RecyclerView.LayoutManager layoutManager;
     MainMenu mainMenu;
     ImageButton search;
+    TextView empty;
 
     String[] animeNames, mangaNames;
 
@@ -104,9 +98,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         busqueda = "Anime";
-        view = inflater.inflate(R.layout.fragment_buscar, container, false);
+        view = inflater.inflate(R.layout.fragment_search, container, false);
         search = view.findViewById(R.id.searchButton);
-
+        empty= view.findViewById(R.id.empty);
         linearLayout= view.findViewById(R.id.linearSearch);
         search.setOnClickListener(this);
         searchView = view.findViewById(R.id.autocomplete);
@@ -118,8 +112,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
         mainMenu = (MainMenu) getActivity();
         animeNames = mainMenu.getAnimesNames();
         mangaNames = mainMenu.getMangaNames();
-        Log.d("length1", animeNames.length + "");
-        Log.d("length2", mangaNames.length + "");
         ArrayAdapter<String> adapterAnime = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, animeNames);
         ArrayAdapter<String> adapterManga = new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, mangaNames);
         searchView.setAdapter(adapterAnime);
@@ -156,8 +148,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
     public void onClick(View v) {
         linearLayout.clearFocus();
         if (v.getId() == search.getId()) {
-
-
             animes.clear();
             nombre = "";
             query = searchView.getText().toString();
@@ -200,13 +190,30 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
                                 if (!animes.contains(e)) {
                                     animes.add(e);
                                 }
-                                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), animes, getContext(), R.layout.element_busqueda, busqueda);
-
+                                mainMenu.setAnimes(animes);
+                                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), animes, getContext(), R.layout.element_search, busqueda);
+                                searchAdapter.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        int posicion= recyclerView.getChildAdapterPosition(v);
+                                        mainMenu.getToggle().setVisibility(View.VISIBLE);
+                                        ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
+                                        ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
+                                    }
+                                });
                                 recyclerView.setAdapter(searchAdapter);
                                 layoutManager = new LinearLayoutManager(getContext());
                                 recyclerView.setLayoutManager(layoutManager);
+
                             }
 
+                        }
+                        if(animes.isEmpty()){
+                            empty.setVisibility(View.VISIBLE);
+                            empty.setText("No hay resultados encontrados");
+                        }
+                        else {
+                            empty.setText("");
                         }
 
 
@@ -244,8 +251,17 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
                                 if (!animes.contains(e)) {
                                     animes.add(e);
                                 }
-                                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), animes, getContext(), R.layout.element_busqueda, busqueda);
-
+                                mainMenu.setMangas(animes);
+                                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), animes, getContext(), R.layout.element_search, busqueda);
+                                searchAdapter.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        int posicion= recyclerView.getChildAdapterPosition(v);
+                                        mainMenu.getToggle().setVisibility(View.VISIBLE);
+                                        ((MainMenu)getActivity()).setManga(mainMenu.getMangas().get(posicion).getManga());
+                                        ((MainMenu)getActivity()).reemplazarFragment(new MangaDescriptionFragment());
+                                    }
+                                });
                                 recyclerView.setAdapter(searchAdapter);
                                 layoutManager = new LinearLayoutManager(getContext());
                                 recyclerView.setLayoutManager(layoutManager);
@@ -253,11 +269,19 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
 
 
                         }
+                        if(animes.isEmpty()){
+                            empty.setVisibility(View.VISIBLE);
+                            empty.setText("No hay resultados encontrados");
+                        }
+                        else {
+                            empty.setText("");
+                        }
 
 
                     }
                 });
             }
+
         }
     }
 

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -74,6 +75,7 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
     ArrayList<AnimeUser> animes;
     ArrayList<MangaUser> mangas;
     Boolean complete;
+    ImageView back;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -109,11 +111,14 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_editar_item, container, false);
+        view = inflater.inflate(R.layout.fragment_edit_item, container, false);
         complete = true;
         animes = new ArrayList<>();
         mangas = new ArrayList<>();
         mainMenu = (MainMenu) getActivity();
+        back= mainMenu.getBack();
+        back.setVisibility(View.VISIBLE);
+        back.setOnClickListener(this);
         estadoAnime = "";
         user = Objects.requireNonNull(mainMenu).devolverUser();
         e = mainMenu.getEncapsulador();
@@ -121,7 +126,6 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
         ref = FirebaseDatabase.getInstance().getReference("Usuario");
         totales = view.findViewById(R.id.episodiosTotales);
         estado = "";
-        mainMenu.switchButton();
         progreso = view.findViewById(R.id.progreso);
         animeUser = new AnimeUser();
         mangaUser = new MangaUser();
@@ -416,11 +420,23 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
             Snackbar.make(v, getString(R.string.cambiosGuardados), Snackbar.LENGTH_INDEFINITE)
                     .setAction(getString(R.string.ok), v1 -> {
                        mainMenu.tab();
-                        mainMenu.switchButton();
+                        mainMenu.getSwitchButton().setVisibility(View.GONE);
                         String username= user.getUsername();
                         mainMenu.reemplazarFragment(new RankingFragment());
                         mainMenu.guardarUsuarioNuevo(user, user.getUsername());
                     }).show();
+
+        } else if (v.getId()==back.getId()) {
+            back.setVisibility(View.GONE);
+            int id = mainMenu.getNavBarId();
+            if(id== R.id.ranking){
+                mainMenu.reemplazarFragment(new RankingFragment());
+            } else if (id== R.id.buscar) {
+                mainMenu.reemplazarFragment(new SearchFragment());
+            } else if (id== R.id.listas) {
+                mainMenu.reemplazarFragment(new AnimeListFragment());
+            }
+
 
         }
     }

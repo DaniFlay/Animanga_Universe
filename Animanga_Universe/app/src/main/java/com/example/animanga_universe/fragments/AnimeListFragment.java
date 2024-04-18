@@ -12,6 +12,7 @@ import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
@@ -42,7 +43,7 @@ public class AnimeListFragment extends Fragment {
     Drawable drawable;
     RecyclerView recyclerView;
 
-
+    TextView empty;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -84,7 +85,8 @@ public class AnimeListFragment extends Fragment {
             user = activity.devolverUser();
         }
 
-        view = inflater.inflate(R.layout.fragment_anime_listas, container, false);
+        view = inflater.inflate(R.layout.fragment_lists_anime, container, false);
+        empty= view.findViewById(R.id.empty);
         tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.todos));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.viendo));
@@ -128,15 +130,21 @@ public class AnimeListFragment extends Fragment {
                     animes.add(e);
                 }
             }
+            if(animes.isEmpty()){
+                empty.setVisibility(View.VISIBLE);
+            }
+            else {
+                empty.setText("");
+            }
                 recyclerView = view.findViewById(R.id.recycler_view);
 
-                listAdapter = new ListAdapter(user, animes, getContext(), R.layout.element_lista_usuario,"Anime" );
+                listAdapter = new ListAdapter(user, animes, getContext(), R.layout.element_list_user,"Anime" );
                 listAdapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int posicion= recyclerView.getChildAdapterPosition(v);
-                        activity.switchButton();
-                        activity.toggleState();
+                        activity.getSwitchButton().setVisibility(View.GONE);
+                        activity.getToggle().setVisibility(View.VISIBLE);
                         activity.setAnime(animes.get(posicion).getAnime());
                         activity.reemplazarFragment(new AnimeDescriptionFragment());
                     }
@@ -334,13 +342,13 @@ public class AnimeListFragment extends Fragment {
                         }
                         recyclerView = view.findViewById(R.id.recycler_view);
 
-                        listAdapter = new ListAdapter(user, animes, getContext(), R.layout.element_lista_usuario,"Anime" );
+                        listAdapter = new ListAdapter(user, animes, getContext(), R.layout.element_list_user,"Anime" );
                         listAdapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 int posicion= recyclerView.getChildAdapterPosition(v);
-                                activity.changeToggle();
-                                activity.switchButton();
+                                activity.getToggle().setVisibility(View.VISIBLE);
+                                activity.getSwitchButton().setVisibility(View.GONE);
                                 activity.setAnime(animes.get(posicion).getAnime());
                                 activity.reemplazarFragment(new AnimeDescriptionFragment());
                             }
@@ -348,7 +356,9 @@ public class AnimeListFragment extends Fragment {
                         recyclerView.setAdapter(listAdapter);
                         layoutManager = new LinearLayoutManager(getContext());
                         recyclerView.setLayoutManager(layoutManager);
-
+                        if(!animes.isEmpty()){
+                            empty.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
@@ -366,7 +376,9 @@ public class AnimeListFragment extends Fragment {
 
 
         }
-
+        else {
+            empty.setVisibility(View.VISIBLE);
+        }
         return view;
     }
 }

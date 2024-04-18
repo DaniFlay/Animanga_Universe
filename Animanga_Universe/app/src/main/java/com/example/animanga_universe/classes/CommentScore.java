@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Objects;
 
+/** @noinspection deprecation */
 public class CommentScore implements Serializable, Parcelable {
     User user;
     Comment comment;
@@ -38,7 +39,7 @@ public class CommentScore implements Serializable, Parcelable {
         return 0;
     }
 
-    public static final Creator<CommentScore> CREATOR = new Creator<CommentScore>() {
+    public static final Creator<CommentScore> CREATOR = new Creator<>() {
         @Override
         public CommentScore createFromParcel(Parcel in) {
             return new CommentScore(in);
@@ -63,27 +64,8 @@ public class CommentScore implements Serializable, Parcelable {
         return Objects.hash(user, comment);
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Comment getComment() {
-        return comment;
-    }
-
-    public void setComment(Comment comment) {
-        this.comment = comment;
-    }
-
     public boolean isLike() {
         return like;
     }
 
-    public void setLike(boolean like) {
-        this.like = like;
-    }
 }

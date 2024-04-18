@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
@@ -30,46 +31,28 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     View view;
     User user;
     MainMenu mainMenu;
-
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    ImageView back;
 
 
     public EditProfileFragment() {
 
     }
-    /**
-     * Se crea la instancia del fragment
-     * @param param1 Parameter 1 creado automáticamente
-     * @param param2 Parameter 2 creado automáticamente
-     * @return Nueva instancia del Fragment
-     */
-    public static EditProfileFragment newInstance(String param1, String param2) {
-        EditProfileFragment fragment = new EditProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_editar_perfil, container, false);
+        view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
         mainMenu = (MainMenu) getActivity();
         user= Objects.requireNonNull(mainMenu).devolverUser();
+        back= mainMenu.getBack();
+        back.setVisibility(View.VISIBLE);
+        back.setOnClickListener(this);
         usuario= view.findViewById(R.id.user);
         correo= view.findViewById(R.id.correo);
         fecha= view.findViewById(R.id.fechaNacimiento);
@@ -125,6 +108,9 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             },anyo,mes,dia);
             elegirFecha.getDatePicker().setFirstDayOfWeek(Calendar.MONDAY);
             elegirFecha.show();
+        } else if (v.getId() == back.getId()){
+            mainMenu.reemplazarFragment(new ProfileFragment());
+            back.setVisibility(View.GONE);
         }
 
     }

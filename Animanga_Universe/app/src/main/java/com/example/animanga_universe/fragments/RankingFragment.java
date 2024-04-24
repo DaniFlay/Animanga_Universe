@@ -31,6 +31,7 @@ import com.google.firebase.firestore.Query;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Es el fragment "principal" que aparece al arrancar la actividad, aparecen los rankings de animes y mangas, los 10 animes y mangas mejor valorados
@@ -102,14 +103,14 @@ public class RankingFragment extends Fragment {
                 public void onTabSelected(TabLayout.Tab tab) {
                     if (tab.getPosition() == 0) {
                         busqueda = "Anime";
-                        searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_search, busqueda);
+                        searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimesRanking(), getContext(), R.layout.element_search, busqueda);
                         recyclerView.setAdapter(searchAdapter);
                         searchAdapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 int posicion= recyclerView.getChildAdapterPosition(v);
                                 mainMenu.getToggle().setVisibility(View.VISIBLE);
-                                ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
+                                ((MainMenu)getActivity()).setAnime(mainMenu.getAnimesRanking().get(posicion).getAnime());
                                 ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
                             }
                         });
@@ -117,13 +118,13 @@ public class RankingFragment extends Fragment {
                         recyclerView.setLayoutManager(layoutManager);
                     } else if (tab.getPosition() == 1) {
                         busqueda = "Manga";
-                        searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getMangas(), getContext(), R.layout.element_search, busqueda);
+                        searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getMangasRanking(), getContext(), R.layout.element_search, busqueda);
                         searchAdapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 int posicion= recyclerView.getChildAdapterPosition(v);
                                 mainMenu.getToggle().setVisibility(View.VISIBLE);
-                                ((MainMenu)getActivity()).setManga(mainMenu.getMangas().get(posicion).getManga());
+                                ((MainMenu)getActivity()).setManga(mainMenu.getMangasRanking().get(posicion).getManga());
                                 ((MainMenu)getActivity()).reemplazarFragment(new MangaDescriptionFragment());
                             }
                         });
@@ -147,7 +148,8 @@ public class RankingFragment extends Fragment {
             recyclerView = view.findViewById(R.id.recycler_view);
             //Se realiza la búsqueda en la base de datos de los anines, ordenados en el orden descendiente, y se sacan los 10 primeros, y luego se hace el relleno
             //del encapsulador para mostrar la lista
-            if (mainMenu.getAnimes().isEmpty()) {
+            if (mainMenu.getAnimesRanking().isEmpty()) {
+
                 cr = FirebaseFirestore.getInstance().collection(busqueda);
                 cr.orderBy("score", Query.Direction.DESCENDING).limit(10).addSnapshotListener((value, error) -> {
                     if (value != null) {
@@ -155,12 +157,12 @@ public class RankingFragment extends Fragment {
                             Anime a = d.toObject(Anime.class);
                             String anyo = "";
                             if (a != null) {
-                                if (a.getPremieredYear() != null && !a.getPremieredYear().equals("")) {
+                                if (a.getPremieredYear() != null && !a.getPremieredYear().trim().equals("")) {
                                     anyo = a.getPremieredYear();
                                 } else {
                                     anyo = "?";
                                 }
-                                if (!a.getEpisodes().equals("")) {
+                                if (!a.getEpisodes().trim().equals("")) {
                                     info = a.getEpisodes() + " ep, " + anyo;
                                 } else {
                                     info = "? ep, " + anyo;
@@ -174,16 +176,16 @@ public class RankingFragment extends Fragment {
                                 }
                                 rating = String.valueOf(a.getScore());
                                 Encapsulator e = new Encapsulator(a, drawable, R.color.pordefecto, a.getTitle(), info, rating);
-                                if (!mainMenu.getAnimes().contains(e)) {
-                                    mainMenu.getAnimes().add(e);
+                                if (!mainMenu.getAnimesRanking().contains(e)) {
+                                    mainMenu.getAnimesRanking().add(e);
                                 }
-                                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_search, busqueda);
+                                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimesRanking(), getContext(), R.layout.element_search, busqueda);
                                 searchAdapter.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         int posicion= recyclerView.getChildAdapterPosition(v);
                                         mainMenu.getToggle().setVisibility(View.VISIBLE);
-                                        ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
+                                        ((MainMenu)getActivity()).setAnime(mainMenu.getAnimesRanking().get(posicion).getAnime());
                                         ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
                                     }
                                 });
@@ -198,13 +200,13 @@ public class RankingFragment extends Fragment {
                 });
 
             }else {
-                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimes(), getContext(), R.layout.element_search, busqueda);
+                searchAdapter = new SearchAdapter(mainMenu.devolverUser(), mainMenu.getAnimesRanking(), getContext(), R.layout.element_search, busqueda);
                 searchAdapter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int posicion= recyclerView.getChildAdapterPosition(v);
                         mainMenu.getToggle().setVisibility(View.VISIBLE);
-                        ((MainMenu)getActivity()).setAnime(mainMenu.getAnimes().get(posicion).getAnime());
+                        ((MainMenu)getActivity()).setAnime(mainMenu.getAnimesRanking().get(posicion).getAnime());
                         ((MainMenu)getActivity()).reemplazarFragment(new AnimeDescriptionFragment());
                     }
                 });
@@ -215,7 +217,7 @@ public class RankingFragment extends Fragment {
                 cargando.setText("");
             }
             //Se hace el mismo proceso con los mangas
-            if (mainMenu.getMangas().isEmpty()) {
+            if (mainMenu.getMangasRanking().isEmpty()) {
                 cr = FirebaseFirestore.getInstance().collection("Manga");
                 cr.orderBy("score", Query.Direction.DESCENDING).limit(10).addSnapshotListener((value, error) -> {
                     if (value != null) {
@@ -242,8 +244,8 @@ public class RankingFragment extends Fragment {
                                 }
                                 rating = String.valueOf(m.getScore());
                                 Encapsulator e = new Encapsulator(m, drawable, R.color.pordefecto, m.getTitle(), info, rating);
-                                if (!mainMenu.getMangas().contains(e)) {
-                                    mainMenu.getMangas().add(e);
+                                if (!mainMenu.getMangasRanking().contains(e)) {
+                                    mainMenu.getMangasRanking().add(e);
                                 }
                             }
                         }

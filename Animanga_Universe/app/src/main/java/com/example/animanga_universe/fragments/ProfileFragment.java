@@ -15,7 +15,17 @@ import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.classes.AnimeUser;
 import com.example.animanga_universe.classes.MangaUser;
 import com.example.animanga_universe.classes.User;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
 
 /**
  * El Fragment del Perfil, que muestra la información relevante del usuario y donde se puede cambiar la contraseña o editar el perfil
@@ -23,12 +33,17 @@ import com.google.android.material.tabs.TabLayout;
  * @noinspection ALL
  */
 public class ProfileFragment extends Fragment implements View.OnClickListener {
-    TextView usuario, sexo, fechaNac, fechaReg, correo, editarPerfil, cambiarContraseña, todos, enProceso, completado, dejado, enLista, enEspera, viendo;
+    TextView usuario, sexo, fechaNac, fechaReg, correo, editarPerfil, cambiarContraseña, todos, enProceso, completado, dejado, enLista, enEspera, viendo, anyos, meses,semanas, dias,horas, minutos, media ;
     TabLayout tabLayout;
-    TableLayout tableLayout;
+    TableLayout tableLayout, tableLayoutTime;
     User user;
     int counter;
     MainMenu mainMenu;
+    PieChart pieChart;
+    PieData pieData;
+    PieDataSet pieDataSet;
+    ArrayList<PieEntry> pieEntriesAnime;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -72,8 +87,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         todos=view.findViewById(R.id.todos);
        counter=0;
+        pieEntriesAnime= new ArrayList<>();
+       anyos= view.findViewById(R.id.anyos);
+       meses= view.findViewById(R.id.meses);
+       semanas= view.findViewById(R.id.semanas);
+       dias= view.findViewById(R.id.dias);
+       horas= view.findViewById(R.id.horas);
+       minutos= view.findViewById(R.id.minutos);
+       media= view.findViewById(R.id.media);
        completado= view.findViewById(R.id.completados);
-       enProceso= view.findViewById(R.id.enproceso);
+       enProceso= view.findViewById(R.id.viendo);
        dejado= view.findViewById(R.id.dejado);
        enLista= view.findViewById(R.id.enlista);
        enEspera= view.findViewById(R.id.enespera);
@@ -103,10 +126,31 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         editarPerfil.setOnClickListener(this);
         cambiarContraseña.setOnClickListener(this);
         viendo.setText(R.string.viendo);
+        pieChart= view.findViewById(R.id.pieChart);
         if(user.getAnimes()!=null){
             todos.setText(String.valueOf(user.getAnimes().size()));
             rellenarAnimes();
         }
+        if(user.getAnimes().size()!=0){
+            pieChart.setVisibility(View.VISIBLE);
+            getDataAnime();
+
+            pieDataSet= new PieDataSet(pieEntriesAnime, "Animes");
+
+            pieDataSet.setColors(getResources().getColor(R.color.enProceso),getResources().getColor(R.color.dejado),getResources().getColor(R.color.enlista),getResources().getColor(R.color.espera),getResources().getColor(R.color.completado));
+            pieDataSet.setValueTextSize(18f);
+            pieDataSet.setValueFormatter(new LargeValueFormatter());
+            pieData= new PieData(pieDataSet);
+            pieChart.setData(pieData);
+
+            pieChart.getDescription().setEnabled(false);
+            pieChart.animateY(1300);
+        }else {
+            pieChart.setVisibility(View.GONE);
+        }
+        convertMinutes(timeAnime());
+
+
 //Dependiedo del tab seleccionado se muestran las estadísticas de los animes o de los mangas por sus estados
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -115,11 +159,46 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 if (tab.getPosition() == 0) {
                     if(user.getAnimes()!=null){
                         rellenarAnimes();
+                        convertMinutes(timeAnime());
+                        if(user.getAnimes().size()!=0){
+                            pieChart.setVisibility(View.VISIBLE);
+                            getDataAnime();
+
+                            pieDataSet= new PieDataSet(pieEntriesAnime, "Animes");
+
+                            pieDataSet.setColors(getResources().getColor(R.color.enProceso),getResources().getColor(R.color.dejado),getResources().getColor(R.color.enlista),getResources().getColor(R.color.espera),getResources().getColor(R.color.completado));
+                            pieDataSet.setValueTextSize(18f);
+                            pieDataSet.setValueFormatter(new LargeValueFormatter());
+                            pieData= new PieData(pieDataSet);
+                            pieChart.setData(pieData);
+
+                            pieChart.getDescription().setEnabled(false);
+                            pieChart.animateY(1300);
+                        }else {
+                            pieChart.setVisibility(View.GONE);
+                        }
+
                     }
 
                 } else if (tab.getPosition() == 1) {
                         if(user.getMangas()!=null){
                             rellenarMangas();
+                            convertMinutes(timeManga());
+                            if(user.getMangas().size()!=0){
+                                pieChart.setVisibility(View.VISIBLE);
+                                getDataAnime();
+                                pieDataSet= new PieDataSet(pieEntriesAnime, "Mangas");
+                                pieDataSet.setColors(getResources().getColor(R.color.enProceso),getResources().getColor(R.color.dejado),getResources().getColor(R.color.enlista),getResources().getColor(R.color.espera),getResources().getColor(R.color.completado));
+                                pieDataSet.setValueTextSize(18f);
+                                pieDataSet.setValueFormatter(new LargeValueFormatter());
+                                pieData= new PieData(pieDataSet);
+                                pieChart.setData(pieData);
+                                pieChart.getDescription().setEnabled(false);
+                                pieChart.animateY(1300);
+                            }else {
+                                pieChart.setVisibility(View.GONE);
+                            }
+
                         }
                 }
             }
@@ -154,6 +233,7 @@ if(v.getId()==editarPerfil.getId()){
      * de cada estado
      */
     public void rellenarAnimes(){
+        counter=0;
         viendo.setText(R.string.viendo);
         todos.setText(String.valueOf(user.getAnimes().size()));
         for(AnimeUser a: user.getAnimes()){
@@ -236,4 +316,76 @@ if(v.getId()==editarPerfil.getId()){
             enProceso.setText(String.valueOf(counter));
             counter=0;
         }
+        public void getDataAnime(){
+        pieEntriesAnime.clear();
+        if(!viendo.getText().toString().equals("0")){
+            if(tabLayout.getSelectedTabPosition()==0){
+                pieEntriesAnime.add(new PieEntry(Float.valueOf(viendo.getText().toString()),getString(R.string.viendo)));
+            }
+            else {
+                pieEntriesAnime.add(new PieEntry(Float.valueOf(viendo.getText().toString()),getString(R.string.leyendo)));
+            }
+        }
+        if(!dejado.getText().toString().equals("0")) {
+            pieEntriesAnime.add(new PieEntry(Float.valueOf(dejado.getText().toString()), getString(R.string.dejado)));
+        }
+        if(!enLista.getText().toString().equals("0")) {
+                pieEntriesAnime.add(new PieEntry(Float.valueOf(enLista.getText().toString()), getString(R.string.planeado)));
+        }
+        if(!enEspera.getText().toString().equals("0")) {
+            pieEntriesAnime.add(new PieEntry(Float.valueOf(enEspera.getText().toString()), getString(R.string.enespera)));
+        }
+        if(!completado.getText().toString().equals("0")) {
+                pieEntriesAnime.add(new PieEntry(Integer.parseInt(completado.getText().toString()), getString(R.string.completado)));
+            }
     }
+    public void convertMinutes(int minutes){
+        int minutesPerHour =60;
+        int minutesPerDay = 1440;
+        int minutesPerWeek = 10080;
+        int minutesPerMonth = 43800;
+        int minutesPerYear = 525600;
+        int years = minutes / minutesPerYear;
+        int remainingMinutes = minutes % minutesPerYear;
+        int months = remainingMinutes / minutesPerMonth;
+        remainingMinutes %= minutesPerMonth;
+        int weeks = remainingMinutes / minutesPerWeek;
+        remainingMinutes %= minutesPerWeek;
+        int days = remainingMinutes / minutesPerDay;
+        remainingMinutes %= minutesPerDay;
+        int hours = remainingMinutes / minutesPerHour;
+        remainingMinutes %= minutesPerHour;
+        anyos.setText(String.valueOf(years));
+        meses.setText(String.valueOf(months));
+        semanas.setText(String.valueOf(weeks));
+        dias.setText(String.valueOf(days));
+        horas.setText(String.valueOf(hours));
+        minutos.setText(String.valueOf(remainingMinutes));
+    }
+    public int timeAnime(){
+        int minutes=0;
+        for(AnimeUser a: user.getAnimes()){
+            if(a.getAnime().getDuration().contains("hr")){
+                minutes+=Integer.parseInt(a.getAnime().getDuration().substring(5,7));
+                for(int i=0; i<Integer.parseInt(a.getAnime().getDuration().substring(0,1));i++){
+                    minutes+=60;
+                }
+            }else {
+                for(int i=0; i<Integer.parseInt(a.getEpisodios());i++){
+                    minutes+=Integer.parseInt(a.getAnime().getDuration().substring(0,2));
+                }
+            }
+
+        }
+        return minutes;
+    }
+    public int timeManga(){
+        int minutes=0;
+        for(MangaUser m: user.getMangas()){
+            for(int i=0; i<Integer.parseInt(m.getCapitulos());i++){
+                minutes+=22;
+            }
+        }
+        return minutes;
+    }
+        }

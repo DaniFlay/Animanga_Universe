@@ -128,5 +128,7 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
         ref= FirebaseDatabase.getInstance().getReference("Forum_Posts");
         ref.push().setValue(forumPost);
         ((MainMenu) requireActivity()).reemplazarFragment(new ForumsFragment());
+        ((MainMenu)requireActivity()).getPosts().add(forumPost);
+        ((MainMenu)requireActivity()).setPosts(((MainMenu)requireActivity()).getPosts());
     }
 }

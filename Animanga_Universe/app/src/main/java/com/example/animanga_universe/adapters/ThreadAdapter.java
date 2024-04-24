@@ -94,7 +94,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                 comment.setLikes(comment.getLikes()-1);
                 comments.set(position,comment);
                 forumPost.setComments(comments);
-                ((MainMenu)context).CommentScoreRemove(new CommentScore(user,comment,true));
+                ((MainMenu)context).commentScoreRemove(new CommentScore(user,comment,true));
             }
             if(Objects.equals(holder.dislike.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))) {
                 holder.dislike.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));
@@ -119,7 +119,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                 comment.setDislikes(comment.getDislikes()-1);
                 comments.set(position,comment);
                 forumPost.setComments(comments);
-                ((MainMenu)context).CommentScoreRemove(new CommentScore(user,comment,true));
+                ((MainMenu)context).commentScoreRemove(new CommentScore(user,comment,true));
             }
             if(Objects.equals(holder.like.getImageTintList(), ColorStateList.valueOf(context.getResources().getColor(R.color.tangerine)))) {
                 holder.like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));

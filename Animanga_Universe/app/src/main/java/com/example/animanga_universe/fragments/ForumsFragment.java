@@ -69,5 +69,4 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         ((MainMenu) requireActivity()).reemplazarFragment(new NewForumPostFragment());
     }
-
 }

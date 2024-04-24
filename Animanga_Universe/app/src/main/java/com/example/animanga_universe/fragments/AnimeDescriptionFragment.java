@@ -92,6 +92,7 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
         fab.setOnClickListener(this);
         toggleButton= menu.getToggle();
         toggleButton.setVisibility(View.VISIBLE);
+        toggleButton.setChecked(false);
         rellenoInformacion2(anime);
         TranslatorOptions options= new TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
@@ -151,6 +152,8 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
             }
             if (anime != null && !anime.getEpisodes().equals("")) {
                 info = anime.getEpisodes() + " ep, " + year;
+            }else {
+                info= "? ep, "+year;
             }
             for(AnimeUser animeUser: user.getAnimes()){
                 if(animeUser.getAnime().equals(anime)){
@@ -211,7 +214,7 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
      * @return String de los episodios
      */
     public String episodios(Anime a){
-        if(a.getEpisodes()==null||a.getEpisodes().equals("")){
+        if(a.getEpisodes()==null||a.getEpisodes().trim().equals("")){
             return "?";
         }else {
             return a.getEpisodes();
@@ -291,6 +294,7 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
         imageView.setImageDrawable(drawable);
         estado.setText(a.getStatus());
         score.setText(a.getScore());
+
         episodios.setText(episodios(a));
         duracion.setText(conversionEpisodios(a));
         titulo.setText(a.getTitle());

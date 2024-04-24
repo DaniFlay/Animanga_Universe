@@ -111,4 +111,12 @@
     <string name="realiza_una_busqueda">Realiza una búsqueda</string>
     <string name="floating_button">Floating button</string>
     <string name="image_button">Image button</string>
+    <string name="media">Nota Media: </string>
+    <string name="tiempo">Tiempo empleado</string>
+    <string name="anyos">Años</string>
+    <string name="meses">Meses</string>
+    <string name="semanas">Semanas</string>
+    <string name="dias">Días</string>
+    <string name="horas">Horas</string>
+    <string name="minutos">Minutos</string>
 </resources>

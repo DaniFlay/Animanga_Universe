@@ -85,6 +85,7 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         fab.setOnClickListener(this);
         toggleButton= menu.getToggle();
         toggleButton.setVisibility(View.VISIBLE);
+        toggleButton.setChecked(false);
         rellenoInformacion2(manga);
         TranslatorOptions options= new TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)

@@ -168,12 +168,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
                             Anime a = d.toObject(Anime.class);
                             String anyo = "";
                             if (a != null) {
-                                if (a.getPremieredYear() != null && !a.getPremieredYear().equals("")) {
+                                if (a.getPremieredYear() != null && !a.getPremieredYear().trim().equals("")) {
                                     anyo = a.getPremieredYear();
                                 } else {
                                     anyo = "?";
                                 }
-                                if (!a.getEpisodes().equals("")) {
+                                if (!a.getEpisodes().trim().equals("")) {
                                     info = a.getEpisodes() + " ep, " + anyo;
                                 } else {
                                     info = "? ep, " + anyo;

@@ -50,7 +50,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Forum_Post f= (Forum_Post) list.get(position);
+        Forum_Post f= list.get(position);
         holder.representation(f);
 
     }
@@ -67,6 +67,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
         final TextView discussion;
         final TextView comments;
         final ImageView imageView;
+        final TextView date;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,6 +76,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
             discussion= itemView.findViewById(R.id.topic);
             comments= itemView.findViewById(R.id.comments);
             imageView= itemView.findViewById(R.id.imagen);
+            date= itemView.findViewById(R.id.date);
         }
         @SuppressLint("UseCompatLoadingForDrawables")
         public void representation(Forum_Post f){
@@ -101,6 +103,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
                 comments.setText(String.valueOf(f.getComments().size()-1));
             }
             imageView.setImageDrawable(drawable);
+            date.setText(f.getComments().get(0).getDate());
 
         }
     }

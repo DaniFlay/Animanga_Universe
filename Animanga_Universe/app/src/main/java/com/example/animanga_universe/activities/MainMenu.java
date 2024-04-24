@@ -60,6 +60,8 @@ public class MainMenu extends AppCompatActivity {
     String busqueda;
     ArrayList<Encapsulator> animes;
     ArrayList<Encapsulator> mangas;
+    ArrayList<Encapsulator> animesRanking;
+    ArrayList<Encapsulator> mangasRanking;
     ArrayList<Forum_Post> posts;
     Anime anime;
     Manga manga;
@@ -79,7 +81,8 @@ public class MainMenu extends AppCompatActivity {
         helper= new Helper(this, "bbdd",null,1);
         db= helper.getWritableDatabase();
         user= getIntent().getParcelableExtra("usuario");
-
+        animesRanking= new ArrayList<>();
+        mangasRanking= new ArrayList<>();
         binding= ActivityMainMenuBinding.inflate(getLayoutInflater());
         allMangas= new ArrayList<>();
         binding.toggle.setVisibility(View.GONE);
@@ -99,12 +102,14 @@ public class MainMenu extends AppCompatActivity {
             if(id==R.id.ranking){
                 setToolbar();
                 updateThread(forumPost);
+                binding.back.setVisibility(View.GONE);
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new RankingFragment());
                 binding.toggle.setVisibility(View.GONE);
             }else if(id== R.id.forums){
                 setToolbar();
                 updateThread(forumPost);
+                binding.back.setVisibility(View.GONE);
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new ForumsFragment());
                 binding.toggle.setVisibility(View.GONE);
@@ -112,6 +117,7 @@ public class MainMenu extends AppCompatActivity {
             }else if(id== R.id.buscar){
                 setToolbar();
                 updateThread(forumPost);
+                binding.back.setVisibility(View.GONE);
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new SearchFragment());
                 binding.toggle.setVisibility(View.GONE);
@@ -119,6 +125,7 @@ public class MainMenu extends AppCompatActivity {
             } else if (id== R.id.listas) {
                 setToolbar();
                 updateThread(forumPost);
+                binding.back.setVisibility(View.GONE);
                 binding.switchButton.setVisibility(View.VISIBLE);
                 binding.switchButton.setChecked(false);
                 binding.toggle.setVisibility(View.GONE);
@@ -146,6 +153,7 @@ public class MainMenu extends AppCompatActivity {
                 });
             } else if (id==R.id.perfil) {
                 setToolbar();
+                binding.back.setVisibility(View.GONE);
                 updateThread(forumPost);
                 binding.switchButton.setVisibility(View.GONE);
                 reemplazarFragment(new ProfileFragment());
@@ -430,7 +438,7 @@ public void commentScore(CommentScore cs){
             }
         });
 }
-public void CommentScoreRemove(CommentScore cs){
+public void commentScoreRemove(CommentScore cs){
         ref= FirebaseDatabase.getInstance().getReference("CommentScore");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -486,5 +494,20 @@ public void fillAnimes(ArrayList<String> animes){
     }
     public int getNavBarId(){
         return binding.bottonNavigationView.getSelectedItemId();
+    }
+    public void setPosts(ArrayList<Forum_Post> posts){
+        this.posts= posts;
+    }
+    public void setAnimesRanking(ArrayList<Encapsulator> animes){
+        animesRanking=animes;
+    }
+    public ArrayList<Encapsulator> getAnimesRanking(){
+        return animesRanking;
+    }
+    public void setMangasRanking(ArrayList<Encapsulator> mangas){
+        mangasRanking=mangas;
+    }
+    public ArrayList<Encapsulator> getMangasRanking(){
+        return mangasRanking;
     }
 }

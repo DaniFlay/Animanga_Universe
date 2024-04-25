@@ -73,4 +73,20 @@ public class MangaScore implements Serializable, Parcelable {
         dest.writeParcelable(manga, flags);
         dest.writeParcelable(user, flags);
     }
+
+    public void setNota(String nota) {
+        this.nota = nota;
+    }
+
+    public void setManga(Manga manga) {
+        this.manga = manga;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

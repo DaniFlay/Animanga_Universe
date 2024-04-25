@@ -143,7 +143,7 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
 
             toggleButton.setVisibility(View.GONE);
             menu.setBusqueda("Anime");
-            String dummy="", info="", year;
+            String dummy="", info, year;
             int progress=0;
             if (anime!=null&& anime.getPremieredYear() != null && !anime.getPremieredYear().equals("")) {
                 year = anime.getPremieredYear();

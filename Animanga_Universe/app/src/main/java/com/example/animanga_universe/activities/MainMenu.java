@@ -418,6 +418,7 @@ public void updateThread(Forum_Post forumPost){
 
 }
 public void commentScore(CommentScore cs){
+        Log.d("comment", cs.toString());
         ref= FirebaseDatabase.getInstance().getReference("CommentScore");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -52,6 +52,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.11.1")
     implementation(files("libs/core-12.1.0-javadoc.jar"))
     implementation("com.google.firebase:firebase-config:21.6.3")
+    implementation("com.google.firebase:firebase-storage:20.3.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -59,4 +60,8 @@ dependencies {
     implementation ("com.google.firebase:firebase-ml-natural-language:22.0.1")
     implementation("com.google.mlkit:translate:17.0.2")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
+    implementation("com.github.bumptech.glide:glide:4.11.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
+    implementation("com.github.dhaval2404:imagepicker:2.1")
 }

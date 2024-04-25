@@ -77,6 +77,18 @@ public class Comment implements Serializable, Parcelable {
         dislikes = in.readInt();
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
     public static final Creator<Comment> CREATOR = new Creator<>() {
         @Override
         public Comment createFromParcel(Parcel in) {

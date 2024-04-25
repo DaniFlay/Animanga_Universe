@@ -60,6 +60,15 @@ public class CommentScore implements Serializable, Parcelable {
     }
 
     @Override
+    public String toString() {
+        return "CommentScore{" +
+                "user=" + user.getUsername() +
+                ", comment=" + comment.getComentario() +
+                ", like=" + like +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(user, comment);
     }
@@ -68,4 +77,23 @@ public class CommentScore implements Serializable, Parcelable {
         return like;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
+    }
 }

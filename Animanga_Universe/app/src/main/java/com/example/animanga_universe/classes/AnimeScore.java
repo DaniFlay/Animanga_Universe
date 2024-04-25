@@ -72,4 +72,19 @@ public class AnimeScore implements Serializable, Parcelable {
         return nota;
     }
 
+    public void setAnime(Anime anime) {
+        this.anime = anime;
+    }
+
+    public void setNota(String nota) {
+        this.nota = nota;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

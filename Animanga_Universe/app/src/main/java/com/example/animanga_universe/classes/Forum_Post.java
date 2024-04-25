@@ -91,6 +91,38 @@ public class Forum_Post implements Serializable, Parcelable {
         }
     };
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setAnime(Anime anime) {
+        this.anime = anime;
+    }
+
+    public void setManga(Manga manga) {
+        this.manga = manga;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public Anime getAnime() {
         return anime;
     }

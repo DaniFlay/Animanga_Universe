@@ -31,7 +31,8 @@ import com.google.firebase.firestore.Query;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
+
+import pl.droidsonroids.gif.GifImageView;
 
 /**
  * Es el fragment "principal" que aparece al arrancar la actividad, aparecen los rankings de animes y mangas, los 10 animes y mangas mejor valorados
@@ -40,7 +41,7 @@ import java.util.ArrayList;
  */
 public class RankingFragment extends Fragment {
     TextView cargando;
-    ProgressBar progressBar;
+    GifImageView progressBar;
     TabLayout tabLayout;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;

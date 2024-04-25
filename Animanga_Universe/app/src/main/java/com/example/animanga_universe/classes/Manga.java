@@ -139,6 +139,82 @@ public class Manga implements Serializable, Parcelable {
         this.volumes = volumes;
     }
 
+    public void setAuthors(String authors) {
+        this.authors = authors;
+    }
+
+    public void setChapters(Long chapters) {
+        this.chapters = chapters;
+    }
+
+    public void setDemographics(String demographics) {
+        this.demographics = demographics;
+    }
+
+    public Long getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Long favorites) {
+        this.favorites = favorites;
+    }
+
+    public void setGenres(String genres) {
+        this.genres = genres;
+    }
+
+    public String getMalId() {
+        return malId;
+    }
+
+    public void setMalId(String malId) {
+        this.malId = malId;
+    }
+
+    public void setMainPicture(String mainPicture) {
+        this.mainPicture = mainPicture;
+    }
+
+    public void setPublishedFrom(String publishedFrom) {
+        this.publishedFrom = publishedFrom;
+    }
+
+    public String getPublishedTo() {
+        return publishedTo;
+    }
+
+    public void setPublishedTo(String publishedTo) {
+        this.publishedTo = publishedTo;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTitleEnglish(String titleEnglish) {
+        this.titleEnglish = titleEnglish;
+    }
+
+    public void setTitleJapanese(String titleJapanese) {
+        this.titleJapanese = titleJapanese;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setVolumes(Long volumes) {
+        this.volumes = volumes;
+    }
+
     public String getAuthors() {
         return authors;
     }

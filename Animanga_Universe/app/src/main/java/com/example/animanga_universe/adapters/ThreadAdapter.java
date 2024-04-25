@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +88,7 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder
                 comment.setLikes(comment.getLikes()+1);
                 comments.set(position,comment);
                 forumPost.setComments(comments);
+                Log.d("infooooooooooooooooooooooooooooo", user.getUsername()+"    "+comment.getComentario());
                 ((MainMenu)context).commentScore(new CommentScore(user,comment,true));
             }else {
                 holder.like.setImageTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.black)));

@@ -94,6 +94,7 @@ public class MangaUser implements Serializable, Parcelable {
         this.nota = nota;
     }
 
+
     public MangaUser(Manga manga, String capitulos, String estado, String nota) {
         this.manga = manga;
         this.capitulos = capitulos;

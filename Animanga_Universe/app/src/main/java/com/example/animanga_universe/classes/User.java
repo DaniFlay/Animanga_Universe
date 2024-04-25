@@ -1,10 +1,13 @@
 package com.example.animanga_universe.classes;
 
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+
+import com.example.animanga_universe.R;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -20,8 +23,8 @@ public class User implements Serializable, Parcelable {
     String fecha_de_nacimiento;
     String fecha_de_registro;
     String rol;
-ArrayList<MangaUser> mangas;
-ArrayList<AnimeUser> animes;
+    ArrayList<MangaUser> mangas;
+    ArrayList<AnimeUser> animes;
 
     public User(String username, String password, String sexo, String correo, String fecha_de_nacimiento) {
         this.username = username;
@@ -35,22 +38,13 @@ ArrayList<AnimeUser> animes;
         this.rol = "Usuario";
         this.mangas = new ArrayList<>();
         this.animes = new ArrayList<>();
+
     }
 
     public User() {
     }
 
-// --Commented out by Inspection START (08/04/2024 14:24):
-//    public int getStability() {
-//        return stability;
-//    }
-// --Commented out by Inspection STOP (08/04/2024 14:24)
 
-// --Commented out by Inspection START (08/04/2024 14:24):
-//    public void setStability(int stability) {
-//        this.stability = stability;
-//    }
-// --Commented out by Inspection STOP (08/04/2024 14:24)
 
     protected User(Parcel in) {
         username = in.readString();
@@ -109,6 +103,18 @@ ArrayList<AnimeUser> animes;
         return username;
     }
 
+    public void setFecha_de_registro(String fecha_de_registro) {
+        this.fecha_de_registro = fecha_de_registro;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -149,23 +155,6 @@ ArrayList<AnimeUser> animes;
         return fecha_de_registro;
     }
 
-// --Commented out by Inspection START (08/04/2024 14:24):
-//    public void setFecha_de_registro(String fecha_de_registro) {
-//        this.fecha_de_registro = fecha_de_registro;
-//    }
-// --Commented out by Inspection STOP (08/04/2024 14:24)
-
-// --Commented out by Inspection START (08/04/2024 14:24):
-//    public String getRol() {
-//        return rol;
-//    }
-// --Commented out by Inspection STOP (08/04/2024 14:24)
-
-// --Commented out by Inspection START (08/04/2024 14:24):
-//    public void setRol(String rol) {
-//        this.rol = rol;
-//    }
-// --Commented out by Inspection STOP (08/04/2024 14:24)
 
     public ArrayList<MangaUser> getMangas() {
         return mangas;

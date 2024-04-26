@@ -1,13 +1,10 @@
 package com.example.animanga_universe.classes;
 
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-
-import com.example.animanga_universe.R;
 
 import java.io.Serializable;
 import java.time.LocalDate;

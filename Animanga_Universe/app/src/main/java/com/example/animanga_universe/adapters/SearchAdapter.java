@@ -18,6 +18,7 @@ import com.example.animanga_universe.classes.User;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.example.animanga_universe.fragments.EditItemFragment;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -89,7 +90,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         public void representacionElementos(Encapsulator e){
             titulo.setText(e.getTitulo());
             info.setText(e.getInfo());
-            rating.setText(e.getRating());
+            float newScore = Float.parseFloat(e.getRating());
+            DecimalFormat formato = new DecimalFormat("#.##");
+            newScore= Float.parseFloat(formato.format(newScore));
+            rating.setText(String.valueOf(newScore));
             imagen.setImageDrawable(e.getImagen());
             boton.setBackgroundColor(e.getColor());
         }

@@ -28,6 +28,7 @@ import com.google.mlkit.nl.translate.TranslatorOptions;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DecimalFormat;
 
 /**
  * Crea una instancia del fragment
@@ -224,7 +225,9 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         imageView.setImageDrawable(drawable);
         estado.setText(status);
         sinopsis.setText(sinop);
-        score.setText(String.valueOf(m.getScore()));
+        Double newScore = m.getScore();
+        DecimalFormat formato = new DecimalFormat("#.##");
+        score.setText(formato.format(newScore));
         capitulos.setText(capitulos(m));
         volumenes.setText(volumenes(m));
         titulo.setText(m.getTitle());
@@ -247,7 +250,9 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         }
         imageView.setImageDrawable(drawable);
         estado.setText(m.getStatus());
-        score.setText(String.valueOf(m.getScore()));
+        Double newScore = m.getScore();
+        DecimalFormat formato = new DecimalFormat("#.##");
+        score.setText(formato.format(newScore));
         capitulos.setText(capitulos(m));
         volumenes.setText(volumenes(m));
         titulo.setText(m.getTitle());

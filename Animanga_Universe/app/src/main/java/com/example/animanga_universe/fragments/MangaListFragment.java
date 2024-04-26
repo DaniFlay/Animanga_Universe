@@ -12,6 +12,7 @@ import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
@@ -41,6 +42,7 @@ public class MangaListFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     Drawable drawable;
     RecyclerView recyclerView;
+    TextView empty;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -83,6 +85,7 @@ public class MangaListFragment extends Fragment {
             user= mainMenu.devolverUser();
         }
         view = inflater.inflate(R.layout.fragment_lists_manga, container, false);
+        empty= view.findViewById(R.id.empty);
         tabLayout = view.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.todos));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.leyendo));
@@ -94,6 +97,7 @@ public class MangaListFragment extends Fragment {
         String anyo, info;
         //Se hace el relleno de los encapsuladores para mostrar las listas que tiene el usuario
         if(user.getMangas()!=null){
+            empty.setVisibility(View.GONE);
             for (MangaUser m : user.getMangas()) {
                 if (m.getManga().getPublishedFrom() != null && !m.getManga().getPublishedFrom().equals("")) {
                     anyo = m.getManga().getPublishedFrom().substring(m.getManga().getPublishedFrom().length()-4);
@@ -186,7 +190,11 @@ public class MangaListFragment extends Fragment {
                                 if (!mangas.contains(e)) {
                                     mangas.add(e);
                                 }
-
+                            }
+                            if(mangas.isEmpty()){
+                                empty.setVisibility(View.VISIBLE);
+                            }else {
+                                empty.setVisibility(View.GONE);
                             }
                         } else if (tab.getPosition() == 1) {
                             check = R.color.enProceso;
@@ -214,8 +222,14 @@ public class MangaListFragment extends Fragment {
                                     if (!mangas.contains(e)) {
                                         mangas.add(e);
                                     }
+
                                 }
 
+                            }
+                            if(mangas.isEmpty()){
+                                empty.setVisibility(View.VISIBLE);
+                            }else {
+                                empty.setVisibility(View.GONE);
                             }
                         } else if (tab.getPosition() == 2) {
                             check = R.color.enlista;
@@ -244,6 +258,10 @@ public class MangaListFragment extends Fragment {
                                         mangas.add(e);
                                     }
                                 }
+                            }if(mangas.isEmpty()){
+                                empty.setVisibility(View.VISIBLE);
+                            }else {
+                                empty.setVisibility(View.GONE);
                             }
 
                         } else if (tab.getPosition() == 3) {
@@ -275,6 +293,11 @@ public class MangaListFragment extends Fragment {
                                 }
 
                             }
+                            if(mangas.isEmpty()){
+                                empty.setVisibility(View.VISIBLE);
+                            }else {
+                                empty.setVisibility(View.GONE);
+                            }
                         } else if (tab.getPosition() == 4) {
                             check = R.color.dejado;
                             for (MangaUser m : user.getMangas()) {
@@ -303,6 +326,11 @@ public class MangaListFragment extends Fragment {
                                     }
                                 }
 
+                            }
+                            if(mangas.isEmpty()){
+                                empty.setVisibility(View.VISIBLE);
+                            }else {
+                                empty.setVisibility(View.GONE);
                             }
                         } else if (tab.getPosition() == 5) {
                             check = R.color.completado;
@@ -333,7 +361,13 @@ public class MangaListFragment extends Fragment {
                                 }
 
                             }
+                            if(mangas.isEmpty()){
+                                empty.setVisibility(View.VISIBLE);
+                            }else {
+                                empty.setVisibility(View.GONE);
+                            }
                         }
+
                         recyclerView = view.findViewById(R.id.recycler_view);
 
                         listAdapter = new ListAdapter(user, mangas, getContext(), R.layout.element_list_user, "Manga");
@@ -365,6 +399,8 @@ public class MangaListFragment extends Fragment {
                     }
                 });
             }
+        }else{
+            empty.setVisibility(View.VISIBLE);
         }
 
         return view;

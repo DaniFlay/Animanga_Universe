@@ -61,7 +61,4 @@ dependencies {
     implementation("com.google.mlkit:translate:17.0.2")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.17")
-    implementation("com.github.bumptech.glide:glide:4.11.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
-    implementation("com.github.dhaval2404:imagepicker:2.1")
 }

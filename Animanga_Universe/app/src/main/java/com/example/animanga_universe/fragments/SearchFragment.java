@@ -211,6 +211,10 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
                         if(animes.isEmpty()){
                             empty.setVisibility(View.VISIBLE);
                             empty.setText("No hay resultados encontrados");
+                            if(searchAdapter!=null){
+                                searchAdapter.notifyDataSetChanged();
+                            }
+
                         }
                         else {
                             empty.setText("");
@@ -272,6 +276,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener, Vi
                         if(animes.isEmpty()){
                             empty.setVisibility(View.VISIBLE);
                             empty.setText("No hay resultados encontrados");
+                            searchAdapter.notifyDataSetChanged();
                         }
                         else {
                             empty.setText("");

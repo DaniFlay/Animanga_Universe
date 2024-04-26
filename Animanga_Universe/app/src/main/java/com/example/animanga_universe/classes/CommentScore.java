@@ -3,6 +3,8 @@ package com.example.animanga_universe.classes;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -59,6 +61,7 @@ public class CommentScore implements Serializable, Parcelable {
         return Objects.equals(user, that.user) && Objects.equals(comment, that.comment);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "CommentScore{" +

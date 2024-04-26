@@ -32,6 +32,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DecimalFormat;
 
 /**
  * Fragment que muestra toda la información relevante del amime seleccionado
@@ -270,7 +271,9 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
         imageView.setImageDrawable(drawable);
         estado.setText(status);
         sinopsis.setText(sinop);
-        score.setText(a.getScore());
+        float newScore = Float.parseFloat(a.getScore());
+        DecimalFormat formato = new DecimalFormat("#.##");
+        score.setText(formato.format(newScore));
         episodios.setText(episodios(a));
         duracion.setText(conversionEpisodios(a));
         titulo.setText(a.getTitle());
@@ -293,8 +296,9 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
         }
         imageView.setImageDrawable(drawable);
         estado.setText(a.getStatus());
-        score.setText(a.getScore());
-
+        float newScore = Float.parseFloat(a.getScore());
+        DecimalFormat formato = new DecimalFormat("#.##");
+        score.setText(formato.format(newScore));
         episodios.setText(episodios(a));
         duracion.setText(conversionEpisodios(a));
         titulo.setText(a.getTitle());

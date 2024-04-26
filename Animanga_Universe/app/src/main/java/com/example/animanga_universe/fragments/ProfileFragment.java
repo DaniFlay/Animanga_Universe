@@ -1,29 +1,19 @@
 package com.example.animanga_universe.fragments;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.classes.AnimeUser;
 import com.example.animanga_universe.classes.MangaUser;
 import com.example.animanga_universe.classes.User;
-import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -32,9 +22,6 @@ import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 /**
  * El Fragment del Perfil, que muestra la información relevante del usuario y donde se puede cambiar la contraseña o editar el perfil

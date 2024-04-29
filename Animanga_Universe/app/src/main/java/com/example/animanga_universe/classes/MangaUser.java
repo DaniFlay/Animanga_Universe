@@ -11,6 +11,7 @@ import java.util.Objects;
 /**
  * Se utiliza para guardar los mangas en los listados de los usuarios, contiene el manga y el progreso
  * individual del usuario de este manga
+ * @noinspection ALL
  */
 public class MangaUser implements Serializable, Parcelable {
     Manga manga;

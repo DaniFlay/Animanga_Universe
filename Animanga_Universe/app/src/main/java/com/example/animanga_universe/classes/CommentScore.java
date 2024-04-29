@@ -11,6 +11,7 @@ import java.util.Objects;
 /**
  * El fin de este objeto es llevar la cuenta de los me gusta y no me gusta de cada comentario
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class CommentScore implements Serializable, Parcelable {
     User user;

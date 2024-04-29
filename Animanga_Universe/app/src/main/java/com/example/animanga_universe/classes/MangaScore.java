@@ -11,6 +11,7 @@ import java.util.Objects;
 /**
  * Este objeto se utiliza para llevar la cuenta de las notas de los mangas que hace cada usuario
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class MangaScore implements Serializable, Parcelable {
     String nota;

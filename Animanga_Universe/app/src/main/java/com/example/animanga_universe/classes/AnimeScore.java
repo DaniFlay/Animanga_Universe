@@ -9,6 +9,7 @@ import java.util.Objects;
 /**
  * Objeto para Realtime Database, se ha creado para saber si se ha valorado un anime, y el usuario que lo ha valorado
  * El fin es poder llevar la cuenta de la valoración media de los animes
+ * @noinspection ALL
  */
 public class AnimeScore implements Serializable, Parcelable {
     Anime anime;
@@ -24,6 +25,7 @@ public class AnimeScore implements Serializable, Parcelable {
         this.user = user;
     }
 
+    /** @noinspection deprecation, deprecation */
     protected AnimeScore(Parcel in) {
         anime = in.readParcelable(Anime.class.getClassLoader());
         nota = in.readString();

@@ -13,6 +13,7 @@ import java.util.Objects;
 /**
  * Comentarios de los Forum_Post
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class Comment implements Serializable, Parcelable {
     User user;

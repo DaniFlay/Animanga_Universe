@@ -28,6 +28,7 @@ import java.util.Objects;
 /**
  * Fragment para el cambio de contraseña
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class ChangePasswordFragment extends Fragment implements View.OnClickListener {
 
@@ -78,6 +79,7 @@ ImageView back;
         view= inflater.inflate(R.layout.fragment_change_password, container, false);
 
         mainMenu = (MainMenu) getActivity();
+        assert mainMenu != null;
         back= mainMenu.getBack();
         back.setVisibility(View.VISIBLE);
         back.setOnClickListener(this);

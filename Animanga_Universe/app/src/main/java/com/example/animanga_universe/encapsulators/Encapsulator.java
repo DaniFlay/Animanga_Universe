@@ -15,6 +15,7 @@ import java.util.Objects;
 /**
  * Encapsulador para representar los animes o mangas en los RecyclerView
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class Encapsulator implements Serializable, Parcelable {
     Anime anime;

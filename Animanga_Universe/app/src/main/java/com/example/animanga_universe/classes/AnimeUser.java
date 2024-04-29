@@ -12,6 +12,7 @@ import java.util.Objects;
  * Se guardan en los listados de los animes de un usuasrio, contiene el anime con toda la infromación, y los datos
  * del progreso individual del usuario en este anime
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class AnimeUser implements Serializable, Parcelable {
     Anime anime;
@@ -30,6 +31,7 @@ public class AnimeUser implements Serializable, Parcelable {
     }
 
     protected AnimeUser(Parcel in) {
+        //noinspection deprecation
         anime = in.readParcelable(Anime.class.getClassLoader());
         episodios = in.readString();
         nota = in.readString();

@@ -33,6 +33,7 @@ import java.util.Objects;
 
 /**
  * El adaptador para el hilo de una discusión
+ * @noinspection ALL
  */
 public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder>{
     final User user;

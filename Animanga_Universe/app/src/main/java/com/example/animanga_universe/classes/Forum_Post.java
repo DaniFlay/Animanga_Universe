@@ -12,6 +12,7 @@ import java.util.Objects;
 /**
  * Las discusiones en los foros
  * @author Daniel Seregin Kozlov
+ * @noinspection ALL
  */
 public class Forum_Post implements Serializable, Parcelable {
     User user;

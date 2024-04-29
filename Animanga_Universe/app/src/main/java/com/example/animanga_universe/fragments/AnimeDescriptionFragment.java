@@ -140,8 +140,8 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
 
     @Override
     public void onClick(View v) {
+        //En el caso de pulsar el FAB, se settean las variables y se abre el fragment para editar el anime
         if (v.getId()==fab.getId()) {
-
             toggleButton.setVisibility(View.GONE);
             menu.setBusqueda("Anime");
             String dummy="", info, year;
@@ -176,6 +176,8 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
             }
             menu.setEncapsulador(new Encapsulator(anime,drawable,check, anime.getTitle(),info, progress ));
             menu.reemplazarFragment(new EditItemFragment());
+            //En el caso de darle al boton de atras, se vuelve atras, y el fragment que aparece depende del tab
+            //del menu inferior
         }else if(v.getId()==back.getId()){
             menu.getSwitchButton().setVisibility(View.GONE);
             toggleButton.setVisibility(View.GONE);
@@ -285,6 +287,11 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
         compania.setText(a.getStudios().substring(1,a.getStudios().length()-1));
         tituloJapones.setText(a.getTitleJapanese());
     }
+
+    /**
+     * Esta funcion rellena la infromacion del fragment, pero traduciendo algunos datos al castellano
+     * @param a anime que se utilizará para el relleno de información
+     */
     @SuppressLint("UseCompatLoadingForDrawables")
     public void rellenoInformacion2(Anime a){
         try {

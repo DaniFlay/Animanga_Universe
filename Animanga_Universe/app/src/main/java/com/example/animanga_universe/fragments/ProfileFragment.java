@@ -338,6 +338,11 @@ if(v.getId()==editarPerfil.getId()){
                 pieEntriesAnime.add(new PieEntry(Integer.parseInt(completado.getText().toString()), getString(R.string.completado)));
             }
     }
+
+    /**
+     * Esta funcion convierte el total de los minutos en años, meses, semanas, dias, horas, y minutos
+     * @param minutes Minutos a convertir
+     */
     public void convertMinutes(int minutes){
         int minutesPerHour =60;
         int minutesPerDay = 1440;
@@ -361,6 +366,11 @@ if(v.getId()==editarPerfil.getId()){
         horas.setText(String.valueOf(hours));
         minutos.setText(String.valueOf(remainingMinutes));
     }
+
+    /**
+     * Esta función calcula el tiempo invertido en el anime
+     * @return los minutos invertidos en el anime
+     */
     public int timeAnime(){
         int minutes=0;
         for(AnimeUser a: user.getAnimes()){
@@ -378,6 +388,11 @@ if(v.getId()==editarPerfil.getId()){
         }
         return minutes;
     }
+
+    /**
+     * El tiempo invertido en el manga, ya que no tiene duración, se ha cogido una media de 22 minutos por capitulo
+     * @return los minutos invertidos en el manga
+     */
     public int timeManga(){
         int minutes=0;
         for(MangaUser m: user.getMangas()){
@@ -387,6 +402,10 @@ if(v.getId()==editarPerfil.getId()){
         }
         return minutes;
     }
+
+    /**
+     * Calcula la nota media del usuario de los animes, y lo settea
+     */
     public void scoreAnime(){
         float score=0;
         for(AnimeUser a: user.getAnimes()){
@@ -395,6 +414,10 @@ if(v.getId()==editarPerfil.getId()){
 
         media.setText(String.format("%.2f",2*(score/(user.getAnimes().size()))));
     }
+
+    /**
+     * Calcula la nota media de los mangas, y lo settea
+     */
     public void scoreManga(){
         float score=0;
         for(MangaUser m: user.getMangas()){

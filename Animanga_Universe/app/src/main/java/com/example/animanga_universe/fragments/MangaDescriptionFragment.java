@@ -121,6 +121,7 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        //En el caso de pulsar el botón atrás, se vuelve atrás
         if(v.getId()==back.getId()){
             int id= menu.getNavBarId();
             back.setVisibility(View.GONE);
@@ -135,8 +136,9 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
                 menu.reemplazarFragment(new MangaListFragment());
             }
         } else if (v.getId()== fab.getId()) {
+            //En el caso de pulsar el FAB se abre el fragment de la edición del manga
             toggleButton.setVisibility(View.GONE);
-            menu.setBusqueda("Anime");
+            menu.setBusqueda("Manga");
             String dummy="", info, year;
             int progress=0, check=0;
             if (manga!=null&& manga.getPublishedFrom() != null && !manga.getPublishedFrom().equals("")) {
@@ -152,7 +154,7 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
             for(MangaUser mangaUser: user.getMangas()){
                 if(mangaUser.getManga().equals(manga)){
                     dummy= mangaUser.getEstado();
-                    progress= Math.toIntExact(manga.getChapters());
+                    progress= Math.toIntExact(Long.parseLong(mangaUser.getCapitulos()));
                     break;
                 }
             }
@@ -172,6 +174,12 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         }
 
     }
+
+    /**
+     * Formatea los capitulso del manga
+     * @param m Manga cuyos capitulos se deben formatear
+     * @return los capitulos formateados
+     */
     public String capitulos(Manga m){
         if(m.getChapters()==null){
             return "?";
@@ -180,6 +188,12 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         }
 
     }
+
+    /**
+     * Formatea los volumenes de un manga
+     * @param m Manga cuyos volumenes deben ser formateados
+     * @return los volumenes fomrmateados
+     */
     public String volumenes(Manga m){
         if(m.getVolumes()==null){
             return "?";
@@ -188,6 +202,12 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         }
 
     }
+
+    /**
+     * Formatea los generos del manga
+     * @param m Manga cuyos generos deben ser formateados
+     * @return los generos formateados
+     */
     public String generos(Manga m){
         StringBuilder formateo= new StringBuilder();
         String generos= m.getGenres().substring(1,m.getGenres().length()-1);
@@ -213,6 +233,11 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         }
         return formateo.toString();
     }
+
+    /**
+     * Se encarga de rellenar la información del manga, traduciendo alguna información al castellani
+     * @param m Manga cuya información se utiliza para el relleno de los campos
+     */
     @SuppressLint("UseCompatLoadingForDrawables")
     public void rellenoDeInformacion(Manga m){
         try {
@@ -239,6 +264,11 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         autores.setText(authors(m));
         tituloJapones.setText(m.getTitleJapanese());
     }
+
+    /**
+     * Se encarga de rellenar la información del manga
+     * @param m Manga cuya información se utiliza para el relleno de los campos
+     */
     @SuppressLint("UseCompatLoadingForDrawables")
     public void rellenoInformacion2(Manga m){
         try {
@@ -265,6 +295,12 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
         autores.setText(authors(m));
         tituloJapones.setText(m.getTitleJapanese());
     }
+
+    /**
+     * Se utiliza pra el formateo de los autores del manga
+     * @param m Manga cuyos autores han de ser formateados
+     * @return los autores formateados
+     */
     public String authors(Manga m){
         StringBuilder a= new StringBuilder(m.getAuthors());
         char[] array1= a.toString().toCharArray();

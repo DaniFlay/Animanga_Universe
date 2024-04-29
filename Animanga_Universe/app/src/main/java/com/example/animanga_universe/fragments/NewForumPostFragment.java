@@ -83,7 +83,7 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
         publicar.setOnClickListener(this);
         return view;
     }
-
+//Dependiendo del tab seleccionado se cargaran animes o mangas en el seleccionador
     @Override
     public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
         if(group.getCheckedChipId()== anime.getId()){
@@ -102,7 +102,8 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
             obras.setAdapter(adapter);
         }
     }
-
+//A la hora de guardar, se crea un nuevo post, se actualiza la lista de los posts y se vuelve al fragment
+    //de los foros, donde se cargará el listado actualizado
     @Override
     public void onClick(View v) {
         if(anime.isChecked()){

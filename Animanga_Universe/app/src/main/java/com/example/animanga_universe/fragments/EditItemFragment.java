@@ -150,7 +150,6 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
         if (e.getAnime() != null && user.getAnimes() != null) {
             for (AnimeUser a : user.getAnimes()) {
                 if (a.getAnime().equals(e.getAnime())) {
-                    Log.d("tagtagtag", a.getAnime().equals(e.getAnime())+"   "+ a.getEpisodios());
                     estadoAnime = a.getEstado();
                     progreso.getEditText().setText(a.getEpisodios());
                 }
@@ -427,7 +426,7 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                         mainMenu.reemplazarFragment(new RankingFragment());
                         mainMenu.guardarUsuarioNuevo(user, user.getUsername());
                     }).show();
-
+// Si se pusla el botón atrás, se vuelve al fragment anterior, dependiendo del tab pulsado
         } else if (v.getId()==back.getId()) {
             back.setVisibility(View.GONE);
             int id = mainMenu.getNavBarId();

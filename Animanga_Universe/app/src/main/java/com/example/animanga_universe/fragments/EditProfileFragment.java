@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Objects;
 
 /**
- * Frgament para la edición de perfil del usuario
+ * Fragment para la edición de perfil del usuario
  * @author Daniel Seregin Kozlov
  */
 public class EditProfileFragment extends Fragment implements View.OnClickListener {
@@ -109,6 +109,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             elegirFecha.getDatePicker().setFirstDayOfWeek(Calendar.MONDAY);
             elegirFecha.show();
         } else if (v.getId() == back.getId()){
+            //Si se pulsa el botón atrás se vuelve al fragment de Perfil
             mainMenu.reemplazarFragment(new ProfileFragment());
             back.setVisibility(View.GONE);
         }

@@ -8,6 +8,10 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Objeto anime que se utiliza para Firestore con sus respectivos metodos
+ * @author Daniel Seregin Kozlov
+ */
 public class Anime implements Serializable, Parcelable {
     String airedFrom;
     String airedTo;

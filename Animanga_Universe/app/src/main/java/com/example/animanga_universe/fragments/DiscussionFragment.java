@@ -66,6 +66,8 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        //En el caso de envio, se boora el campo de texto, se crea un nuevo comentario y se actaulzia con este comentario
+        //el listado de los comentarios de la discusion
         if(v.getId()== send.getId()){
             Comment c= new Comment(((MainMenu) requireActivity()).devolverUser(),message.getText().toString(),0,0);
             ArrayList<Comment> comments= ((MainMenu) requireActivity()).getPost().getComments();
@@ -73,6 +75,7 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
             comments.add(c);
             ((MainMenu) requireActivity()).getPost().setComments(comments);
             threadAdapter.notifyItemInserted(comments.size()-1);
+            //En el caso de darl eal botón atrás se vuelve al fragment de los foros
         } else if (v.getId()==back.getId()) {
             back.setVisibility(View.GONE);
             ((MainMenu) requireActivity()).reemplazarFragment(new ForumsFragment());

@@ -6,7 +6,10 @@ import android.os.Parcelable;
 import java.io.Serializable;
 import java.util.Objects;
 
-/** @noinspection deprecation */
+/**
+ * Objeto para Realtime Database, se ha creado para saber si se ha valorado un anime, y el usuario que lo ha valorado
+ * El fin es poder llevar la cuenta de la valoración media de los animes
+ */
 public class AnimeScore implements Serializable, Parcelable {
     Anime anime;
     String nota;

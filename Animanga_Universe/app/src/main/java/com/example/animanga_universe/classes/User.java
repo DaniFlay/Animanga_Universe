@@ -12,6 +12,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * El objeto usuario con todos sus datos y listas
+ * @author Daniel Seregin Kozlov
+ */
 public class User implements Serializable, Parcelable {
     String username;
     String password;

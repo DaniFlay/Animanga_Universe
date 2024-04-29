@@ -31,7 +31,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-/** @noinspection ALL */
+/**
+ * El adaptador para el hilo de una discusión
+ */
 public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.ViewHolder>{
     final User user;
     final Forum_Post forumPost;

@@ -8,7 +8,10 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-/** @noinspection deprecation */
+/**
+ * Este objeto se utiliza para llevar la cuenta de las notas de los mangas que hace cada usuario
+ * @author Daniel Seregin Kozlov
+ */
 public class MangaScore implements Serializable, Parcelable {
     String nota;
     Manga manga;

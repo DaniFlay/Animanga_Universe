@@ -8,7 +8,11 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-/** @noinspection deprecation*/
+/**
+ * Se guardan en los listados de los animes de un usuasrio, contiene el anime con toda la infromación, y los datos
+ * del progreso individual del usuario en este anime
+ * @author Daniel Seregin Kozlov
+ */
 public class AnimeUser implements Serializable, Parcelable {
     Anime anime;
     String episodios;

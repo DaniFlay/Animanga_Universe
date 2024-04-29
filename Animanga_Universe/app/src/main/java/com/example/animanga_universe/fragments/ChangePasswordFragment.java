@@ -25,7 +25,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
 
 
-/** @noinspection ALL */
+/**
+ * Fragment para el cambio de contraseña
+ * @author Daniel Seregin Kozlov
+ */
 public class ChangePasswordFragment extends Fragment implements View.OnClickListener {
 
 TextInputLayout passwordAntigua, passwordNueva, passwordNueva2;
@@ -99,6 +102,7 @@ ImageView back;
             String[] usuario= {user.getUsername()};
             Cursor c = db.rawQuery("select password from usuario where usuario =?",usuario);
             c.moveToFirst();
+            //Se hace la comprobacion de si la contraseña antigua es correcta, si los campos están rellenos, etc
             if(!c.getString(0).equals(PasswordEncryption.hashPassword(Objects.requireNonNull(passwordAntigua.getEditText()).getText().toString()))){
                 Snackbar.make(v,getString(R.string.contraseñaIncorrecta),Snackbar.LENGTH_SHORT).show();
                 passwordAntigua.setBoxStrokeColorStateList(ColorStateList.valueOf(Color.RED));
@@ -115,7 +119,7 @@ ImageView back;
                 } else if (!passwordNueva.getEditText().getText().toString().equals(passwordNueva2.getEditText().getText().toString())) {
                     Snackbar.make(v,getString(R.string.camposContraseñaNoCoinciden),Snackbar.LENGTH_SHORT).show();
                     passwordAntigua.setBoxStrokeColorStateList(ColorStateList.valueOf(Color.RED));
-
+                //En el caso de que todo esté correcto, se cambia la contraseña tanto
                 }else {
                     user.setPassword(PasswordEncryption.hashPassword(passwordNueva.getEditText().getText().toString()));
                     Snackbar.make(v, getString(R.string.cambiosGuardados), Snackbar.LENGTH_INDEFINITE)

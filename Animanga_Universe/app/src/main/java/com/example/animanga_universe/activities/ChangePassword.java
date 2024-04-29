@@ -61,6 +61,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         if(password.getEditText()!=null&&password2.getEditText()!=null){
             contraseña= password.getEditText().getText().toString().trim();
             contraseña2 = password2.getEditText().getText().toString().trim();
+            //Se hace la comprobación de los campos, si están vacçios, si no coinciden, etc.
             if(!contraseña.equals(contraseña2.trim())){
                 Snackbar.make(v,getString(R.string.camposContraseñaNoCoinciden),Snackbar.LENGTH_SHORT).show();
 

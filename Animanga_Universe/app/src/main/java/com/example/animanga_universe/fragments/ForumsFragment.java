@@ -46,6 +46,7 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
         view= inflater.inflate(R.layout.fragment_forums, container, false);
         user= ((MainMenu) requireActivity()).devolverUser();
         posts=new ArrayList<>();
+        //Se rellena el RecyclerView con los posts desde la base de datos
         for(Forum_Post f: ((MainMenu) requireActivity()).getPosts() ){
             if(!posts.contains(f)){
                 posts.add(f);

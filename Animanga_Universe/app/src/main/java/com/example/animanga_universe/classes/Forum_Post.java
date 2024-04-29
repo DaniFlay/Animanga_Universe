@@ -9,7 +9,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
-/** @noinspection deprecation */
+/**
+ * Las discusiones en los foros
+ * @author Daniel Seregin Kozlov
+ */
 public class Forum_Post implements Serializable, Parcelable {
     User user;
     Anime anime;

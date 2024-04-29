@@ -21,7 +21,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-/** @noinspection unused, unused, unused, unused */
+/**
+ * Es el adaptador para el RecyclerView de los foros
+ * @author Daniel Seregin Kozlov
+ */
 public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder>{
     final User user;
     final ArrayList<Forum_Post> list;

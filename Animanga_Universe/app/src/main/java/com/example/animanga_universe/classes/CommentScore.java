@@ -8,7 +8,10 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-/** @noinspection deprecation */
+/**
+ * El fin de este objeto es llevar la cuenta de los me gusta y no me gusta de cada comentario
+ * @author Daniel Seregin Kozlov
+ */
 public class CommentScore implements Serializable, Parcelable {
     User user;
     Comment comment;

@@ -68,6 +68,7 @@ public class ChangePasswordMail extends AppCompatActivity implements View.OnClic
             else {
                 mail = correo.getEditText().getText().toString().trim();
                 ref.addValueEventListener(new ValueEventListener() {
+                    //Se comprueba si existe el usuario
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot d: snapshot.getChildren()){
@@ -81,6 +82,7 @@ public class ChangePasswordMail extends AppCompatActivity implements View.OnClic
                                 Snackbar.make(v,getString(R.string.bbddvacia),Snackbar.LENGTH_SHORT).show();
                             }
                         }
+                        //Si existe, se crea el código de verificación, y se envía por correo
                             if(contador>0){
                                 for(int i=0; i<6; i++){
                                     codigo+=rand.nextInt(10);
@@ -92,7 +94,7 @@ public class ChangePasswordMail extends AppCompatActivity implements View.OnClic
                                 intent.putExtra("usuario",(Parcelable)u);
                                 intent.putExtra("codigo",codigo);
                                 startActivity(intent);
-
+                            //En caso ccontrario se avisa al usuario de ello
                             }else{
                                 Snackbar.make(v,getString(R.string.usuarioNoExiste),Snackbar.LENGTH_SHORT).show();
                             }

@@ -12,7 +12,10 @@ import com.example.animanga_universe.classes.Manga;
 import java.io.Serializable;
 import java.util.Objects;
 
-/** @noinspection deprecation */
+/**
+ * Encapsulador para representar los animes o mangas en los RecyclerView
+ * @author Daniel Seregin Kozlov
+ */
 public class Encapsulator implements Serializable, Parcelable {
     Anime anime;
     Manga manga;

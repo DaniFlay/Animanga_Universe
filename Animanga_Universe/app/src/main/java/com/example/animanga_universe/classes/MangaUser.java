@@ -8,7 +8,10 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-/** @noinspection deprecation*/
+/**
+ * Se utiliza para guardar los mangas en los listados de los usuarios, contiene el manga y el progreso
+ * individual del usuario de este manga
+ */
 public class MangaUser implements Serializable, Parcelable {
     Manga manga;
     String capitulos;

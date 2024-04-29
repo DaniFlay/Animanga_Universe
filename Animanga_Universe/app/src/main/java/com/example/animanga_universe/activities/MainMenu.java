@@ -341,22 +341,48 @@ public class MainMenu extends AppCompatActivity {
         return animes;
     }
 
+    /**
+     * El setter para la variable del anime que se utilizará en varios fragments de la actividad
+     * @param a Anime para settear la variable
+     */
     public void setAnime(Anime a){
         anime= a;
     }
+
+    /**
+     * Getter para la variable del anime que se utilizará en varios fragments de la actividad
+     * @return a La variable anime guardada en la actividad
+     */
     public Anime getAnime(){
         return anime;
     }
+
+    /**
+     * El setter para la variable del manga que se utilizará en varios fragments de la actividad
+     * @param m Manga para settear la variable
+     */
     public void setManga(Manga m){
         manga= m;
     }
+    /**
+     * Getter para la variable del anime que se utilizará en varios fragments de la actividad
+     * @return m La variable manga guardada en la actividad
+     */
     public Manga getManga(){
         return manga;
     }
 
-public ToggleButton getToggle(){
+    /**
+     * Getter para el ToggleButton para poder modificar el estado de visibilidad en cualquier momento
+     * @return ToggleButton de la barra superior
+     */
+    public ToggleButton getToggle(){
         return binding.toggle;
 }
+
+    /**
+     * La función que busca todos los postsw de los foros y rellena el listado para la pestaña de los foros
+     */
     public void fillPosts(){
         posts.clear();
         ref= FirebaseDatabase.getInstance().getReference("Forum_Posts");
@@ -377,24 +403,52 @@ public ToggleButton getToggle(){
         });
 
     }
+
+    /**
+     * Getter para la variable del listado de los Forum_Post
+     * @return posts El listado con los Forum_Post
+     */
     public ArrayList<Forum_Post> getPosts(){
         return posts;
     }
+
+    /**
+     * Setter para la variable del Forum_Post
+     * @param forumPost la variable para settear la variable
+     */
     public void setPost(Forum_Post forumPost){
         this.forumPost= forumPost;
     }
+    /**
+     * Getter para la variable del Forum_Post
+     * @return  forumPost la variable del Forum_Post
+     */
     public Forum_Post getPost(){
         return this.forumPost;
     }
-public MaterialToolbar getToolbar(){
+
+    /**
+     * Getter para Toolbar de la actividad
+     * @return Toolbar de la actividad
+     */
+    public MaterialToolbar getToolbar(){
        return binding.toolBar;
 
 }
-public void setToolbar(){
+
+    /**
+     * Setter de las características para Toolbar de la actividad
+     */
+    public void setToolbar(){
         binding.toolBar.setTitleTextAppearance(this, R.style.NarutoFont);
         binding.toolBar.setTitle(getString(R.string.AnimangaUniverse));
 }
-public void updateThread(Forum_Post forumPost){
+
+    /**
+     * Actualiza un Forum_Post en la base de datos en la nube
+     * @param forumPost con datos actualizados
+     */
+    public void updateThread(Forum_Post forumPost){
         if(forumPost!=null){
             ref= FirebaseDatabase.getInstance().getReference("Forum_Posts");
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -417,18 +471,24 @@ public void updateThread(Forum_Post forumPost){
         }
 
 }
-public void commentScore(CommentScore cs){
-        Log.d("comment", cs.toString());
+
+    /**
+     * Añade o actualiza una reacción de un usuario a un comentario dentro de una discusión
+     * @param cs El objeto CommentScore con los datos
+     */
+    public void commentScore(CommentScore cs){
         ref= FirebaseDatabase.getInstance().getReference("CommentScore");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int counter=0;
+                //En el caso de que exista ya una reacción, esa se actualiza
                 for(DataSnapshot d: snapshot.getChildren()){
                     if(Objects.requireNonNull(d.getValue(CommentScore.class)).equals(cs)){
                         counter++;
                         d.getRef().setValue(cs);
                     }
+                    //En caso contrario se añade
                 }if(counter==0){
                     ref.push().setValue(cs);
                 }
@@ -439,7 +499,12 @@ public void commentScore(CommentScore cs){
             }
         });
 }
-public void commentScoreRemove(CommentScore cs){
+
+    /**
+     * Esta función borra una reacción específica de la base de datos
+     * @param cs CommentScore a borrar
+     */
+    public void commentScoreRemove(CommentScore cs){
         ref= FirebaseDatabase.getInstance().getReference("CommentScore");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -458,7 +523,12 @@ public void commentScoreRemove(CommentScore cs){
             }
         });
 }
-public void fillAnimes(ArrayList<String> animes){
+
+    /**
+     * Esta función rellena el listado con todos los nombres de los animes que se sacan de la base de datos
+     * @param animes EL listado a rellenar
+     */
+    public void fillAnimes(ArrayList<String> animes){
     CollectionReference cr= FirebaseFirestore.getInstance().collection("Anime");
     cr.addSnapshotListener((value, error) -> {
         for (DocumentSnapshot d : Objects.requireNonNull(value).getDocuments()) {
@@ -467,6 +537,11 @@ public void fillAnimes(ArrayList<String> animes){
         }
     });
 }
+
+    /**
+     * Esta función rellena el listado con todos los nombres de los mangas que se sacan de la base de datos
+     * @param mangas El listado a rellenar
+     */
     public void fillMangas(ArrayList<String> mangas){
         CollectionReference cr= FirebaseFirestore.getInstance().collection("Manga");
         cr.addSnapshotListener((value, error) -> {
@@ -476,6 +551,11 @@ public void fillAnimes(ArrayList<String> animes){
             }
         });
     }
+
+    /**
+     * Rellena un Array de Strings con los nombres de los animes
+     * @return El array con los nombres de los animes
+     */
     public String[] getAnimesNames(){
         String[] names= new String[allAnimes.size()];
         for(int i=0; i<names.length;i++){
@@ -483,6 +563,11 @@ public void fillAnimes(ArrayList<String> animes){
         }
         return names;
     }
+
+    /**
+     * Rellena un Array de Strings con los nombres de los mangas
+     * @return El array con los nombres de los mangas
+     */
     public String[] getMangaNames(){
         String[] names= new String[allMangas.size()];
         for(int i=0; i<names.length;i++){
@@ -490,24 +575,43 @@ public void fillAnimes(ArrayList<String> animes){
         }
         return names;
     }
+
+    /**
+     * Getter de la imagen que sirve como botón de atrás
+     * @return el ImageView que sirve de botón atrás
+     */
     public ImageView getBack(){
         return binding.back;
     }
+
+    /**
+     * Devuelve el id del tab seleccionado del menú inferior
+     * @return el id del tab seleccionado del menú inferior
+     */
     public int getNavBarId(){
         return binding.bottonNavigationView.getSelectedItemId();
     }
+
+    /**
+     * Setter para la lista de los Forum_Post
+     * @param posts variable para settear la variable de la actividad
+     */
     public void setPosts(ArrayList<Forum_Post> posts){
         this.posts= posts;
     }
-    public void setAnimesRanking(ArrayList<Encapsulator> animes){
-        animesRanking=animes;
-    }
+
+    /**
+     * Getter para el listado del ranking de los animes
+     * @return el listado con los rankings de los animes
+     */
     public ArrayList<Encapsulator> getAnimesRanking(){
         return animesRanking;
     }
-    public void setMangasRanking(ArrayList<Encapsulator> mangas){
-        mangasRanking=mangas;
-    }
+
+    /**
+     * Getter para el listado del ranking de los mangas
+     * @return el listado con los rankings de los mangas
+     */
     public ArrayList<Encapsulator> getMangasRanking(){
         return mangasRanking;
     }

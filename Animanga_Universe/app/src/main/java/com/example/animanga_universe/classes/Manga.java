@@ -8,6 +8,10 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * El objeto Manga que se utiliza para Firestore
+ * @author Daniel Seregin Kozlov
+ */
 public class Manga implements Serializable, Parcelable {
     String authors;
     Long chapters;

@@ -184,7 +184,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
             helper = new Helper(Login.this, "bbdd", null, 1);
             db = helper.getWritableDatabase();
             assert usuario.getEditText()!=null;
-            String[] usuarioIntroducido = {usuario.getEditText().getText().toString()};
+            String[] usuarioIntroducido = {usuario.getEditText().getText().toString().trim()};
             Cursor cursor = db.rawQuery("select * from usuario where usuario=?", usuarioIntroducido);
             if (cursor.moveToFirst()) {
                 usuarioDummy = cursor.getString(0);
@@ -194,8 +194,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
                 bottomSheetView.findViewById(R.id.no).setOnClickListener(v12 -> {
                     bottomSheetDialog.dismiss();
                     cursor.close();
-
-
                 });
                 bottomSheetView.findViewById(R.id.si).setOnClickListener(v1 -> {
                     buscarUsuario(usuarioDummy);

@@ -10,7 +10,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-/** @noinspection deprecation*/
+/**
+ * Comentarios de los Forum_Post
+ * @author Daniel Seregin Kozlov
+ */
 public class Comment implements Serializable, Parcelable {
     User user;
     String date;

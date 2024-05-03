@@ -180,7 +180,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if(!hasFocus){
-
             helper = new Helper(Login.this, "bbdd", null, 1);
             db = helper.getWritableDatabase();
             assert usuario.getEditText()!=null;

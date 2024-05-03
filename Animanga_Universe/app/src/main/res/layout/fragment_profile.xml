@@ -78,6 +78,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cambiarContraseña"
                     android:layout_marginEnd="20dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/salir"
+                    android:text="@string/salir"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout

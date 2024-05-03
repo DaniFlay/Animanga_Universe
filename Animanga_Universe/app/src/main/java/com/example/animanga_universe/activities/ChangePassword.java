@@ -13,6 +13,7 @@ import android.widget.Button;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.extras.PasswordEncryption;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -61,7 +62,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         if(password.getEditText()!=null&&password2.getEditText()!=null){
             contraseña= password.getEditText().getText().toString().trim();
             contraseña2 = password2.getEditText().getText().toString().trim();
-            //Se hace la comprobación de los campos, si están vacçios, si no coinciden, etc.
+            //Se hace la comprobación de los campos, si están vacios, si no coinciden, etc.
             if(!contraseña.equals(contraseña2.trim())){
                 Snackbar.make(v,getString(R.string.camposContraseñaNoCoinciden),Snackbar.LENGTH_SHORT).show();
 
@@ -74,15 +75,23 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                 Snackbar.make(v,getString(R.string.campoContraseña2Vacio),Snackbar.LENGTH_SHORT).show();
                 password2.setBoxStrokeColorStateList(ColorStateList.valueOf(Color.RED));
                 requestFocus(password2);
+
             } else{
+
                 ref.addValueEventListener(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot d: snapshot.getChildren()){
                             User user = d.getValue(User.class);
+
                             if(user !=null){
                                 if(user.equals(ChangePassword.this.user)){
-                                    ChangePassword.this.user.setPassword(contraseña);
+                                    MainMenu mainMenu= new MainMenu();
+                                    PasswordEncryption passwordEncryption= new PasswordEncryption();
+                                    String encryptedPassword= passwordEncryption.hashPassword(password.getEditText().getText().toString());
+                                    ChangePassword.this.user.setPassword(encryptedPassword);
+                                    mainMenu.actualizarPassword(ChangePassword.this.user.getUsername(),encryptedPassword);
                                     d.getRef().setValue(ChangePassword.this.user);
                                     Snackbar.make(v,getString(R.string.contraseñaCambiada),Snackbar.LENGTH_SHORT)
                                             .setAction(getString(R.string.aceptar), v1 -> {

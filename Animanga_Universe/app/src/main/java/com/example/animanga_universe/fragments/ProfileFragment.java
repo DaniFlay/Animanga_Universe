@@ -1,5 +1,6 @@
 package com.example.animanga_universe.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import com.example.animanga_universe.R;
+import com.example.animanga_universe.activities.Login;
 import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.classes.AnimeUser;
 import com.example.animanga_universe.classes.MangaUser;
@@ -29,7 +31,7 @@ import java.util.ArrayList;
  * @noinspection ALL
  */
 public class ProfileFragment extends Fragment implements View.OnClickListener {
-    TextView usuario, sexo, fechaNac, fechaReg, correo, editarPerfil, cambiarContraseña, todos, enProceso, completado, dejado, enLista, enEspera, viendo, anyos, meses,semanas, dias,horas, minutos, media ;
+    TextView usuario, sexo, fechaNac, fechaReg, correo, editarPerfil, cambiarContraseña,salir, todos, enProceso, completado, dejado, enLista, enEspera, viendo, anyos, meses,semanas, dias,horas, minutos, media ;
     TabLayout tabLayout;
     TableLayout tableLayout, tableLayoutTime;
     User user;
@@ -84,6 +86,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         todos=view.findViewById(R.id.todos);
        counter=0;
+       salir= view.findViewById(R.id.salir);
+       salir.setOnClickListener(this);
         pieEntriesAnime= new ArrayList<>();
        anyos= view.findViewById(R.id.anyos);
        meses= view.findViewById(R.id.meses);
@@ -224,6 +228,10 @@ if(v.getId()==editarPerfil.getId()){
     //Si se pulsa el cambio de contraseña se cambia al fragment del cambio de contraseña
 } else if (v.getId()== cambiarContraseña.getId()) {
     mainMenu.reemplazarFragment(new ChangePasswordFragment());
+    //Si se pulsa el texto salir, se sale de la actividad, y se vuelve a la pantalla del Login
+} else if (v.getId()==salir.getId()) {
+    Intent intent= new Intent(getContext(), Login.class);
+    startActivity(intent);
 }
     }
 

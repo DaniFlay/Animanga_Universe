@@ -581,6 +581,8 @@ public class MainMenu extends AppCompatActivity {
      * @return el ImageView que sirve de botón atrás
      */
     public ImageView getBack(){
+
+
         return binding.back;
     }
 

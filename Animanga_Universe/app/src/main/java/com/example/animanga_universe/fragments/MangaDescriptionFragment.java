@@ -151,11 +151,13 @@ public class MangaDescriptionFragment extends Fragment implements View.OnClickLi
             }else {
                 info= "? cap, "+year;
             }
-            for(MangaUser mangaUser: user.getMangas()){
-                if(mangaUser.getManga().equals(manga)){
-                    dummy= mangaUser.getEstado();
-                    progress= Math.toIntExact(Long.parseLong(mangaUser.getCapitulos()));
-                    break;
+            if(user.getMangas()!=null){
+                for(MangaUser mangaUser: user.getMangas()){
+                    if(mangaUser.getManga().equals(manga)){
+                        dummy= mangaUser.getEstado();
+                        progress= Math.toIntExact(Long.parseLong(mangaUser.getCapitulos()));
+                        break;
+                    }
                 }
             }
             if (dummy.equals(getString(R.string.completado))) {

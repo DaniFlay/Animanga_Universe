@@ -52,6 +52,7 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
                 posts.add(f);
             }
         }
+        ((MainMenu)requireActivity()).setToolbar();
         recyclerView= view.findViewById(R.id.recycler);
         forumAdapter= new ForumAdapter(user,posts,getContext(),R.layout.element_discussion);
         forumAdapter.serOnClickListener(v -> {

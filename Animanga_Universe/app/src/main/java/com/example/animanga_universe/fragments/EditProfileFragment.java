@@ -26,7 +26,7 @@ import java.util.Objects;
  */
 public class EditProfileFragment extends Fragment implements View.OnClickListener {
     String usuarioAntiguo;
-    TextInputLayout usuario, correo, fecha, sexo;
+    TextInputLayout usuario, correo, fecha;
     Button elegirFecha, guardar;
     View view;
     User user;
@@ -56,7 +56,9 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         usuario= view.findViewById(R.id.user);
         correo= view.findViewById(R.id.correo);
         fecha= view.findViewById(R.id.fechaNacimiento);
-        sexo= view.findViewById(R.id.sexo);
+
+
+
         elegirFecha= view.findViewById(R.id.botonFecha);
         guardar= view.findViewById(R.id.botonGuardar);
         Objects.requireNonNull(usuario.getEditText()).setText(user.getUsername());
@@ -75,7 +77,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             user.setUsername(Objects.requireNonNull(usuario.getEditText()).getText().toString());
             user.setCorreo(Objects.requireNonNull(correo.getEditText()).getText().toString());
             user.setFecha_de_nacimiento(Objects.requireNonNull(fecha.getEditText()).getText().toString());
-            user.setSexo(Objects.requireNonNull(sexo.getEditText()).getText().toString());
 
             //En el caso de pulsar el boton que aparece en el SnackBar se guardan los datos en las de datos y se cambia de fragemnt
             Snackbar.make(v, getString(R.string.cambiosGuardados), Snackbar.LENGTH_INDEFINITE)

@@ -36,29 +36,12 @@
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sexo"
-        android:layout_below="@+id/correo"
-        android:hint="@string/sexo"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu">
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            app:simpleItems="@array/sexos"
-            tools:ignore="LabelFor" />
-    </com.google.android.material.textfield.TextInputLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/linearFecha"
-        android:layout_below="@+id/sexo">
+        android:layout_below="@+id/correo">
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fechaNacimiento"
             android:layout_width="250dp"

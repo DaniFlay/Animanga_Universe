@@ -156,13 +156,16 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
             }else {
                 info= "? ep, "+year;
             }
-            for(AnimeUser animeUser: user.getAnimes()){
-                if(animeUser.getAnime().equals(anime)){
-                    dummy= animeUser.getEstado();
-                    progress=Integer.parseInt(animeUser.getEpisodios());
-                    break;
+            if(user.getAnimes()!=null){
+                for(AnimeUser animeUser: user.getAnimes()){
+                    if(animeUser.getAnime().equals(anime)){
+                        dummy= animeUser.getEstado();
+                        progress=Integer.parseInt(animeUser.getEpisodios());
+                        break;
+                    }
                 }
             }
+
             if (dummy.equals(getString(R.string.completado))) {
                 check = R.color.completado;
             } else if (dummy.equals(getString(R.string.dejado))) {
@@ -291,6 +294,7 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
     /**
      * Esta funcion rellena la infromacion del fragment, pero traduciendo algunos datos al castellano
      * @param a anime que se utilizará para el relleno de información
+     *
      */
     @SuppressLint("UseCompatLoadingForDrawables")
     public void rellenoInformacion2(Anime a){

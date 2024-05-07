@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Button;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.extras.Helper;
 import com.example.animanga_universe.extras.PasswordEncryption;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -33,6 +35,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
     DatabaseReference ref;
     User user;
     String contraseña, contraseña2;
+    SQLiteDatabase db;
 
     /**
      * En el método on create se conectan los elementos del xml para darlres funcionalidad
@@ -87,11 +90,12 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
 
                             if(user !=null){
                                 if(user.equals(ChangePassword.this.user)){
-                                    MainMenu mainMenu= new MainMenu();
+                                    Helper helper= new Helper(ChangePassword.this,"bbdd",null,1);
+                                    db= helper.getWritableDatabase();
                                     PasswordEncryption passwordEncryption= new PasswordEncryption();
                                     String encryptedPassword= passwordEncryption.hashPassword(password.getEditText().getText().toString());
                                     ChangePassword.this.user.setPassword(encryptedPassword);
-                                    mainMenu.actualizarPassword(ChangePassword.this.user.getUsername(),encryptedPassword);
+                                    db.execSQL("update usuario set password= '"+encryptedPassword+"'where usuario ='"+user.getUsername()+"'");
                                     d.getRef().setValue(ChangePassword.this.user);
                                     Snackbar.make(v,getString(R.string.contraseñaCambiada),Snackbar.LENGTH_SHORT)
                                             .setAction(getString(R.string.aceptar), v1 -> {

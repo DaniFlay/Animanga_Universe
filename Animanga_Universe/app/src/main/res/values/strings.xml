@@ -120,4 +120,5 @@
     <string name="horas">Horas</string>
     <string name="minutos">Minutos</string>
     <string name="salir">Salir</string>
+    <string name="errorServidor">Error al conectarse al servidor</string>
 </resources>

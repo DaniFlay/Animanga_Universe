@@ -28,6 +28,13 @@ public class MailAPI extends AsyncTask<Void, Void, Void> {
     private final String subject;
     private final String message;
 
+    /**
+     * constructor para el mailapi
+     * @param context el contexto
+     * @param recipient la persona que recibe el emsnaje
+     * @param subject el tema del correoo
+     * @param message el mensaje del correo
+     */
     public MailAPI(Context context,  String recipient, String subject, String message) {
         this.context = context;
         this.recipient = recipient;
@@ -35,6 +42,11 @@ public class MailAPI extends AsyncTask<Void, Void, Void> {
         this.message = message;
     }
 
+    /**
+     * lo que se hace "por detras de las cortinas"
+     * @param voids The parameters of the task
+     * @return
+     */
     @Override
     protected Void doInBackground(Void... voids) {
         Properties properties= new Properties();
@@ -45,13 +57,14 @@ public class MailAPI extends AsyncTask<Void, Void, Void> {
         properties.put("mail.smtp.port","465");
         properties.put("mail.smtp.ssl.trust","smtp.gmail.com");
 
-
+        //Session para el inicio de sesion
         Session session = Session.getDefaultInstance(properties, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(Utils.email, Utils.password);
             }
 
         });
+        //el mensaje a mandar
         MimeMessage mimeMessage= new MimeMessage(session);
         try{
             mimeMessage.setFrom(new InternetAddress(Utils.email));

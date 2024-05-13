@@ -8,6 +8,11 @@ import java.security.NoSuchAlgorithmException;
  * @author Daniel Seregin Kozlov
  */
 public class PasswordEncryption {
+    /**
+     * Se encarga de hashear la contraseña
+     * @param password contraseña a haashear
+     * @return la contraseña hashedada
+     */
     public static String hashPassword(String password){
         try{
             MessageDigest md= MessageDigest.getInstance("SHA-256");

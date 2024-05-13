@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.animanga_universe.R;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.User;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 

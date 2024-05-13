@@ -16,9 +16,9 @@ import android.widget.ToggleButton;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
-import com.example.animanga_universe.classes.Anime;
-import com.example.animanga_universe.classes.AnimeUser;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.Anime;
+import com.example.animanga_universe.models.AnimeUser;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.mlkit.common.model.DownloadConditions;
@@ -95,6 +95,7 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
         toggleButton.setVisibility(View.VISIBLE);
         toggleButton.setChecked(false);
         rellenoInformacion2(anime);
+        //Se crea el traductor y se cargan los parametros necesarios
         TranslatorOptions options= new TranslatorOptions.Builder()
                 .setSourceLanguage(TranslateLanguage.ENGLISH)
                 .setTargetLanguage(TranslateLanguage.SPANISH)
@@ -123,6 +124,7 @@ public class AnimeDescriptionFragment extends Fragment implements View.OnClickLi
                 rellenoInformacion2(anime);
             }
         });
+        //Si tiene link para el trailer se muestra el reproductor, en caso contrario no se muestra el reproductor de YouTube
 if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
     youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
         @Override
@@ -138,6 +140,10 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
         return view;
     }
 
+    /**
+     * Método con click sobreescrito
+     * @param v vista pulsada
+     */
     @Override
     public void onClick(View v) {
         //En el caso de pulsar el FAB, se settean las variables y se abre el fragment para editar el anime

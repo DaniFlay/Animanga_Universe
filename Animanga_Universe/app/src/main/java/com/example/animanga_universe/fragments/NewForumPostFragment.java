@@ -14,13 +14,13 @@ import android.widget.Spinner;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
-import com.example.animanga_universe.classes.Anime;
-import com.example.animanga_universe.classes.AnimeUser;
-import com.example.animanga_universe.classes.Comment;
-import com.example.animanga_universe.classes.Forum_Post;
-import com.example.animanga_universe.classes.Manga;
-import com.example.animanga_universe.classes.MangaUser;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.Anime;
+import com.example.animanga_universe.models.AnimeUser;
+import com.example.animanga_universe.models.Comment;
+import com.example.animanga_universe.models.Forum_Post;
+import com.example.animanga_universe.models.Manga;
+import com.example.animanga_universe.models.MangaUser;
+import com.example.animanga_universe.models.User;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputLayout;
@@ -62,7 +62,6 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         view= inflater.inflate(R.layout.fragment_new_forum_post, container, false);
         user= ((MainMenu) requireActivity()).devolverUser();
         names= new ArrayList<>();

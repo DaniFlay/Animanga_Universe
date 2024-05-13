@@ -13,9 +13,9 @@ import android.widget.TextView;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.Login;
 import com.example.animanga_universe.activities.MainMenu;
-import com.example.animanga_universe.classes.AnimeUser;
-import com.example.animanga_universe.classes.MangaUser;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.AnimeUser;
+import com.example.animanga_universe.models.MangaUser;
+import com.example.animanga_universe.models.User;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -130,6 +130,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         cambiarContraseña.setOnClickListener(this);
         viendo.setText(R.string.viendo);
         pieChart= view.findViewById(R.id.pieChart);
+        //Si el usuario tiene animes guardados, se setea el PieChart, en caso contrario se hace invisible el elemento
         if(user.getAnimes()!=null) {
             todos.setText(String.valueOf(user.getAnimes().size()));
             rellenarAnimes();
@@ -323,7 +324,11 @@ if(v.getId()==editarPerfil.getId()){
             enProceso.setText(String.valueOf(counter));
             counter=0;
         }
-        public void getDataAnime(){
+
+    /**
+     * Se obtienen los datos de la tabla con los numeros de las obras segun el estado, y se introducen al PieChart
+     */
+    public void getDataAnime(){
         pieEntriesAnime.clear();
         if(!viendo.getText().toString().equals("0")){
             if(tabLayout.getSelectedTabPosition()==0){

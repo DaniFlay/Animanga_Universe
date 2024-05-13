@@ -15,9 +15,9 @@ import android.widget.ToggleButton;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
-import com.example.animanga_universe.classes.Manga;
-import com.example.animanga_universe.classes.MangaUser;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.Manga;
+import com.example.animanga_universe.models.MangaUser;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.mlkit.common.model.DownloadConditions;

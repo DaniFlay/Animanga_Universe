@@ -21,13 +21,13 @@ import android.widget.TextView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
-import com.example.animanga_universe.classes.Anime;
-import com.example.animanga_universe.classes.AnimeUser;
-import com.example.animanga_universe.classes.Manga;
-import com.example.animanga_universe.classes.MangaUser;
-import com.example.animanga_universe.classes.AnimeScore;
-import com.example.animanga_universe.classes.MangaScore;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.Anime;
+import com.example.animanga_universe.models.AnimeUser;
+import com.example.animanga_universe.models.Manga;
+import com.example.animanga_universe.models.MangaUser;
+import com.example.animanga_universe.models.AnimeScore;
+import com.example.animanga_universe.models.MangaScore;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -181,8 +181,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                         if (e.getTitulo().equals(a.getAnime().getTitle())) {
                             //Se settea la valoración que le ha puesto el usuario a la obra
                             ratingBar.setRating(Float.parseFloat(a.getNota()));
+                            if(complete){
                                 progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
-
+                            }
                             //Se cambia el color de la barra de progreso dependiendo del estado
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.espera)));
                         }
@@ -192,7 +193,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                     for (AnimeUser a : user.getAnimes()) {
                         if (e.getTitulo().equals(a.getAnime().getTitle())) {
                             ratingBar.setRating(Float.parseFloat(a.getNota()));
-                            progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
+                            if(complete){
+                                progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
+                            }
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.enProceso)));
                         }
                     }
@@ -201,7 +204,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                     for (AnimeUser a : user.getAnimes()) {
                         if (e.getTitulo().equals(a.getAnime().getTitle())) {
                             ratingBar.setRating(Float.parseFloat(a.getNota()));
-                            progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
+                            if(complete){
+                                progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
+                            }
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.completado)));
                         }
                     }
@@ -211,7 +216,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                     for (AnimeUser a : user.getAnimes()) {
                         if (e.getTitulo().equals(a.getAnime().getTitle())) {
                             ratingBar.setRating(Float.parseFloat(a.getNota()));
-                            progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
+                            if(complete){
+                                progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
+                            }
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.enlista)));
                         }
                     }
@@ -220,7 +227,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                     for (AnimeUser a : user.getAnimes()) {
                         if (e.getTitulo().equals(a.getAnime().getTitle())) {
                             ratingBar.setRating(Float.parseFloat(a.getNota()));
-                            progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
+                            if(complete){
+                                progressBar.setProgress(Integer.parseInt(a.getEpisodios()));
+                            }
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.dejado)));
                         }
                     }
@@ -237,7 +246,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                     for (MangaUser m : user.getMangas()) {
                         if (e.getTitulo().equals(m.getManga().getTitle())) {
                             ratingBar.setRating(Float.parseFloat(String.valueOf(m.getNota())));
-                            progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            if(complete){
+                                progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            }
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.espera)));
                         }
                     }
@@ -246,7 +257,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                     for (MangaUser m : user.getMangas()) {
                         if (e.getTitulo().equals(m.getManga().getTitle())) {
                             ratingBar.setRating(Float.parseFloat(String.valueOf(m.getNota())));
-                            progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            if(complete){
+                                progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            }
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.enProceso)));
                         }
                     }
@@ -255,7 +268,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                     for (MangaUser m : user.getMangas()) {
                         if (e.getTitulo().equals(m.getManga().getTitle())) {
                             ratingBar.setRating(Float.parseFloat(String.valueOf(m.getNota())));
-                            progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            if(complete){
+                                progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            }
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.completado)));
                         }
                     }
@@ -265,7 +280,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                     for (MangaUser m : user.getMangas()) {
                         if (e.getTitulo().equals(m.getManga().getTitle())) {
                             ratingBar.setRating(Float.parseFloat(String.valueOf(m.getNota())));
-                            progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            if(complete){
+                                progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            }
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.enlista)));
                         }
                     }
@@ -274,7 +291,9 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
                     for (MangaUser m : user.getMangas()) {
                         if (e.getTitulo().equals(m.getManga().getTitle())) {
                             ratingBar.setRating(Float.parseFloat(String.valueOf(m.getNota())));
-                            progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            if(complete){
+                                progressBar.setProgress(Integer.parseInt(m.getCapitulos()));
+                            }
                             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.dejado)));
                         }
                     }
@@ -445,7 +464,6 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
 //Dependiedo del chip elegido se realiza el setteo de la barra de progreso, como su color, el progreso etc
     @Override
     public void onCheckedChanged(@NonNull ChipGroup group, @NonNull List<Integer> checkedIds) {
-
         if (group.getCheckedChipId() == completado.getId()) {
             progressBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.completado)));
             if (e.getAnime() != null) {
@@ -473,10 +491,7 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
         } else if (group.getCheckedChipId() == enProceso.getId()) {
             progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.enProceso)));
         } else if (group.getCheckedChipId() == enLista.getId()) {
-            progressBar.setMax(10);
-            progressBar.setProgress(0);
-            assert progreso.getEditText() != null;
-            progreso.getEditText().setText("");
+            progressBar.setProgressTintList(ColorStateList.valueOf(mainMenu.getResources().getColor(R.color.enlista)));
         }
     }
 

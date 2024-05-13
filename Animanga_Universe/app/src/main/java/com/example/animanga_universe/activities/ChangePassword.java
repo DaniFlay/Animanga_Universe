@@ -13,7 +13,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.animanga_universe.R;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.extras.Helper;
 import com.example.animanga_universe.extras.PasswordEncryption;
 import com.google.android.material.snackbar.Snackbar;
@@ -78,18 +78,22 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                 Snackbar.make(v,getString(R.string.campoContraseña2Vacio),Snackbar.LENGTH_SHORT).show();
                 password2.setBoxStrokeColorStateList(ColorStateList.valueOf(Color.RED));
                 requestFocus(password2);
-
+            //Em el caso de que los campos coinicdan y no estén vacíos, se procede al cambio de la contraseña
             } else{
 
                 ref.addValueEventListener(new ValueEventListener() {
-
+                    /**
+                     * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+                     * @param snapshot Es la tabla a la que se accede
+                     */
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot d: snapshot.getChildren()){
                             User user = d.getValue(User.class);
-
                             if(user !=null){
+                                //Se comprueba todos los usuarios de la base de datos con el usuario de la aplicación
                                 if(user.equals(ChangePassword.this.user)){
+                                    //En el caso de que coincida, se encripta la contraseña, y se actualiza en la base de datos de Firebase y en la base de datos interna SQLite
                                     Helper helper= new Helper(ChangePassword.this,"bbdd",null,1);
                                     db= helper.getWritableDatabase();
                                     PasswordEncryption passwordEncryption= new PasswordEncryption();
@@ -111,9 +115,13 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                         }
                     }
 
+                    /**
+                     * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+                     * @param error El error de firebase
+                     */
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Snackbar.make(v, getString(R.string.errorServidor), Snackbar.LENGTH_SHORT).show();
                     }
                 });
             }

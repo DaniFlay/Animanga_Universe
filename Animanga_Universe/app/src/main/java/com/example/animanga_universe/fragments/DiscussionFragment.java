@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.adapters.ThreadAdapter;
-import com.example.animanga_universe.classes.Comment;
+import com.example.animanga_universe.models.Comment;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class DiscussionFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        //En el caso de envio, se boora el campo de texto, se crea un nuevo comentario y se actaulzia con este comentario
+        //En el caso de envio, se borra el campo de texto, se crea un nuevo comentario y se actaulzia con este comentario
         //el listado de los comentarios de la discusion
         if(v.getId()== send.getId()){
             Comment c= new Comment(((MainMenu) requireActivity()).devolverUser(),message.getText().toString(),0,0);

@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.animanga_universe.R;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.extras.MailAPI;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -59,8 +59,7 @@ public class ChangePasswordMail extends AppCompatActivity implements View.OnClic
      */
     @Override
     public void onClick(View v) {
-
-        contador=0;
+        contador=0;//El contador para comporbar que existe el correo en la base de datos
         if(correo.getEditText()!=null){
             if(correo.getEditText().getText().toString().trim().equals("")){
                 Snackbar.make(v,getString(R.string.campoCorreoVacio),Snackbar.LENGTH_SHORT).show();
@@ -69,6 +68,11 @@ public class ChangePasswordMail extends AppCompatActivity implements View.OnClic
                 mail = correo.getEditText().getText().toString().trim();
                 ref.addValueEventListener(new ValueEventListener() {
                     //Se comprueba si existe el usuario
+
+                    /**
+                     * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+                     * @param snapshot Es la tabla a la que se accede
+                     */
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot d: snapshot.getChildren()){
@@ -100,10 +104,13 @@ public class ChangePasswordMail extends AppCompatActivity implements View.OnClic
                             }
 
                     }
-
+                    /**
+                     * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+                     * @param error El error de firebase
+                     */
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Snackbar.make(v, getString(R.string.errorServidor), Snackbar.LENGTH_SHORT).show();
                     }
                 });
             }

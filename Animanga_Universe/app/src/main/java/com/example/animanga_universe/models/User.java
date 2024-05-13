@@ -1,4 +1,4 @@
-package com.example.animanga_universe.classes;
+package com.example.animanga_universe.models;
 
 
 import android.os.Parcel;

@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.adapters.ListAdapter;
-import com.example.animanga_universe.classes.MangaUser;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.MangaUser;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.google.android.material.tabs.TabLayout;
 
@@ -135,6 +135,7 @@ public class MangaListFragment extends Fragment {
 
                 listAdapter = new ListAdapter(user, mangas, getContext(), R.layout.element_list_user, "Manga");
                 listAdapter.setOnClickListener(new View.OnClickListener() {
+                    //En el caso de pulsar a un item, se hacen los seteos necesarios, es decir, se hacen invisibles algunos elementos, se hacen visibles otros y se setean las variables
                     @Override
                     public void onClick(View v) {
                         int posicion= recyclerView.getChildAdapterPosition(v);
@@ -155,7 +156,6 @@ public class MangaListFragment extends Fragment {
                     public void onTabSelected(TabLayout.Tab tab) {
                         mangas.clear();
                         String anyo, info;
-
                         if (tab.getPosition() == 0) {
                             for (MangaUser m : user.getMangas()) {
                                 if (m.getManga().getPublishedFrom() != null && !m.getManga().getPublishedFrom().equals("")) {

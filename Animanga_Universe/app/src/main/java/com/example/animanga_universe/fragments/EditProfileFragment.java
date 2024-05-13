@@ -13,7 +13,7 @@ import android.widget.ImageView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.User;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -56,9 +56,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         usuario= view.findViewById(R.id.user);
         correo= view.findViewById(R.id.correo);
         fecha= view.findViewById(R.id.fechaNacimiento);
-
-
-
         elegirFecha= view.findViewById(R.id.botonFecha);
         guardar= view.findViewById(R.id.botonGuardar);
         Objects.requireNonNull(usuario.getEditText()).setText(user.getUsername());

@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.extras.Helper;
 import com.example.animanga_universe.extras.PasswordEncryption;
 import com.google.android.material.snackbar.Snackbar;

@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.animanga_universe.R;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.extras.Helper;
 import com.example.animanga_universe.extras.PasswordEncryption;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,9 +47,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     /**
      * El metodo on create crea la actividad, y conecto todos los elementos del xml para darles funcionalidad
-     * @param savedInstanceState If the activity is being re-initialized after
-     *     previously being shut down then this Bundle contains the data it most
-     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     * @param savedInstanceState  En el caso de que se reinicie la actividad, después de haberse apagadom este Bundle contiene
+     * la informacion mas reciente, en el caso contrario el valor es nulo
      *
      */
     @Override
@@ -113,6 +112,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 password = contraseña.getEditText().getText().toString().trim();
                 password2 = contraseña2.getEditText().getText().toString().trim();
                 ref.addValueEventListener(new ValueEventListener() {
+                    /**
+                     * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+                     * @param snapshot Es la tabla a la que se accede
+                     */
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot d: snapshot.getChildren()){
@@ -124,7 +127,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             }
                         }
                     }
-
+                    /**
+                     * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+                     * @param error El error de firebase
+                     */
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 

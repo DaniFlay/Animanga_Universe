@@ -6,8 +6,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.example.animanga_universe.classes.Anime;
-import com.example.animanga_universe.classes.Manga;
+import com.example.animanga_universe.models.Anime;
+import com.example.animanga_universe.models.Manga;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -25,6 +25,10 @@ public class Encapsulator implements Serializable, Parcelable {
     String titulo, info, rating;
     int progreso;
 
+    /**
+     * Getter para el progreso
+     * @return el numero de capitulos
+     */
     public int getProgreso() {
         return progreso;
     }
@@ -37,7 +41,6 @@ public class Encapsulator implements Serializable, Parcelable {
         this.info = info;
         this.progreso= progreso;
     }
-
     public Encapsulator(Manga manga, Drawable imagen, int color, String titulo, String info, int progreso) {
         this.manga = manga;
         this.imagen = imagen;

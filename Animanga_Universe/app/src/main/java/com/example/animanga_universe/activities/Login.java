@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.example.animanga_universe.R;
 
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.extras.Helper;
 import com.example.animanga_universe.extras.PasswordEncryption;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -54,10 +54,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
     /**
      * El método onCreate sobreescrito, donde conecto todos los elementos necesarios del xml para poder darles funcionalidad en java
      * Y también me conecto a Firebase
-     *
-     * @param savedInstanceState If the activity is being re-initialized after
-     *                           previously being shut down then this Bundle contains the data it most
-     *                           recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     * @param savedInstanceState En el caso de que se reinicie la actividad, es el bundle que contiene la última instancia guardada
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +76,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
 
     /**
      * Método onClick sobreescrito para los botones y el textview de la contraseña olvidada
-     *
      * @param v The view that was clicked.
      */
     @Override
@@ -101,6 +97,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
                 password.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             } else {
                 ref.addValueEventListener(new ValueEventListener() {
+                    /**
+                     * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+                     * @param snapshot Es la tabla a la que se accede
+                     */
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot d : snapshot.getChildren()) {
@@ -118,10 +118,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
                             Snackbar.make(v, getString(R.string.usuarioNoExiste), Snackbar.LENGTH_SHORT).show();
                         }
                     }
-
+                    /**
+                     * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+                     * @param error El error de firebase
+                     */
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        Snackbar.make(v, getString(R.string.errorServidor), Snackbar.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -151,6 +154,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
     public void buscarUsuario(String nombre) {
         ref = FirebaseDatabase.getInstance().getReference("Usuario");
         ref.addValueEventListener(new ValueEventListener() {
+            /**
+             * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+             * @param snapshot Es la tabla a la que se accede
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot d : snapshot.getChildren()) {
@@ -161,7 +168,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Vi
                     }
                 }
             }
-
+            /**
+             * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+             * @param error El error de firebase
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.example.animanga_universe.R;
 import com.example.animanga_universe.activities.MainMenu;
 import com.example.animanga_universe.adapters.ListAdapter;
-import com.example.animanga_universe.classes.AnimeUser;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.AnimeUser;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.google.android.material.tabs.TabLayout;
 

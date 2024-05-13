@@ -17,11 +17,11 @@ import android.widget.ImageView;
 import android.widget.ToggleButton;
 
 import com.example.animanga_universe.R;
-import com.example.animanga_universe.classes.Anime;
-import com.example.animanga_universe.classes.CommentScore;
-import com.example.animanga_universe.classes.Forum_Post;
-import com.example.animanga_universe.classes.Manga;
-import com.example.animanga_universe.classes.User;
+import com.example.animanga_universe.models.Anime;
+import com.example.animanga_universe.models.CommentScore;
+import com.example.animanga_universe.models.Forum_Post;
+import com.example.animanga_universe.models.Manga;
+import com.example.animanga_universe.models.User;
 import com.example.animanga_universe.databinding.ActivityMainMenuBinding;
 import com.example.animanga_universe.encapsulators.Encapsulator;
 import com.example.animanga_universe.extras.Helper;
@@ -185,6 +185,10 @@ public class MainMenu extends AppCompatActivity {
     public void guardarUsuario(User user){
         DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Usuario");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            /**
+             * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+             * @param snapshot Es la tabla a la que se accede
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot d: snapshot.getChildren()){
@@ -195,7 +199,10 @@ public class MainMenu extends AppCompatActivity {
                     }
                 }
             }
-
+            /**
+             * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+             * @param error El error de firebase
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -239,6 +246,10 @@ public class MainMenu extends AppCompatActivity {
         try{
             DatabaseReference ref= FirebaseDatabase.getInstance().getReference("Usuario");
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                /**
+                 * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+                 * @param snapshot Es la tabla a la que se accede
+                 */
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot d: snapshot.getChildren()){
@@ -249,9 +260,10 @@ public class MainMenu extends AppCompatActivity {
                         }
                     }
                 }
-
-
-
+                /**
+                 * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+                 * @param error El error de firebase
+                 */
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -381,12 +393,16 @@ public class MainMenu extends AppCompatActivity {
 }
 
     /**
-     * La función que busca todos los postsw de los foros y rellena el listado para la pestaña de los foros
+     * La función que busca todos los posts de los foros y rellena el listado para la pestaña de los foros
      */
     public void fillPosts(){
         posts.clear();
         ref= FirebaseDatabase.getInstance().getReference("Forum_Posts");
         ref.addValueEventListener(new ValueEventListener() {
+            /**
+             * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+             * @param snapshot Es la tabla a la que se accede
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot d: snapshot.getChildren()){
@@ -395,7 +411,10 @@ public class MainMenu extends AppCompatActivity {
 
                 }
             }
-
+            /**
+             * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+             * @param error El error de firebase
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -452,6 +471,10 @@ public class MainMenu extends AppCompatActivity {
         if(forumPost!=null){
             ref= FirebaseDatabase.getInstance().getReference("Forum_Posts");
             ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                /**
+                 * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+                 * @param snapshot Es la tabla a la que se accede
+                 */
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for(DataSnapshot d: snapshot.getChildren()){
@@ -462,7 +485,10 @@ public class MainMenu extends AppCompatActivity {
                         }
                     }
                 }
-
+                /**
+                 * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+                 * @param error El error de firebase
+                 */
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
 
@@ -479,6 +505,10 @@ public class MainMenu extends AppCompatActivity {
     public void commentScore(CommentScore cs){
         ref= FirebaseDatabase.getInstance().getReference("CommentScore");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            /**
+             * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+             * @param snapshot Es la tabla a la que se accede
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int counter=0;
@@ -493,6 +523,10 @@ public class MainMenu extends AppCompatActivity {
                     ref.push().setValue(cs);
                 }
             }
+            /**
+             * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+             * @param error El error de firebase
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -507,6 +541,10 @@ public class MainMenu extends AppCompatActivity {
     public void commentScoreRemove(CommentScore cs){
         ref= FirebaseDatabase.getInstance().getReference("CommentScore");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            /**
+             * Se llama a este método para recorrer la base de datos en Firebase, para poder realizar los cambios
+             * @param snapshot Es la tabla a la que se accede
+             */
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot d: snapshot.getChildren()){
@@ -516,7 +554,10 @@ public class MainMenu extends AppCompatActivity {
                     }
                 }
             }
-
+            /**
+             * Este método se llama si hay un error, ya sea por las reglas de Firebase o por no tener conexión a internet
+             * @param error El error de firebase
+             */
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 

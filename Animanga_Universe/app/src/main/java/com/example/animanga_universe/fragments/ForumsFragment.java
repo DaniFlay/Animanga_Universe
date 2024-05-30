@@ -63,7 +63,13 @@ public class ForumsFragment extends Fragment implements View.OnClickListener {
         layoutManager= new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         fab= view.findViewById(R.id.fab);
-        fab.setOnClickListener(this);
+        if(user.getAnimes()==null && user.getMangas()==null){
+            fab.setVisibility(View.GONE);
+        }
+        else{
+            fab.setOnClickListener(this);
+        }
+
         return view;
     }
 

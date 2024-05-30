@@ -143,6 +143,17 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
         dejado = view.findViewById(R.id.dejado);
         enLista = view.findViewById(R.id.planeado);
         porDefecto = view.findViewById(R.id.sinAsignar);
+        if(e.getAnime()!=null) {
+            if (e.getAnime().getEpisodes() == null) {
+                completado.setClickable(false);
+            }
+        }
+        if(e.getManga()!=null) {
+            if (e.getManga().getChapters() == null) {
+                completado.setClickable(false);
+            }
+            enProceso.setText(getString(R.string.leyendo));
+        }
         assert progreso.getEditText() != null;
         //En el caso de que el encapsulador contenga un anime y el usuario tenga animes en sus listas, se recorre la lista del usuario buscando el anime del
         //encapsulador y si lo encuentra, selecciona su estado, y settea los episodios del progreso que lleva el usuario
@@ -155,6 +166,7 @@ public class EditItemFragment extends Fragment implements View.OnClickListener, 
             }
             //En el caso de que el encapsulador lo que contiene es un manga, se hace el mismo proceso pero se busca en la lista de los mangas y no animes
         } else if (e.getManga() != null && user.getMangas() != null) {
+
             for (MangaUser m : user.getMangas()) {
                 if (m.getManga().equals(e.getManga())) {
                     estadoAnime = m.getEstado();

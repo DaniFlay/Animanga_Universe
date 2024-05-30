@@ -130,7 +130,8 @@ if(anime.getTrailerUrl()!=null&&!anime.getTrailerUrl().trim().equals("")){
         @Override
         public void onReady(@NonNull YouTubePlayer youTubePlayer) {
             String[] divisionLink= anime.getTrailerUrl().split("v=");
-            youTubePlayer.cueVideo(divisionLink[1],0);
+            youTubePlayer.loadVideo(divisionLink[1],0);
+
         }
     });
 }else {

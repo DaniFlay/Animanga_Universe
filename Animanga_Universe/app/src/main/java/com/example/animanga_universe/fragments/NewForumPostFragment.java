@@ -68,15 +68,31 @@ public class NewForumPostFragment extends Fragment implements ChipGroup.OnChecke
         chipGroup= view.findViewById(R.id.chipsObras);
         anime= view.findViewById(R.id.chipAnime);
         manga= view.findViewById(R.id.chipManga);
+        if(user.getAnimes()==null){
+            anime.setClickable(false);
+            manga.setChecked(true);
+
+            for(MangaUser m: user.getMangas()){
+                names.add(m.getManga().getTitle());
+            }
+        } else if (user.getMangas()==null) {
+            manga.setClickable(false);
+            anime.setChecked(true);
+            for(AnimeUser a: user.getAnimes()){
+                names.add(a.getAnime().getTitle());
+            }
+        } else if (user.getAnimes()!=null&&user.getMangas()!=null) {
+            anime.setChecked(true);
+            for(AnimeUser a: user.getAnimes()){
+                names.add(a.getAnime().getTitle());
+            }
+        }
         obras= view.findViewById(R.id.animeSpinner);
         discusion= view.findViewById(R.id.discusion);
         mensaje= view.findViewById(R.id.mensaje);
         chipGroup.setOnCheckedStateChangeListener(this);
-        anime.setChecked(true);
         publicar= view.findViewById(R.id.publicar);
-        for(AnimeUser a: user.getAnimes()){
-            names.add(a.getAnime().getTitle());
-        }
+
         adapter= new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_dropdown_item,names);
         obras.setAdapter(adapter);
         publicar.setOnClickListener(this);

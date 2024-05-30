@@ -97,7 +97,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
        minutos= view.findViewById(R.id.minutos);
        media= view.findViewById(R.id.media);
        completado= view.findViewById(R.id.completados);
-       enProceso= view.findViewById(R.id.viendo);
+       enProceso= view.findViewById(R.id.enProceso);
        dejado= view.findViewById(R.id.dejado);
        enLista= view.findViewById(R.id.enlista);
        enEspera= view.findViewById(R.id.enespera);
@@ -128,7 +128,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         tableLayout= view.findViewById(R.id.tableLayout);
         editarPerfil.setOnClickListener(this);
         cambiarContraseña.setOnClickListener(this);
-        viendo.setText(R.string.viendo);
+        enProceso.setText(R.string.viendo);
         pieChart= view.findViewById(R.id.pieChart);
         //Si el usuario tiene animes guardados, se setea el PieChart, en caso contrario se hace invisible el elemento
         if(user.getAnimes()!=null) {
@@ -242,7 +242,7 @@ if(v.getId()==editarPerfil.getId()){
      */
     public void rellenarAnimes(){
         counter=0;
-        viendo.setText(R.string.viendo);
+        enProceso.setText(R.string.viendo);
         todos.setText(String.valueOf(user.getAnimes().size()));
         for(AnimeUser a: user.getAnimes()){
             if(a.getEstado().equals(getString(R.string.completado))){
@@ -277,7 +277,7 @@ if(v.getId()==editarPerfil.getId()){
                 counter++;
             }
         }
-        enProceso.setText(String.valueOf(counter));
+        viendo.setText(String.valueOf(counter));
         counter=0;
     }
 
@@ -286,7 +286,7 @@ if(v.getId()==editarPerfil.getId()){
      * de cada estado
      */
     public void rellenarMangas(){
-            viendo.setText(getString(R.string.leyendo));
+            enProceso.setText(getString(R.string.leyendo));
             todos.setText(String.valueOf(user.getMangas().size()));
             for(MangaUser m: user.getMangas()){
                 if(m.getEstado().equals(getString(R.string.completado))){
@@ -321,7 +321,7 @@ if(v.getId()==editarPerfil.getId()){
                     counter++;
                 }
             }
-            enProceso.setText(String.valueOf(counter));
+            viendo.setText(String.valueOf(counter));
             counter=0;
         }
 
